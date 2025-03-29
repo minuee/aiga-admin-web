@@ -117,7 +117,7 @@ export function SidebarResponsive(props: SidebarResponsiveProps) {
             _hover={{ boxShadow: 'none' }}
           />
           <DrawerBody maxW="285px" px="0rem" pb="0">
-            <Scrollbars
+            {/* <Scrollbars
               autoHide
               renderTrackVertical={renderTrack}
               renderThumbVertical={renderThumb}
@@ -125,7 +125,7 @@ export function SidebarResponsive(props: SidebarResponsiveProps) {
               universal={true}
             >
               <Content routes={routes} />
-            </Scrollbars>
+            </Scrollbars> */}
           </DrawerBody>
         </DrawerContent>
       </Drawer>

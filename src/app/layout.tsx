@@ -4,7 +4,7 @@ import AppWrappers from './AppWrappers';
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="ko" suppressHydrationWarning>
       <body id={'root'}>
         <AppWrappers>{children}</AppWrappers>
       </body>
