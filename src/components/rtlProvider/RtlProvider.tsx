@@ -12,10 +12,7 @@ let options = {
 }
 export function RtlProvider (props: { children: ReactNode }) {
   const { children } = props
-  const dir =
-    isWindowAvailable() && window.document.documentElement.dir == 'ar'
-      ? 'rtl'
-      : 'ltr'
+  const dir ='ltr'
   const cache = createCache(options[dir])
   return <CacheProvider value={cache} children={children} />
 }

@@ -15,6 +15,8 @@ import {
   getActiveRoute,
   isWindowAvailable,
 } from 'utils/navigation';
+//Left Sidebar 전역상태
+import LnbStateStore from 'store/lnbStore';
 
 interface RTLLayoutProps extends PropsWithChildren {}
 
@@ -23,11 +25,13 @@ export default function RTLLayout(props: RTLLayoutProps) {
   const { children, ...rest } = props;
   const [fixed] = useState(false);
   const [toggleSidebar, setToggleSidebar] = useState(false);
+  const setOpenState = LnbStateStore((state) => state.setOpenState);
+  const isOpen = LnbStateStore(state => state.isOpen);
+
 
   useEffect(() => {
-    if (!isWindowAvailable()) return;
-    window.document.documentElement.dir = 'rtl';
-  });
+    console.log("isOpen 22",isOpen)    
+  }, [isOpen])
 
   const { onOpen } = useDisclosure();
   return (

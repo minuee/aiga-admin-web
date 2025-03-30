@@ -17,7 +17,7 @@ export function SidebarBrand() {
 				fontWeight="500"
 				fontSize="30px"
 			>
-				AIGA Admin 
+				AIGA Admin
 			</Text>
 
 			<HSeparator mb='30px' mt="30px" />

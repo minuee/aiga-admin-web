@@ -17,7 +17,7 @@ import { RiEyeCloseLine } from 'react-icons/ri';
 //로그인 전역상태
 import UserStateStore from 'store/userStore';
 
-
+import illustrationBackground from '/img/auth/bg.png'
 
 export default function SignIn() {
   const setLoginUserInfo = UserStateStore((state) => state.setUserState);
@@ -74,8 +74,9 @@ export default function SignIn() {
     }
   };
 
+  
   return (
-    <DefaultAuthLayout illustrationBackground={'/img/auth/bg.png'}>
+    <DefaultAuthLayout illustrationBackground={'/img/auth/auth.png'}>
       <Flex
         maxW={{ base: '100%', md: 'max-content' }}
         w="100%"

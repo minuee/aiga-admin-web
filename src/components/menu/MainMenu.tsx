@@ -21,6 +21,8 @@ import {
 	MdOutlineSettings
 } from 'react-icons/md';
 
+
+
 export default function Banner(props: { [x: string]: any }) {
 	const { ...rest } = props;
 
@@ -38,6 +40,7 @@ export default function Banner(props: { [x: string]: any }) {
 
 	// Ellipsis modals
 	const { isOpen: isOpen1, onOpen: onOpen1, onClose: onClose1 } = useDisclosure();
+	
 
 	return (
 		<Menu isOpen={isOpen1} onClose={onClose1}>

@@ -1,4 +1,5 @@
-import React from 'react';
+'use client';
+import React, { PropsWithChildren } from 'react';
 
 // chakra imports
 import {
@@ -12,6 +13,13 @@ import {
   useDisclosure,
   DrawerContent,
   DrawerCloseButton,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
 } from '@chakra-ui/react';
 import Content from 'components/sidebar/components/Content';
 import {
@@ -20,6 +28,9 @@ import {
   renderView,
 } from 'components/scrollbar/Scrollbar';
 import dynamic from 'next/dynamic';
+
+//Left Sidebar 전역상태
+import LnbStateStore from 'store/lnbStore';
 
 const Scrollbars = dynamic(
   () => import('react-custom-scrollbars-2').then((mod) => mod.Scrollbars),
@@ -35,9 +46,13 @@ interface SidebarResponsiveProps {
   routes: IRoute[];
 }
 
-interface SidebarProps extends SidebarResponsiveProps {
+export interface SidebarProps extends PropsWithChildren {
+  routes: IRoute[];
   [x: string]: any;
 }
+/* interface SidebarProps extends SidebarResponsiveProps {
+  [x: string]: any;
+} */
 
 function Sidebar(props: SidebarProps) {
   const { routes } = props;
@@ -79,8 +94,16 @@ export function SidebarResponsive(props: SidebarResponsiveProps) {
   let menuColor = useColorModeValue('gray.400', 'white');
   // // SIDEBAR
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const btnRef = React.useRef();
+  //const setOpenState = LnbStateStore((state) => state.setOpenState);
+  //const isOpen = LnbStateStore(state => state.isOpen);
 
+
+  React.useEffect(() => {
+    console.log("isOpen",isOpen)    
+  }, [isOpen])
+  
+  
+  const btnRef = React.useRef();
   const { routes } = props;
   // let isWindows = navigator.platform.startsWith("Win");
   //  BRAND
@@ -98,40 +121,62 @@ export function SidebarResponsive(props: SidebarResponsiveProps) {
           _hover={{ cursor: 'pointer' }}
         />
       </Flex>
-      <Drawer
-        isOpen={isOpen}
-        onClose={onClose}
-        placement={
-          isWindowAvailable() && window.document.documentElement.dir === 'rtl'
-            ? 'right'
-            : 'left'
-        }
-        finalFocusRef={btnRef}
-      >
-        <DrawerOverlay />
-        <DrawerContent w="285px" maxW="285px" bg={sidebarBackgroundColor}>
-          <DrawerCloseButton
-            zIndex="3"
-            onClick={onClose}
-            _focus={{ boxShadow: 'none' }}
-            _hover={{ boxShadow: 'none' }}
-          />
-          <DrawerBody maxW="285px" px="0rem" pb="0">
-            {/* <Scrollbars
-              autoHide
-              renderTrackVertical={renderTrack}
-              renderThumbVertical={renderThumb}
-              renderView={renderView}
-              universal={true}
+      {
+        isOpen && (
+          <Drawer
+            isOpen={isOpen}
+            onClose={onClose}
+            placement={'left'}
+            finalFocusRef={btnRef}
+            closeOnOverlayClick
+          >
+            <DrawerOverlay 
+              backdropFilter="auto"
+              backdropBlur="8px"
+            />
+            <DrawerContent 
+              //h="100vh" 
+              w="285px" 
+              maxW="300px"  
+              ms={{
+                sm: '300px',
+              }}
+              my={{
+                sm: '0',
+              }}
+              borderRadius="16px"
             >
-              <Content routes={routes} />
-            </Scrollbars> */}
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
+              <DrawerCloseButton
+                zIndex="3"
+                onClick={onClose}
+                _focus={{ boxShadow: 'none' }}
+                _hover={{ boxShadow: 'none' }}
+              />
+              <DrawerBody maxW="300px" px="0rem" pb="0">
+                <Scrollbars
+                  autoHide
+                  renderTrackVertical={renderTrack}
+                  renderThumbVertical={renderThumb}
+                  renderView={renderView}
+                  universal={true}
+                >
+                  <Content routes={routes} />
+                </Scrollbars>
+              </DrawerBody>
+            </DrawerContent>
+          </Drawer>
+        )
+      }
+      
     </Flex>
   );
 }
 // PROPS
+
+type WindowSize = {
+  width: number
+  height: number
+}
+
 
 export default Sidebar;

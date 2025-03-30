@@ -12,11 +12,6 @@ export default function FixedPlugin (props: { [x: string]: any }) {
 
   let left = ''
   let right = '35px'
-  useEffect(() => {
-    if (isWindowAvailable() || window.document.documentElement.dir !== 'rtl')
-      return
-    ;[left, right] = [right, left]
-  })
 
   return (
     <Button

@@ -16,7 +16,7 @@ export default function AuthLayout({ children }: AuthProps) {
   // states and functions
   const [toggleSidebar, setToggleSidebar] = useState(false);
   const authBg = useColorModeValue('white', 'navy.900');
-  if (isWindowAvailable()) document.documentElement.dir = 'ltr';
+  
   return (
     <Box>
       <SidebarContext.Provider
