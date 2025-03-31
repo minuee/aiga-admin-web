@@ -13,15 +13,9 @@ import {
   useDisclosure,
   DrawerContent,
   DrawerCloseButton,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
 } from '@chakra-ui/react';
 import Content from 'components/sidebar/components/Content';
+import SmallContent from 'components/sidebar/components/SmallContent';
 import {
   renderThumb,
   renderTrack,
@@ -31,6 +25,7 @@ import dynamic from 'next/dynamic';
 
 //Left Sidebar 전역상태
 import LnbStateStore from 'store/lnbStore';
+import LnbSmallStateStore from 'store/lnbSmallStore';
 
 const Scrollbars = dynamic(
   () => import('react-custom-scrollbars-2').then((mod) => mod.Scrollbars),
@@ -56,6 +51,7 @@ export interface SidebarProps extends PropsWithChildren {
 
 function Sidebar(props: SidebarProps) {
   const { routes } = props;
+  const isSmall = LnbSmallStateStore(state => state.isSmall);
 
   let variantChange = '0.2s linear';
   let shadow = useColorModeValue(
@@ -65,6 +61,28 @@ function Sidebar(props: SidebarProps) {
   // Chakra Color Mode
   let sidebarBg = useColorModeValue('white', 'navy.800');
   let sidebarMargins = '0px';
+
+  if ( isSmall ) {
+    // SIDEBAR
+    return (
+      <Box display={{ sm: 'none', xl: 'block' }} position="fixed" minH="100%">
+        <Box
+          bg={sidebarBg}
+          transition={variantChange}
+          w="100px"
+          h="100vh"
+          m={sidebarMargins}
+          minH="100%"
+          overflowX="hidden"
+          boxShadow={shadow}
+        >
+          <Scrollbars universal={true}>
+            <SmallContent routes={routes} />
+          </Scrollbars>
+        </Box>
+      </Box>
+    );
+  }
 
   // SIDEBAR
   return (
@@ -94,13 +112,16 @@ export function SidebarResponsive(props: SidebarResponsiveProps) {
   let menuColor = useColorModeValue('gray.400', 'white');
   // // SIDEBAR
   const { isOpen, onOpen, onClose } = useDisclosure();
-  //const setOpenState = LnbStateStore((state) => state.setOpenState);
-  //const isOpen = LnbStateStore(state => state.isOpen);
-
+  const setLeftOpenState = LnbStateStore((state) => state.setOpenState);
+  const isLeftOpen = LnbStateStore(state => state.isOpen);
 
   React.useEffect(() => {
-    console.log("isOpen",isOpen)    
+    setLeftOpenState(isOpen)
   }, [isOpen])
+
+  React.useEffect(() => {
+    if ( !isLeftOpen ) onClose()
+  }, [isLeftOpen])
   
   
   const btnRef = React.useRef();
@@ -122,7 +143,7 @@ export function SidebarResponsive(props: SidebarResponsiveProps) {
         />
       </Flex>
       {
-        isOpen && (
+        isLeftOpen && (
           <Drawer
             isOpen={isOpen}
             onClose={onClose}
@@ -132,19 +153,20 @@ export function SidebarResponsive(props: SidebarResponsiveProps) {
           >
             <DrawerOverlay 
               backdropFilter="auto"
-              backdropBlur="8px"
+              backdropBlur="18px"
+              color="red"
             />
             <DrawerContent 
               //h="100vh" 
               w="285px" 
               maxW="300px"  
-              ms={{
+              /* ms={{
                 sm: '300px',
               }}
               my={{
                 sm: '0',
               }}
-              borderRadius="16px"
+              borderRadius="16px" */
             >
               <DrawerCloseButton
                 zIndex="3"

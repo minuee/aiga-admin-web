@@ -1,34 +1,34 @@
 type RowObj = {
 	name: string;
-	progress: string;
+	writer: string;
 	quantity: number;
 	date: string; 
 };
 
 const tableDataColumns: RowObj[] = [
 	{
-		name: 'Horizon UI PRO',
+		name: '공지사항 제목 제목 1',
 		quantity: 2458,
-		progress: '17.5%',
-		date: '12 Jan 2021', 
+		writer: '관리자',
+		date: '2025.04.05',
 	},
 	{
-		name:'Horizon UI Free',
-		quantity: 1485,
-		progress: '10.8%',
-		date: '21 Feb 2021', 
+		name: '공지사항 제목 제목 1',
+		quantity: 2458,
+		writer: '관리자',
+		date: '2025.04.05',
 	},
 	{
-		name: 'Weekly Update',
-		quantity: 1024,
-		progress: '21.3%',
-		date: '13 Mar 2021', 
+		name: '공지사항 제목 제목 1',
+		quantity: 2458,
+		writer: '관리자',
+		date: '2025.04.05',
 	},
 	{
-		name: 'Venus 3D Asset',
-		quantity: 858,
-		progress: '31.5%',
-		date: '24 Jan 2021', 
+		name: '공지사항 제목 제목 1',
+		quantity: 2458,
+		writer: '관리자',
+		date: '2025.04.05',
 	}, 
 ];
 

@@ -1,11 +1,14 @@
 /* eslint-disable */
 
 // chakra imports
-import { Box, Flex, HStack, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, HStack, Text, useColorModeValue,useDisclosure } from '@chakra-ui/react';
 import Link from 'next/link';
 import { IRoute } from 'types/navigation';
 import { usePathname } from 'next/navigation';
 import { useCallback } from 'react';
+//Left Sidebar 전역상태
+import LnbStateStore from 'store/lnbStore';
+import LnbSmallStateStore from 'store/lnbSmallStore';
 
 interface SidebarLinksProps {
   routes: IRoute[];
@@ -13,6 +16,11 @@ interface SidebarLinksProps {
 
 export function SidebarLinks(props: SidebarLinksProps) {
   const { routes } = props;
+  // // SIDEBAR
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const setLeftOpenState = LnbStateStore((state) => state.setOpenState);
+  const isSmall = LnbSmallStateStore(state => state.isSmall);
+  const isLeftOpen = LnbStateStore(state => state.isOpen);
 
   //   Chakra color mode
   const pathname = usePathname();
@@ -34,6 +42,17 @@ export function SidebarLinks(props: SidebarLinksProps) {
     [pathname],
   );
 
+  const onHandleClick = (url:string) => {
+    console.log("routes pathname",pathname,">>",url);
+    if ( !isLeftOpen ) {
+      setLeftOpenState(true)
+      setTimeout(() => setLeftOpenState(false), 300);
+    }else{
+      setTimeout(() => setLeftOpenState(false), 600);
+    }
+    
+  }
+
   // this function creates the links from the secondary accordions (for example auth -> sign-in -> default)
   const createLinks = (routes: IRoute[]) => {
     return routes.map((route, index: number) => {
@@ -43,7 +62,7 @@ export function SidebarLinks(props: SidebarLinksProps) {
         route.layout === '/rtl'
       ) {
         return (
-          <Link key={index} href={route.layout + route.path}>
+          <Link key={index} href={route.layout + route.path} onClick={()=>onHandleClick(route.path)}>
             {route.icon ? (
               <Box>
                 <HStack
@@ -64,21 +83,31 @@ export function SidebarLinks(props: SidebarLinksProps) {
                     >
                       {route.icon}
                     </Box>
-                    <Text
-                      me="auto"
-                      color={
-                        activeRoute(route.path.toLowerCase())
-                          ? activeColor
-                          : textColor
-                      }
-                      fontWeight={
-                        activeRoute(route.path.toLowerCase())
-                          ? 'bold'
-                          : 'normal'
-                      }
-                    >
-                      {route.name}
-                    </Text>
+                    {
+                      
+                      (isSmall && !isLeftOpen)
+                      ? 
+                      null
+                      :
+                      (
+                        <Text
+                          me="auto"
+                          color={
+                            activeRoute(route.path.toLowerCase())
+                              ? activeColor
+                              : textColor
+                          }
+                          fontWeight={
+                            activeRoute(route.path.toLowerCase())
+                              ? 'bold'
+                              : 'normal'
+                          }
+                        >
+                          {route.name}
+                        </Text>
+                      )
+                    }
+                    
                   </Flex>
                   <Box
                     h="36px"

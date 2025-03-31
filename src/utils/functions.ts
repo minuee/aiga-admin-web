@@ -1,6 +1,5 @@
 import { format } from 'date-fns';
 import _ from 'lodash';
-
 const EMAIL_FORMAT =
   /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,}$/i;
 const PASSWORD_RULE2 = /^(?=.*[a-zA-Z])(?=.*[!@#$%^~*+=-])(?=.*[0-9]).{8,16}$/i;
@@ -12,6 +11,15 @@ const TO_FIXED_POS = 3;
 const functions = {
   isEmpty(str:any){
     return str === null || str === undefined || str === '' || (typeof str === 'object' && Array.isArray(str) === false && Object.keys(str).length === 0);
+  },
+
+  simpleToast(toast:any,str:string,direction:any='top-right',type:any='info') {
+    return toast({
+      title: str,
+      position: direction,
+      status : type,
+      isClosable: true,
+    })
   },
 
   //날짜->문자

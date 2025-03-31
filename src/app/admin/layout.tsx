@@ -18,6 +18,9 @@ import {
   getActiveNavbarText,
   getActiveRoute,
 } from 'utils/navigation';
+//로그인 전역상태
+import LnbStateStore from 'store/lnbStore';
+import LnbSmallStateStore from 'store/lnbSmallStore';
 
 interface DashboardLayoutProps extends PropsWithChildren {
   [x: string]: any;
@@ -28,11 +31,18 @@ export default function AdminLayout(props: DashboardLayoutProps) {
   const { children, ...rest } = props;
   // states and functions
   const [fixed] = useState(false);
-  const [toggleSidebar, setToggleSidebar] = useState(false);
+  const [newBrandText, setNewBrandText] = useState("Default");
   // functions for changing the states from components
   const { onOpen } = useDisclosure();
+  const isLeftOpen = LnbStateStore(state => state.isOpen);
+  const isSmall = LnbSmallStateStore(state => state.isSmall);
 
   const bg = useColorModeValue('secondaryGray.300', 'navy.900');
+
+  useEffect(() => {
+    const newRouteName = getActiveRoute(routes);
+    setNewBrandText(newRouteName)
+  }, [isLeftOpen])
 
   return (
     <Box h="100vh" w="100vw" bg={bg}>
@@ -45,8 +55,8 @@ export default function AdminLayout(props: DashboardLayoutProps) {
           overflow="auto"
           position="relative"
           maxHeight="100%"
-          w={{ base: '100%', xl: 'calc( 100% - 290px )' }}
-          maxWidth={{ base: '100%', xl: 'calc( 100% - 290px )' }}
+          w={isSmall ? { base: '100%', xl: 'calc( 100% - 90px )' } : { base: '100%', xl: 'calc( 100% - 290px )' }}
+          maxWidth={isSmall ? { base: '100%', xl: 'calc( 100% - 90px )' } : { base: '100%', xl: 'calc( 100% - 290px )' }}
           transition="all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1)"
           transitionDuration=".2s, .2s, .35s"
           transitionProperty="top, bottom, width"
@@ -57,7 +67,8 @@ export default function AdminLayout(props: DashboardLayoutProps) {
               <Navbar
                 onOpen={onOpen}
                 logoText={'AIGA ADMIN'}
-                brandText={getActiveRoute(routes)}
+                //brandText={getActiveRoute(routes)}
+                brandText={newBrandText}
                 secondary={getActiveNavbar(routes)}
                 message={getActiveNavbarText(routes)}
                 fixed={fixed}

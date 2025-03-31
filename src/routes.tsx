@@ -4,7 +4,7 @@ import {
   MdPerson,
   MdHome,
   MdLock,
-  MdOutlineShoppingCart,
+  MdNotifications,
 } from 'react-icons/md';
 
 // Admin Imports
@@ -20,18 +20,18 @@ import { IRoute } from 'types/navigation';
 
 const routes: IRoute[] = [
   {
-    name: 'Main Dashboard',
+    name: '메인 홈',
     layout: '/admin',
     path: '/default',
     icon: <Icon as={MdHome} width="20px" height="20px" color="inherit" />,
   },
   {
-    name: 'NFT Marketplace',
+    name: '공지사항',
     layout: '/admin',
-    path: '/nft-marketplace',
+    path: '/notice',
     icon: (
       <Icon
-        as={MdOutlineShoppingCart}
+        as={MdNotifications}
         width="20px"
         height="20px"
         color="inherit"
@@ -40,23 +40,23 @@ const routes: IRoute[] = [
     secondary: true,
   },
   {
-    name: 'Data Tables',
+    name: '각종통계',
     layout: '/admin',
     icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
     path: '/data-tables',
   },
-  {
+  /* {
     name: 'Profile',
     layout: '/admin',
     path: '/profile',
     icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
-  },
-  {
+  }, */
+/*   {
     name: 'Sign In',
     layout: '/auth',
     path: '/sign-in',
     icon: <Icon as={MdLock} width="20px" height="20px" color="inherit" />,
-  },
+  }, */
   /* {
     name: 'RTL Admin',
     layout: '/rtl',

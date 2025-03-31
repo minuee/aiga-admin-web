@@ -1,6 +1,6 @@
 type RowObj = {
 	name: [string, boolean];
-	progress: string;
+	writer: string;
 	quantity: number;
 	date: string;
 	info: boolean;
@@ -8,80 +8,80 @@ type RowObj = {
 
 const tableDataCheck: RowObj[] = [
 	{
-		name: [ 'Horizon UI PRO', true ],
+		name: [ '공지사항 제목 제목 1', false ],
 		quantity: 2458,
-		progress: '17.5%',
-		date: '12 Jan 2021',
+		writer: '관리자',
+		date: '2025.04.05',
 		info: false
 	},
 	{
-		name: [ 'Horizon UI Free', true ],
+		name: [ '공지사항 제목 제목 2', false ],
 		quantity: 1485,
-		progress: '10.8%',
-		date: '21 Feb 2021',
+		writer: '관리자',
+		date: '2025.04.05',
 		info: true
 	},
 	{
-		name: [ 'Weekly Update', true ],
+		name: [ '공지사항 제목 제목 3', false ],
 		quantity: 1024,
-		progress: '21.3%',
-		date: '13 Mar 2021',
+		writer: '관리자',
+		date: '2025.04.05',
 		info: true
 	},
 	{
-		name: [ 'Venus 3D Asset', true ],
+		name: [ '공지사항 제목 제목 4', false ],
 		quantity: 858,
-		progress: '31.5%',
-		date: '24 Jan 2021',
+		writer: '관리자',
+		date: '2025.04.05',
 		info: true
 	},
 	{
-		name: [ 'Marketplace', true ],
+		name: [ '공지사항 제목 제목 5', false ],
 		quantity: 258,
-		progress: '12.2%',
-		date: '24 Oct 2022',
+		writer: '관리자',
+		date: '2025.04.05',
 		info: false
 	},
 	{
-		name: [ 'Horizon UI Free', true ],
+		name: [ '공지사항 제목 제목 6', false ],
 		quantity: 1485,
-		progress: '10.8%',
-		date: '21 Feb 2021',
+		writer: '관리자',
+		date: '2025.04.05',
 		info: true
 	},
 	{
-		name: [ 'Weekly Update', true ],
+		name: [ '공지사항 제목 제목 7', false ],
 		quantity: 1024,
-		progress: '21.3%',
-		date: '13 Mar 2021',
+		writer: '관리자',
+		date: '2025.04.05',
 		info: true
 	},
 	{
-		name: [ 'Venus 3D Asset', true ],
+		name: [ '공지사항 제목 제목 8', false ],
 		quantity: 858,
-		progress: '31.5%',
-		date: '24 Jan 2021',
+		writer: '관리자',
+		date: '2025.04.05',
 		info: true
 	},
 	{
-		name: [ 'Horizon UI Free', true ],
+		name: [ '공지사항 제목 제목 9', false ],
 		quantity: 1485,
-		progress: '10.8%',
-		date: '21 Feb 2021',
+		writer: '관리자',
+		date: '2025.04.05',
 		info: true
 	},
 	{
-		name: [ 'Weekly Update', true ],
+		name: [ '공지사항 제목 제목 10', false ],
 		quantity: 1024,
-		progress: '21.3%',
-		date: '13 Mar 2021',
+		writer: '관리자',
+		date: '2025.04.05',
 		info: true
 	},
 	{
-		name: [ 'Venus 3D Asset', true ],
+		name: [ '공지사항 제목 제목 11', false ],
 		quantity: 858,
-		progress: '31.5%',
-		date: '24 Jan 2021',
+		writer: '관리자',
+		date: '2025.04.05',
 		info: true
 	}
 ];

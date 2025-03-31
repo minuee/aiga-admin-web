@@ -10,9 +10,10 @@ import {
   Text,
   useColorModeValue
 } from '@chakra-ui/react'
-import { useState, useEffect } from 'react'
-import AdminNavbarLinks from 'components/navbar/NavbarLinksAdmin'
-import { isWindowAvailable } from 'utils/navigation'
+import { useCallback, useState, useEffect } from 'react';
+import AdminNavbarLinks from 'components/navbar/NavbarLinksAdmin';
+import { isWindowAvailable } from 'utils/navigation';
+import LnbSmallStateStore from 'store/lnbSmallStore';
 
 export default function AdminNavbar (props: {
   secondary: boolean
@@ -22,8 +23,8 @@ export default function AdminNavbar (props: {
   fixed: boolean
   onOpen: (...args: any[]) => any
 }) {
-  const [scrolled, setScrolled] = useState(false)
-
+  const [scrolled, setScrolled] = useState(false);
+  
   useEffect(() => {
     if (isWindowAvailable()) {
       // You now have access to `window`
@@ -60,6 +61,8 @@ export default function AdminNavbar (props: {
     }
   }
 
+  const isSmall = LnbSmallStateStore(state => state.isSmall);
+
   return (
     <Box
       position={navbarPosition}
@@ -94,14 +97,26 @@ export default function AdminNavbar (props: {
         xl: '12px'
       }}
       pt='8px'
-      top={{ base: '12px', md: '16px', xl: '18px' }}
-      w={{
-        base: 'calc(100vw - 6%)',
-        md: 'calc(100vw - 8%)',
-        lg: 'calc(100vw - 6%)',
-        xl: 'calc(100vw - 350px)',
-        '2xl': 'calc(100vw - 365px)'
-      }}
+      top={{ base: '12px', md: '0px', xl: '18px' }}
+      w={
+        isSmall
+        ?
+        {
+          base: 'calc(100vw - 6%)',
+          md: 'calc(100vw - 8%)',
+          lg: 'calc(100vw - 6%)',
+          xl: 'calc(100vw - 150px)',
+          '2xl': 'calc(100vw - 165px)'
+        }
+        :
+        {
+          base: 'calc(100vw - 6%)',
+          md: 'calc(100vw - 8%)',
+          lg: 'calc(100vw - 6%)',
+          xl: 'calc(100vw - 350px)',
+          '2xl': 'calc(100vw - 365px)'
+        }
+    }
     >
       <Flex
         w='100%'
@@ -113,8 +128,8 @@ export default function AdminNavbar (props: {
         mb={gap}
       >
         <Box mb={{ sm: '8px', md: '0px' }}>
-          <Breadcrumb>
-            <BreadcrumbItem color={secondaryText} fontSize='sm' mb='5px'>
+          <Breadcrumb sx={{marginBottom:'5px'}}>
+            <BreadcrumbItem color={secondaryText} fontSize='sm'>
               <BreadcrumbLink href='#' color={secondaryText}>
                 Home
               </BreadcrumbLink>

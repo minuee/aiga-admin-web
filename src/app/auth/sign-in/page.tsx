@@ -3,21 +3,18 @@
 
 import React from 'react';
 // Chakra imports
-import { Box,Button,Checkbox,Flex,FormControl,FormLabel,Heading,Icon,Input,InputGroup,InputRightElement,Text,useColorModeValue,} from '@chakra-ui/react';
+import { Box,Button,Checkbox,Flex,FormControl,FormLabel,Heading,Icon,Input,InputGroup,InputRightElement,Text,useColorModeValue,useToast} from '@chakra-ui/react';
 import { redirect } from 'next/navigation';
 // Custom components
-import { HSeparator } from 'components/separator/Separator';
+import { authProvider } from "services/auth";
 import DefaultAuthLayout from 'layouts/auth/Default';
-// Assets
-import Link from 'next/link';
-import { FcGoogle } from 'react-icons/fc';
+// Asset
 import { MdOutlineRemoveRedEye } from 'react-icons/md';
 import { RiEyeCloseLine } from 'react-icons/ri';
 
+import functions from "utils/functions";
 //로그인 전역상태
 import UserStateStore from 'store/userStore';
-
-import illustrationBackground from '/img/auth/bg.png'
 
 export default function SignIn() {
   const setLoginUserInfo = UserStateStore((state) => state.setUserState);
@@ -37,6 +34,8 @@ export default function SignIn() {
     { bg: 'secondaryGray.300' },
     { bg: 'whiteAlpha.200' },
   );
+  const toast = useToast();
+
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
   const [login, setLogin] = React.useState({
@@ -45,8 +44,6 @@ export default function SignIn() {
   });
 
   const onHandleChage = (event: any) => {
-    console.log("onHandleChage", event.target.id)
-    console.log("onHandleChage", event.target.value)
     setLogin({
       ...login,
       [event.target.id]: event.target.value,
@@ -54,17 +51,40 @@ export default function SignIn() {
   };
 
   const handleLogin = async () => {
+    toast.closeAll()
     if (login.staff_id.trim() == '') {
-      window.alert('아이디를 입력해주세요.');
+      functions.simpleToast(toast,`아이디를 입력해주세요`);
     } else if (login.staff_pw.trim() == '') {
-      window.alert('비밀번호를 입력해주세요.');
+      functions.simpleToast(toast,`비밀번호를 입력해주세요`);
+    } else if (login.staff_pw.trim().length < 4) {
+      functions.simpleToast(toast,`비밀번호를 제대로 입력해주세요`);
     } else {
-      setLoginUserInfo(
-        true,
-        login.staff_id,
-        false
-      );
-      setTimeout(() => redirect('/admin/default'), 500);
+      try {
+        const ret = await authProvider.signin(login.staff_id.trim(), login.staff_pw.trim());
+        if (!ret.is_ok ) {
+          functions.simpleToast(toast,`잘못된 정보입니다.`);
+          return {
+            error: "Invalid login attempt",
+          };
+        }else{
+          setLoginUserInfo(
+            true,
+            login.staff_id,
+            ret.data.role,
+            ret.data.nickName
+          );
+          setTimeout(() => redirect('/admin/default'), 500);
+        }
+      } catch (error) {
+        // Unused as of now but this is how you would handle invalid
+        // username/password combinations - just like validating the inputs
+        // above
+        functions.simpleToast(toast,`잘못된 정보입니다.`);
+        return {
+          error: "Invalid login attempt",
+        };
+      }
+      
     }
   };
 
@@ -76,7 +96,7 @@ export default function SignIn() {
 
   
   return (
-    <DefaultAuthLayout illustrationBackground={'/img/auth/auth.png'}>
+    <DefaultAuthLayout illustrationBackground={'/img/auth/bg.png'}>
       <Flex
         maxW={{ base: '100%', md: 'max-content' }}
         w="100%"
@@ -155,7 +175,7 @@ export default function SignIn() {
                 isRequired={true}
                 fontSize="sm"
                 id="staff_pw"
-                placeholder="Min. 8 characters"
+                placeholder="Min. 4 characters"
                 mb="24px"
                 size="lg"
                 type={show ? 'text' : 'password'}

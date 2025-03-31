@@ -5,10 +5,12 @@ interface UserData {
     is_state : boolean;
     staff_id: string;
     is_master:boolean;
+    nickName : string
     setUserState: (
         state : boolean,
         staff_id: string,
-        is_master:boolean
+        is_master:boolean,
+        nickName : string
     ) => void;
 }
 
@@ -19,8 +21,9 @@ const UserStateStore = create<UserData>()(
                 is_state: false,
                 staff_id: '',
                 is_master: false,
-                setUserState: (is_state,staff_id,is_master) => {
-                    set((state) => ({ is_state,staff_id,is_master }));
+                nickName :'',
+                setUserState: (is_state,staff_id,is_master,nickName) => {
+                    set((state) => ({ is_state,staff_id,is_master,nickName }));
                     if ( is_state ) {
                         Cookies.setCookie('LoginUser',JSON.stringify({is_state,staff_id,is_master}));
                     }else{

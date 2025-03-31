@@ -1,12 +1,5 @@
 // Chakra imports
-import {
-  Box,
-  Button,
-  Flex,
-  Icon,
-  Text,
-  useColorModeValue
-} from '@chakra-ui/react'
+import { Box,Button,Flex,Icon,Text,useColorModeValue } from '@chakra-ui/react'
 import Card from 'components/card/Card'
 // Custom components
 import BarChart from 'components/charts/BarChart'
@@ -42,7 +35,7 @@ export default function WeeklyRevenue (props: { [x: string]: any }) {
           fontWeight='700'
           lineHeight='100%'
         >
-          Weekly Revenue
+          Weekly Data
         </Text>
         <Button
           alignItems='center'

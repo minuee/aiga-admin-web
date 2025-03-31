@@ -16,7 +16,7 @@ import Menu from 'components/menu/MainMenu';
 
 type RowObj = {
 	name: [string, boolean];
-	progress: string;
+	writer: string;
 	quantity: number;
 	date: string;
 	info: boolean;
@@ -33,34 +33,53 @@ export default function CheckTable(props: { tableData: any }) {
 	let defaultData= tableData;
 	const columns = [
 		columnHelper.accessor('name', {
-			id: 'name',
+			id: 'title',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
-					NAME
-				</Text>
+				<Flex align='center'>
+					<Checkbox defaultChecked={false} colorScheme='brandScheme' mr='10px' />
+					<Text
+						justifyContent='space-between'
+						align='center'
+						fontSize={{ sm: '10px', lg: '12px' }}
+						color='gray.400'
+					>
+						제목
+					</Text>
+				</Flex>
 			),
 			cell: (info: any) => (
 				<Flex align='center'>
-					<Checkbox defaultChecked={info.getValue()[1]} colorScheme='brandScheme' me='10px' />
+					<Checkbox defaultChecked={info.getValue()[1]} colorScheme='brandScheme' mr='10px' />
 					<Text color={textColor} fontSize='sm' fontWeight='700'>
 						{info.getValue()[0]}
 					</Text>
 				</Flex>
 			)
 		}),
-		columnHelper.accessor('progress', {
-			id: 'progress',
+		columnHelper.accessor('info', {
+			id: 'info',
 			header: () => (
 				<Text
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
 					color='gray.400'>
-					PROGRESS
+					공개
+				</Text>
+			),
+			cell: (info) => (
+				<Checkbox defaultChecked={info.getValue()} colorScheme='brandScheme' mr='10px' />
+			)
+		}),
+		columnHelper.accessor('writer', {
+			id: 'writer',
+			header: () => (
+				<Text
+					justifyContent='space-between'
+					align='center'
+					fontSize={{ sm: '10px', lg: '12px' }}
+					color='gray.400'>
+					작성자
 				</Text>
 			),
 			cell: (info) => (
@@ -69,6 +88,7 @@ export default function CheckTable(props: { tableData: any }) {
 				</Text>
 			)
 		}),
+
 		columnHelper.accessor('quantity', {
 			id: 'quantity',
 			header: () => (
@@ -77,7 +97,7 @@ export default function CheckTable(props: { tableData: any }) {
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
 					color='gray.400'>
-					QUANTITY
+					조회수
 				</Text>
 			),
 			cell: (info) => (
@@ -94,7 +114,7 @@ export default function CheckTable(props: { tableData: any }) {
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
 					color='gray.400'>
-					DATE
+					작성일
 				</Text>
 			),
 			cell: (info) => (
@@ -120,7 +140,7 @@ export default function CheckTable(props: { tableData: any }) {
 		<Card flexDirection='column' w='100%' px='0px' overflowX={{ sm: 'scroll', lg: 'hidden' }}>
 			<Flex px='25px' mb="8px" justifyContent='space-between' align='center'>
 				<Text color={textColor} fontSize='22px' mb="4px" fontWeight='700' lineHeight='100%'>
-					Check Table
+					리스트
 				</Text>
 				<Menu />
 			</Flex>
@@ -128,7 +148,7 @@ export default function CheckTable(props: { tableData: any }) {
 				<Table variant='simple' color='gray.500' mb='24px' mt="12px">
 					<Thead>
 						{table.getHeaderGroups().map((headerGroup) => (
-							<Tr  key={headerGroup.id}>
+							<Tr  key={headerGroup.id} >
 								{headerGroup.headers.map((header) => {
 									return (
 										<Th
@@ -136,8 +156,9 @@ export default function CheckTable(props: { tableData: any }) {
 											colSpan={header.colSpan}
 											pe='10px'
 											borderColor={borderColor}
-											cursor='pointer'
-											onClick={header.column.getToggleSortingHandler()}>
+											//cursor='pointer'
+											//onClick={header.column.getToggleSortingHandler()}
+										>
 											<Flex
 												justifyContent='space-between'
 												align='center'
@@ -162,6 +183,7 @@ export default function CheckTable(props: { tableData: any }) {
 										return (
 											<Td
 												key={cell.id}
+												sx={{borderBottom:'1px', borderBottomColor:'#ebebeb'}}
 												fontSize={{ sm: '14px' }}
 												minW={{ sm: '150px', md: '200px', lg: 'auto' }}
 												borderColor='transparent'>
