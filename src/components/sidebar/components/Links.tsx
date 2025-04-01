@@ -44,10 +44,7 @@ export function SidebarLinks(props: SidebarLinksProps) {
 
   const onHandleClick = (url:string) => {
     console.log("routes pathname",pathname,">>",url);
-    if ( !isLeftOpen ) {
-      setLeftOpenState(true)
-      setTimeout(() => setLeftOpenState(false), 300);
-    }else{
+    if ( isLeftOpen ) {
       setTimeout(() => setLeftOpenState(false), 600);
     }
     

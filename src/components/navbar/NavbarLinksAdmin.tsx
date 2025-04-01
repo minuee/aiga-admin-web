@@ -2,15 +2,10 @@
 // Chakra Imports
 import { Box,Button,Center,Flex,Icon,Menu,MenuButton,MenuItem,MenuList,Text,useColorMode,useColorModeValue } from '@chakra-ui/react';
 // Custom Components
-import { ItemContent } from 'components/menu/ItemContent';
-import { SearchBar } from 'components/navbar/searchBar/SearchBar';
 import { SidebarResponsive } from 'components/sidebar/Sidebar';
 import { SidebarPCResponsive } from 'components/sidebar/PCSidebar';
 // Assets
-import navImage from '/public/img/layout/Navbar.png';
-import { FaEthereum } from 'react-icons/fa';
 import { IoMdMoon, IoMdSunny } from 'react-icons/io';
-import { MdInfoOutline, MdNotificationsNone } from 'react-icons/md';
 import routes from 'routes';
 //로그인 전역상태
 import UserStateStore from 'store/userStore';

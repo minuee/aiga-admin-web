@@ -22,7 +22,17 @@ export function SidebarBrand() {
 				fontWeight="500"
 				fontSize={(isSmall && !isOpen) ? "20px" :"30px"}
 			>
-				{(isSmall && !isOpen)  ? "AA" : "AIGA Admin"}
+				{
+					isOpen
+					?
+					"AIGA Admin"
+					:
+					isSmall
+					?
+					"AA" 
+					: 
+					"AIGA Admin"
+				}
 			</Text>
 
 			<HSeparator mb='30px' mt="30px" />

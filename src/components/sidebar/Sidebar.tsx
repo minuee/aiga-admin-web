@@ -152,9 +152,9 @@ export function SidebarResponsive(props: SidebarResponsiveProps) {
             closeOnOverlayClick
           >
             <DrawerOverlay 
-              backdropFilter="auto"
-              backdropBlur="18px"
-              color="red"
+              //backdropFilter="auto"
+              //backdropBlur="18px"
+              //color="red"
             />
             <DrawerContent 
               //h="100vh" 

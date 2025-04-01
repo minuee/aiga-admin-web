@@ -13,6 +13,7 @@ import Sidebar from 'components/sidebar/Sidebar';
 import { SidebarContext } from 'contexts/SidebarContext';
 import { PropsWithChildren, useEffect, useState } from 'react';
 import routes from 'routes';
+import { usePathname } from 'next/navigation';
 import {
   getActiveNavbar,
   getActiveNavbarText,
@@ -36,13 +37,13 @@ export default function AdminLayout(props: DashboardLayoutProps) {
   const { onOpen } = useDisclosure();
   const isLeftOpen = LnbStateStore(state => state.isOpen);
   const isSmall = LnbSmallStateStore(state => state.isSmall);
-
+  const pathname = usePathname();
   const bg = useColorModeValue('secondaryGray.300', 'navy.900');
 
   useEffect(() => {
     const newRouteName = getActiveRoute(routes);
     setNewBrandText(newRouteName)
-  }, [isLeftOpen])
+  }, [pathname])
 
   return (
     <Box h="100vh" w="100vw" bg={bg}>

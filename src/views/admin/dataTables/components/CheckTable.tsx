@@ -1,6 +1,5 @@
-import { Flex, Box, Table, Checkbox, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue } from '@chakra-ui/react';
-import * as React from 'react';
 
+import * as React from 'react';
 import {
 	createColumnHelper,
 	flexRender,
@@ -9,10 +8,20 @@ import {
 	SortingState,
 	useReactTable
 } from '@tanstack/react-table';
-
+import { Flex, Box, Table, Checkbox, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue,Drawer,DrawerBody,DrawerFooter,
+  DrawerHeader,DrawerOverlay,useDisclosure,DrawerContent,DrawerCloseButton,Button } from '@chakra-ui/react';
 // Custom components
 import Card from 'components/card/Card';
-import Menu from 'components/menu/MainMenu';
+import TableMenu from 'components/menu/TableMenu';
+import CustomAlert from 'components/etc/CustomAlert';
+import { renderThumb,renderTrack,renderView } from 'components/scrollbar/Scrollbar';
+import dynamic from 'next/dynamic';
+const Scrollbars = dynamic(
+  () => import('react-custom-scrollbars-2').then((mod) => mod.Scrollbars),
+  { ssr: true },
+);
+import * as NoticeService from "services/notice/index";
+import NoticeForm from "views/admin/notice/View";
 
 type RowObj = {
 	name: [string, boolean];
@@ -28,8 +37,28 @@ const columnHelper = createColumnHelper<RowObj>();
 export default function CheckTable(props: { tableData: any }) {
 	const { tableData } = props;
 	const [ sorting, setSorting ] = React.useState<SortingState>([]);
+	const [ data_9, setData9 ] = React.useState<any>([]);
 	const textColor = useColorModeValue('secondaryGray.900', 'white');
 	const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
+	const bgColor = useColorModeValue(' .300', 'navy.900');
+
+	const getData = React.useCallback(
+		async() => {
+			const res:any = await NoticeService.getHospitalList({
+				page:1,
+				take:10,
+				order:'ASC',
+				orderName:'hid'
+			});
+			console.log("res",res)
+		},[tableData]
+	  );
+	
+	React.useEffect(() => {
+		getData().then((res) => setData9(res));
+	}, [getData]);
+	
+
 	let defaultData= tableData;
 	const columns = [
 		columnHelper.accessor('name', {
@@ -125,6 +154,8 @@ export default function CheckTable(props: { tableData: any }) {
 		})
 	];
 	const [ data, setData ] = React.useState(() => [ ...defaultData ]);
+	const [ isShow, setShow ] = React.useState(false);
+	const btnRef = React.useRef();
 	const table = useReactTable({
 		data,
 		columns,
@@ -136,13 +167,20 @@ export default function CheckTable(props: { tableData: any }) {
 		getSortedRowModel: getSortedRowModel(),
 		debugTable: true
 	});
+
+	const onHandleToggle = (bool:boolean) => {
+		setShow(bool)
+	}
+
 	return (
 		<Card flexDirection='column' w='100%' px='0px' overflowX={{ sm: 'scroll', lg: 'hidden' }}>
 			<Flex px='25px' mb="8px" justifyContent='space-between' align='center'>
 				<Text color={textColor} fontSize='22px' mb="4px" fontWeight='700' lineHeight='100%'>
 					리스트
 				</Text>
-				<Menu />
+				<TableMenu 
+					onHandleToggle={onHandleToggle}
+				/>
 			</Flex>
 			<Box>
 				<Table variant='simple' color='gray.500' mb='24px' mt="12px">
@@ -197,6 +235,61 @@ export default function CheckTable(props: { tableData: any }) {
 					</Tbody>
 				</Table>
 			</Box>
+			{
+				isShow && (
+				<Drawer
+					isOpen={isShow}
+					onClose={()=>setShow(false)}
+					placement={'bottom'}
+					finalFocusRef={btnRef}
+					closeOnOverlayClick={false}
+					size={'full'}
+				>
+					<DrawerOverlay />
+					<DrawerContent 
+						h="calc( 100vh - 30px)" 
+						overflow='scroll'
+						backgroundColor={bgColor}
+						//w="285px" 
+						//maxW="300px"  
+						/* ms={{
+							sm: '300px',
+						}}
+						my={{
+							sm: '0',
+						}}
+						borderRadius="16px" */
+					>
+					<DrawerCloseButton
+						zIndex="3"
+						onClick={()=>setShow(false)}
+						_focus={{ boxShadow: 'none' }}
+						_hover={{ boxShadow: 'none' }}
+					/>
+					<DrawerHeader sx={{borderBottom:'1px solid #ebebeb'}}>공지사항 등록</DrawerHeader>
+					<DrawerBody w="calc(100% - 20px)"  padding="10px">
+						<Scrollbars
+							autoHide
+							renderTrackVertical={renderTrack}
+							renderThumbVertical={renderThumb}
+							renderView={renderView}
+							universal={true}
+						>
+						<NoticeForm
+							data={null}
+						/>
+						</Scrollbars>
+					</DrawerBody>
+					<DrawerFooter sx={{borderTop:'1px solid #ebebeb'}}>
+						<Button variant='outline' mr={3} onClick={()=>setShow(false)}>
+						Cancel
+						</Button>
+						<Button colorScheme='blue'>Save</Button>
+					</DrawerFooter>
+					</DrawerContent>
+				</Drawer>
+				)
+			}
 		</Card>
 	);
 } 
