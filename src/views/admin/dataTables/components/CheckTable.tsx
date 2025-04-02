@@ -48,7 +48,7 @@ export default function CheckTable(props: { tableData: any }) {
 				page:1,
 				take:10,
 				order:'ASC',
-				orderName:'hid'
+				orderName:'hospital.hid'
 			});
 			console.log("res",res)
 		},[tableData]

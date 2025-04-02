@@ -9,41 +9,49 @@ import Pagination from 'components/etc/Pagination';
 export default function DataTables() {
 
   const [ data, setData ] = React.useState<any>([]);
-  const [ pageCount, setPageCount ] = React.useState(10);
+  const [ order, setOrder ] = React.useState('ASC');
+  const [ orderName, setOrderName ] = React.useState('hospital.hid');
+  const [ totalCount, setTotalCount ] = React.useState(0);
   const [ pageIndex, setPageIndex ] = React.useState(0);
   const [ pageSize, setPageSize ] = React.useState(10);
   const [ page, setPage ] = React.useState(1);
 
   const getData = React.useCallback(
       async() => {
+        console.log("getData",page,
+          pageSize,
+          order,
+          orderName
+        )
         const res:any = await NoticeService.getHospitalList({
           page,
-          take:pageCount,
-          order:'ASC',
-          orderName:'hid'
+          take: pageSize,
+          order,
+          orderName
         });
-        console.log("res",res?.data)
-        if ( res?.data?.length > 0 ) {
-          return res?.data?.data;
+        
+        if ( res?.data?.meta?.totalCount > 0 ) {
+          setData(res?.data?.data);
+          setTotalCount(res?.data.meta?.totalCount)
+          setPageIndex(parseInt(res?.data?.meta?.currentPage)+1)
         }else{
-          return [{
-            data : [],
-            meta : {
-              totalCount : 0,
-              currentPage : 1
-            }
-          }]
+          setData([]);
         }
-      },[]
-      );
+      },[page,order]
+    );
     
     React.useEffect(() => {
-      getData().then((res:any) => {
-        setData(res?.data);
-        setPageCount(res?.meta?.totalCount)
-        setPage(res?.meta?.currentPage)
-      });
+      getData()
     }, [getData]);
+
+  const getDataSortChange = (str:string) => {
+    setOrder(order == 'ASC' ? 'DESC' : 'ASC')
+    setTimeout(() => {
+      setPage(1);
+      setOrderName(str)
+    }, 600)
+
+  }
 
   return (
     <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
@@ -54,13 +62,17 @@ export default function DataTables() {
       >
         <DevelopmentTable 
           tableData={data} 
+          order={order}
+          orderName={orderName}
+          page={page}
+          getDataSortChange={getDataSortChange}
         />
         <Box>
           <PaginationWrapper
-            total={pageCount}
-            page={pageIndex + 1}
+            total={totalCount}
+            page={page}
             pageSize={pageSize}
-            onPageChange={(page:number) => setPage(page - 1)}
+            onPageChange={(page:number) => setPage(page)}
           />
         </Box>
       </SimpleGrid>

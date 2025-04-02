@@ -2,50 +2,76 @@ import { Box, Flex, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useColorModeVa
 import { createColumnHelper,flexRender,getCoreRowModel,getSortedRowModel,SortingState,useReactTable } from '@tanstack/react-table';
 // Custom components
 import Card from 'components/card/Card';
-import Menu from 'components/menu/MainMenu';
-import { AndroidLogo, AppleLogo, WindowsLogo } from 'components/icons/Icons';
-
+import { format } from 'date-fns';
 import * as React from 'react';
-
+import functions from 'utils/functions';
 // Assets
+import { IoCaretUp,IoCaretDown } from "react-icons/io5";
 
 type RowObj = {
 	hid: string;
 	baseName: any;
 	shortName: string;
 	createAt: Date;
-	updateAt: Date;
+	doctor_count: number;
 };
 
 const columnHelper = createColumnHelper<RowObj>();
 
 // const columns = columnsDataCheck;
-export default function ComplexTable(props: { tableData: any }) {
+export default function ComplexTable(props: { tableData: any,page:number, order : string , orderName: string ,getDataSortChange : (str: string) => void}) {
 	
-	const { tableData } = props;
+	const { tableData,page ,order,orderName} = props;
 	const [ isLoading, setLoading ] = React.useState(true);
 	const [ sorting, setSorting ] = React.useState<SortingState>([]);
+	const [ data, setTableData ] = React.useState([]);
 	const textColor = useColorModeValue('secondaryGray.900', 'white');
 	const iconColor = useColorModeValue('secondaryGray.500', 'white');
 	const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
-	const [ data, setData ] = React.useState([]);
 	console.log("tableData",tableData)
 
+	const setData = React.useCallback(
+		async() => {
+			console.log("tableData 222",tableData)
+			setTableData(tableData);
+			setLoading(false);
+		},[tableData]
+	);
+
 	React.useEffect(() => {
-		setData(tableData);
-		setTimeout(() => setLoading(false), 1000);
-	}, [tableData]);
+		setData();
+	}, [setData]);
+
+	
 	const columns = [
 		columnHelper.accessor('hid', {
 			id: 'hid',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
-					HID
-				</Text>
+				<Box
+					width='100%'
+					display={'flex'} 
+					flexDirection={'row'}
+					alignItems={'center'}
+					justifyContent={'space-between'}
+					onClick={()=> props.getDataSortChange('hospital.hid')}
+				>
+					<Text
+						justifyContent='space-between'
+						align='center'
+						fontSize={{ sm: '10px', lg: '12px' }}
+						color='gray.400'>
+						HID
+					</Text>
+					{
+						orderName == 'hospital.hid' && 
+						( 
+							order == 'ASC' ?
+							<IoCaretUp width={16} height={16} />
+							:
+							<IoCaretDown width={16} height={16} />
+						)
+					}
+				</Box>
 			),
 			cell: (info: any) => (
 				<Flex align='center'>
@@ -114,26 +140,44 @@ export default function ComplexTable(props: { tableData: any }) {
 			cell: (info:any) => (
 				<Flex align='center'>
 					<Text me='10px' color={textColor} fontSize='sm' fontWeight='700'>
-						{info.getValue()}%
+						{info.getValue() ? format(info.getValue(), 'yyyy-MM-dd') : ""}
 					</Text>
 				</Flex>
 			)
 		}),
-		columnHelper.accessor('updateAt', {
-			id: 'updateAt',
+		columnHelper.accessor('doctor_count', {
+			id: 'doctor_count',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
-					수정일
-				</Text>
+				<Box
+					width='100%'
+					display={'flex'} 
+					flexDirection={'row'}
+					alignItems={'center'}
+					justifyContent={'space-between'}
+					onClick={()=> props.getDataSortChange('doctor_count')}
+				>
+					<Text
+						justifyContent='space-between'
+						align='center'
+						fontSize={{ sm: '10px', lg: '12px' }}
+						color='gray.400'>
+						의사수
+					</Text>
+					{
+						orderName == 'doctor_count' && 
+						(
+							order == 'ASC' ?
+							<IoCaretUp width={16} height={16} />
+							:
+							<IoCaretDown width={16} height={16} />
+						)
+					}
+				</Box>
 			),
 			cell: (info:any) => (
 				<Flex align='center'>
 					<Text me='10px' color={textColor} fontSize='sm' fontWeight='700'>
-						{info.getValue()}
+						{functions.numberWithCommas(info.getValue())}
 					</Text>
 				</Flex>
 			)
@@ -204,9 +248,9 @@ export default function ComplexTable(props: { tableData: any }) {
 						</Thead>
 
 						<Tbody>
-							{table.getRowModel().rows.slice(0, 11).map((row) => {
+							{table.getRowModel().rows.map((row,index) => {
 								return (
-									<Tr key={row.id}>
+									<Tr key={index}>
 										{row.getVisibleCells().map((cell) => {
 											return (
 												<Td
