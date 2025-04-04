@@ -1,12 +1,14 @@
 'use client';
 // Chakra Imports
-import { Box,Button,Center,Flex,Icon,Menu,MenuButton,MenuItem,MenuList,Text,useColorMode,useColorModeValue } from '@chakra-ui/react';
+import { Box,Button,Center,Flex,Icon,Menu,MenuButton,MenuItem,MenuList,Text,useColorMode,useColorModeValue,useMediaQuery } from '@chakra-ui/react';
 // Custom Components
 import { SidebarResponsive } from 'components/sidebar/Sidebar';
 import { SidebarPCResponsive } from 'components/sidebar/PCSidebar';
 // Assets
 import { IoMdMoon, IoMdSunny } from 'react-icons/io';
 import routes from 'routes';
+import IconFullScreen from "components/icons/IconFullScreen";
+import functions from 'utils/functions';
 //로그인 전역상태
 import UserStateStore from 'store/userStore';
 import { redirect } from 'next/navigation';
@@ -18,6 +20,8 @@ export default function HeaderLinks(props: {
 }) {
   const { secondary } = props;
   const { colorMode, toggleColorMode } = useColorMode();
+  const [isDesktop] = useMediaQuery('(min-width: 800px)')
+
   // Chakra Color Mode
   const navbarIcon = useColorModeValue('gray.400', 'white');
   let menuBg = useColorModeValue('white', 'navy.800');
@@ -71,13 +75,20 @@ export default function HeaderLinks(props: {
         onClick={toggleColorMode}
       >
         <Icon
-          me="10px"
+          me="5px"
           h="18px"
           w="18px"
           color={navbarIcon}
           as={colorMode === 'light' ? IoMdMoon : IoMdSunny}
         />
       </Button>
+      {
+        isDesktop && (
+          <Box display={{sm: 'none' , md : 'flex'}}>
+            <IconFullScreen />
+          </Box>
+        )
+      }
       <Menu>
         <MenuButton p="0px" style={{ position: 'relative' }}>
           <Box
