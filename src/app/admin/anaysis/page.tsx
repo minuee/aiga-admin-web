@@ -18,26 +18,25 @@ export default function DataTables() {
 
   const getData = React.useCallback(
       async() => {
-        console.log("getData",page,
-          pageSize,
-          order,
-          orderName
-        )
-        const res:any = await NoticeService.getHospitalList({
-          page,
-          take: pageSize,
-          order,
-          orderName
-        });
-        
-        if ( res?.data?.meta?.totalCount > 0 ) {
-          setData(res?.data?.data);
-          setTotalCount(res?.data.meta?.totalCount)
-          setPageIndex(parseInt(res?.data?.meta?.currentPage)+1)
-        }else{
+        try{
+          const res:any = await NoticeService.getHospitalList({
+            page,
+            take: pageSize,
+            order,
+            orderName
+          });
+          
+          if ( res?.data?.meta?.totalCount > 0 ) {
+            setData(res?.data?.data);
+            setTotalCount(res?.data.meta?.totalCount)
+            setPageIndex(parseInt(res?.data?.meta?.currentPage)+1)
+          }else{
+            setData([]);
+          }
+        }catch(e){
           setData([]);
         }
-      },[page,order]
+      },[page,orderName,order]
     );
     
     React.useEffect(() => {
@@ -45,12 +44,9 @@ export default function DataTables() {
     }, [getData]);
 
   const getDataSortChange = (str:string) => {
+    setPage(1);
+    setOrderName(str)
     setOrder(order == 'ASC' ? 'DESC' : 'ASC')
-    setTimeout(() => {
-      setPage(1);
-      setOrderName(str)
-    }, 600)
-
   }
 
   return (
@@ -67,7 +63,9 @@ export default function DataTables() {
           page={page}
           getDataSortChange={getDataSortChange}
         />
-        <Box>
+        <Box 
+          display={totalCount > 0 ? 'block' : 'none'}
+        >
           <PaginationWrapper
             total={totalCount}
             page={page}

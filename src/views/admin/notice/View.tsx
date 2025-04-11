@@ -26,6 +26,7 @@ import {
 import { Field, Form, Formik } from 'formik';
 import { MdChevronLeft,MdChevronRight, MdOutlineEventAvailable } from 'react-icons/md';
 import Calendar from 'react-calendar';
+
 import { format } from 'date-fns';
 
 import Editor from "components/editor";
@@ -126,9 +127,11 @@ export default function ViewForm(props: ViewFormProps) {
                         <ModalCloseButton />
                         <ModalBody>
                             <Calendar
+                                locale='ko'
                                 onChange={onDateChange}
                                 value={openDate}
                                 //selectRange={selectRange}
+                                calendarType="US"
                                 view={'month'}
                                 tileContent={<Text color="brand.500" />}
                                 prevLabel={<Icon as={MdChevronLeft} w="24px" h="24px" mt="4px" />}

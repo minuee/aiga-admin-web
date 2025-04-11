@@ -23,8 +23,8 @@ import {
 
 
 
-export default function TableMenu(props: {onHandleToggle: (bool: boolean) => any, [x: string]: any }) {
-	const { ...rest } = props;
+export default function TableMenu({onHandleToggle,...rest}: {onHandleToggle: (bool: boolean) => any;[x: string]: any;}) {
+	
 
 	const textColor = useColorModeValue('secondaryGray.500', 'white');
 	const textHover = useColorModeValue(
@@ -82,7 +82,7 @@ export default function TableMenu(props: {onHandleToggle: (bool: boolean) => any
 						bg: 'transparent'
 					}}
 					mb='10px'
-					onClick={()=> props.onHandleToggle(true)}
+					onClick={()=> onHandleToggle(true)}
 				>
 					<Flex align='center' >
 						<Icon as={MdEdit} h='16px' w='16px' me='8px' />

@@ -26,7 +26,7 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 	const [ sorting, setSorting ] = React.useState<SortingState>([]);
 	const [ data, setTableData ] = React.useState([]);
 	const textColor = useColorModeValue('secondaryGray.900', 'white');
-	const iconColor = useColorModeValue('secondaryGray.500', 'white');
+	const orderTextColor = useColorModeValue('black', 'white');
 	const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
 	console.log("tableData",tableData)
 
@@ -59,7 +59,8 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 						justifyContent='space-between'
 						align='center'
 						fontSize={{ sm: '10px', lg: '12px' }}
-						color='gray.400'>
+						color={orderTextColor}
+					>
 						HID
 					</Text>
 					{
@@ -99,11 +100,11 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 					</Text>
 					{/* {info.getValue().map((item: string, key: number) => {
 						if (item === 'apple') {
-							return <AppleLogo key={key} color={iconColor} me='16px' h='18px' w='15px' />;
+							return <AppleLogo key={key} color={orderTextColor} me='16px' h='18px' w='15px' />;
 						} else if (item === 'android') {
-							return <AndroidLogo key={key} color={iconColor} me='16px' h='18px' w='16px' />;
+							return <AndroidLogo key={key} color={orderTextColor} me='16px' h='18px' w='16px' />;
 						} else if (item === 'windows') {
-							return <WindowsLogo key={key} color={iconColor} h='18px' w='19px' />;
+							return <WindowsLogo key={key} color={orderTextColor} h='18px' w='19px' />;
 						}
 					})} */}
 				</Flex>
@@ -160,7 +161,7 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 						justifyContent='space-between'
 						align='center'
 						fontSize={{ sm: '10px', lg: '12px' }}
-						color='gray.400'>
+						color={orderTextColor}>
 						의사수
 					</Text>
 					{
@@ -246,26 +247,48 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 								</Tr>
 							))}
 						</Thead>
-
-						<Tbody>
-							{table.getRowModel().rows.map((row,index) => {
-								return (
-									<Tr key={index}>
-										{row.getVisibleCells().map((cell) => {
-											return (
-												<Td
-													key={cell.id}
-													fontSize={{ sm: '14px' }}
-													minW={{ sm: '150px', md: '200px', lg: 'auto' }}
-													borderColor='transparent'>
-													{flexRender(cell.column.columnDef.cell, cell.getContext())}
-												</Td>
-											);
-										})}
-									</Tr>
-								);
-							})}
-						</Tbody>
+						{ 
+							data.length == 0
+							?
+							<Tbody >
+								<Tr >
+									<Th colSpan={5} >
+										<Box
+											display={'flex'}
+											width={'100%'}
+											height={{base : "100px" , md : '200px'}}
+											justifyContent={'center'}
+											alignItems={'center'}
+											bg="#ffffff"
+										>
+											<Text color={textColor} fontSize={{base : "15px", md:'20px'}} fontWeight='normal' lineHeight='100%'>
+												데이터가 없습니다.
+											</Text>
+										</Box>
+									</Th>
+								</Tr>
+							</Tbody>
+							:
+							<Tbody>
+								{table.getRowModel().rows.map((row,index) => {
+									return (
+										<Tr key={index}>
+											{row.getVisibleCells().map((cell) => {
+												return (
+													<Td
+														key={cell.id}
+														fontSize={{ sm: '14px' }}
+														minW={{ sm: '150px', md: '200px', lg: 'auto' }}
+														borderColor='transparent'>
+														{flexRender(cell.column.columnDef.cell, cell.getContext())}
+													</Td>
+												);
+											})}
+										</Tr>
+									);
+								})}
+							</Tbody>
+						}
 					</Table>
 				</Box>
 			}
