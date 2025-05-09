@@ -1,7 +1,7 @@
 'use client';
 import dynamic from 'next/dynamic';
 // import Chart from 'react-apexcharts';
-const Chart = dynamic(() => import('react-apexcharts'), {
+const Chart = dynamic(() => import('react-apexcharts').then(mod => mod.default), {
   ssr: false,
 });
 
@@ -9,7 +9,7 @@ const PieChart = (props: any) => {
   const { chartData, chartOptions } = props;
 
   return (
-    // @ts-expect-error
+
     <Chart
       options={chartOptions}
       type="pie"

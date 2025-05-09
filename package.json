@@ -49,7 +49,8 @@
     "start": "next start",
     "lint": "next lint",
     "predeploy": "yarn run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "start-pm2": "pm2 list && pm2-runtime start ecosystem.config.js"
   },
   "browserslist": {
     "production": [

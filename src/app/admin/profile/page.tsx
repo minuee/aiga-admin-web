@@ -23,8 +23,6 @@
 
 // Chakra imports
 import { Box, Grid } from '@chakra-ui/react';
-import AdminLayout from 'layouts/admin';
-
 // Custom components
 import Banner from 'views/admin/profile/components/Banner';
 import General from 'views/admin/profile/components/General';

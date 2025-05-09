@@ -3,8 +3,9 @@ import {
   MdBarChart,
   MdPerson,
   MdHome,
-  MdLock,
+  MdEdit,
   MdNotifications,
+  MdDvr
 } from 'react-icons/md';
 
 // Admin Imports
@@ -32,6 +33,48 @@ const routes: IRoute[] = [
     icon: (
       <Icon
         as={MdNotifications}
+        width="20px"
+        height="20px"
+        color="inherit"
+      />
+    ),
+    secondary: true,
+  },
+  {
+    name: '회원관리',
+    layout: '/admin',
+    path: '/users',
+    icon: (
+      <Icon
+        as={MdPerson}
+        width="20px"
+        height="20px"
+        color="inherit"
+      />
+    ),
+    secondary: true,
+  },
+  {
+    name: '리뷰관리',
+    layout: '/admin',
+    path: '/review',
+    icon: (
+      <Icon
+        as={MdDvr}
+        width="20px"
+        height="20px"
+        color="inherit"
+      />
+    ),
+    secondary: true,
+  },
+  {
+    name: '수정요청',
+    layout: '/admin',
+    path: '/inquiry',
+    icon: (
+      <Icon
+        as={MdEdit}
         width="20px"
         height="20px"
         color="inherit"

@@ -78,7 +78,7 @@ export default function DataTables() {
   );
 }
 
-export const PaginationWrapper = styled(Pagination)`
+const PaginationWrapper = styled(Pagination)`
   display: flex;
   justify-content: center;
   align-items: center;
