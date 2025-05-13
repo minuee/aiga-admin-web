@@ -46,7 +46,7 @@
   "scripts": {
     "dev": "next dev --turbopack -p 6001",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 6060",
     "lint": "next lint",
     "predeploy": "yarn run build",
     "deploy": "gh-pages -d build",

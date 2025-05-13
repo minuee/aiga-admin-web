@@ -1,11 +1,12 @@
-import { Icon } from '@chakra-ui/react';
+import { Icon,Tooltip } from '@chakra-ui/react';
 import {
   MdBarChart,
   MdPerson,
   MdHome,
   MdEdit,
   MdNotifications,
-  MdDvr
+  MdDvr,
+  MdApartment
 } from 'react-icons/md';
 
 // Admin Imports
@@ -24,68 +25,48 @@ const routes: IRoute[] = [
     name: '메인 홈',
     layout: '/admin',
     path: '/default',
-    icon: <Icon as={MdHome} width="20px" height="20px" color="inherit" />,
+    icon: <Tooltip label="메인 홈">
+      <Icon as={MdHome} width="20px" height="20px" color="inherit" />
+    </Tooltip>,
   },
   {
     name: '공지사항',
     layout: '/admin',
     path: '/notice',
-    icon: (
-      <Icon
-        as={MdNotifications}
-        width="20px"
-        height="20px"
-        color="inherit"
-      />
-    ),
+    icon: <Tooltip label="공지사항"><Icon as={MdNotifications} width="20px" height="20px" color="inherit" /></Tooltip>,
     secondary: true,
   },
   {
     name: '회원관리',
     layout: '/admin',
     path: '/users',
-    icon: (
-      <Icon
-        as={MdPerson}
-        width="20px"
-        height="20px"
-        color="inherit"
-      />
-    ),
+    icon: <Tooltip label="회원관리"><Icon as={MdPerson} width="20px" height="20px" color="inherit" /></Tooltip>,
     secondary: true,
   },
   {
     name: '리뷰관리',
     layout: '/admin',
     path: '/review',
-    icon: (
-      <Icon
-        as={MdDvr}
-        width="20px"
-        height="20px"
-        color="inherit"
-      />
-    ),
+    icon: <Tooltip label="리뷰관리"><Icon as={MdDvr} width="20px" height="20px" color="inherit" /></Tooltip>,
     secondary: true,
   },
   {
     name: '수정요청',
     layout: '/admin',
     path: '/inquiry',
-    icon: (
-      <Icon
-        as={MdEdit}
-        width="20px"
-        height="20px"
-        color="inherit"
-      />
-    ),
+    icon: <Tooltip label="수정요청"><Icon as={MdEdit} width="20px" height="20px" color="inherit" /></Tooltip>,
     secondary: true,
+  },
+  {
+    name: '병원관리',
+    layout: '/admin',
+    icon: <Tooltip label="병원관리"><Icon as={MdApartment} width="20px" height="20px" color="inherit" /></Tooltip>,
+    path: '/hospital',
   },
   {
     name: '각종통계',
     layout: '/admin',
-    icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
+    icon: <Tooltip label="각종통계"><Icon as={MdBarChart} width="20px" height="20px" color="inherit" /></Tooltip>,
     path: '/anaysis',
   },
   /* {

@@ -1,45 +1,50 @@
 import { 
-	Box, Flex, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue, Skeleton, SkeletonCircle, SkeletonText,
-	 Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody 
+	Box, Flex, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue, Skeleton, Icon
 } from '@chakra-ui/react';
 import { createColumnHelper,flexRender,getCoreRowModel,getSortedRowModel,SortingState,useReactTable } from '@tanstack/react-table';
 // Custom components
 import Card from 'components/card/Card';
-import HospitalDetail from 'components/modal/HospitalDetail';
 import { format } from 'date-fns';
 import * as React from 'react';
 import functions from 'utils/functions';
 import mConstants from 'utils/constants';
-
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 // Assets
-import { IoCaretUp,IoCaretDown } from "react-icons/io5";
+import { IoCaretUp,IoCaretDown,IoPerson} from "react-icons/io5";
+
 
 type RowObj = {
-	hid: string;
-	baseName: any;
-	shortName: string;
+	hid : string;
+	deptname: string;
+	doctor_id: string;
+	doctorname: string;
 	createAt: Date;
 	doctor_count: number;
+	doctor_url: string;
+	profileimgurl: string;
+	specialties: string;
 };
 
 const columnHelper = createColumnHelper<RowObj>();
 
 // const columns = columnsDataCheck;
-export default function ComplexTable(props: { tableData: any,page:number, order : string , orderName: string ,getDataSortChange : (str: string) => void}) {
+export default function DoctorsTable(props: { tableData: any,page:number, order : string , orderName: string ,getDataSortChange : (str: string) => void}) {
 	
 	const { tableData,page ,order,orderName} = props;
+	const router = useRouter();
 	const [ isLoading, setLoading ] = React.useState(true);
 	const [ sorting, setSorting ] = React.useState<SortingState>([]);
 	const [ data, setTableData ] = React.useState([]);
+	const [ isOpenDrawer, setIsOpenDrawer ] = React.useState(false);
 	const [ isOpenModal, setIsOpenModal ] = React.useState(false);
-	const [ selectedHospital, setSelectedHospital ] = React.useState('');
+	const [ selectedHospital, setSelectedHospital ] = React.useState<any>(null);
 	const textColor = useColorModeValue('secondaryGray.900', 'white');
 	const orderTextColor = useColorModeValue('black', 'white');
 	const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
+	const bgColor = useColorModeValue('white', 'gray.700');
 	const formBtnRef = React.useRef(null);
 	const sidebarBackgroundColor = useColorModeValue('white', 'gray.700');
-
-
 
 	const setData = React.useCallback(
 		async() => {
@@ -61,10 +66,18 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 		}
 	}
 
+	const onHandleDoctors = (hospitalData: any) => {
+		console.log("hospitalData",hospitalData)
+		setSelectedHospital(hospitalData);
+		setIsOpenDrawer(true);
+		//router.push(`/admin/hospital/doctors?hospitalId=${hospitalData?.hid}`);
+	}
+
 	
 	const columns = [
-		columnHelper.accessor('hid', {
-			id: 'hid',
+		columnHelper.accessor('deptname', {
+			id: 'deptname',
+			size: 50,
 			header: () => (
 				<Box
 					width='100%'
@@ -72,7 +85,7 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 					flexDirection={'row'}
 					alignItems={'center'}
 					justifyContent={'space-between'}
-					onClick={()=> props.getDataSortChange('hospital.hid')}
+					onClick={()=> props.getDataSortChange('db.deptname')}
 				>
 					<Text
 						justifyContent='space-between'
@@ -80,10 +93,10 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 						fontSize={{ sm: '10px', lg: '12px' }}
 						color={orderTextColor}
 					>
-						HID
+						진료과목명
 					</Text>
 					{
-						orderName == 'hospital.hid' && 
+						orderName == 'db.deptname' && 
 						( 
 							order == 'ASC' ?
 							<IoCaretUp width={16} height={16} />
@@ -101,15 +114,16 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 				</Flex>
 			)
 		}),
-		columnHelper.accessor('baseName', {
-			id: 'baseName',
+		columnHelper.accessor('doctorname', {
+			id: 'doctorname',
+			size: 50,
 			header: () => (
 				<Text
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
 					color='gray.400'>
-					기본병원명
+					의사명
 				</Text>
 			),
 			cell: (info) => (
@@ -120,15 +134,40 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 				</Flex>
 			)
 		}),
-		columnHelper.accessor('shortName', {
-			id: 'shortName',
+		columnHelper.accessor('profileimgurl', {
+			id: 'profileimgurl',
+			size: 50,
 			header: () => (
 				<Text
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
 					color='gray.400'>
-					약칭명
+					프로필사진
+				</Text>
+			),
+			cell: (info) => (
+				functions.isEmpty(info.getValue()) ?
+				<Flex display={'flex'} alignItems={'center'} justifyContent={'center'}>
+					<Icon as={IoPerson} />
+				</Flex>
+				:
+				<Flex display={'flex'} alignItems={'center'} justifyContent={'center'}>
+					<Icon as={IoPerson} />
+					{/* <Image src={info.getValue()} alt='profile' width={50} height={50} /> */}
+				</Flex>
+			)
+		}),
+		columnHelper.accessor('doctor_id', {
+			id: 'doctor_id',
+			size: 50,
+			header: () => (
+				<Text
+					justifyContent='space-between'
+					align='center'
+					fontSize={{ sm: '10px', lg: '12px' }}
+					color='gray.400'>
+					의사ID
 				</Text>
 			),
 			cell: (info) => (
@@ -137,8 +176,30 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 				</Text>
 			)
 		}),
+		columnHelper.accessor('specialties', {
+			id: 'specialties',
+			size: 150,
+			maxSize: 150,
+			header: () => (
+				<Text
+					justifyContent='space-between'
+					align='center'
+					fontSize={{ sm: '10px', lg: '12px' }}
+					color='gray.400'>
+					진료분야
+				</Text>
+			),
+			cell: (info) => (
+				<Box maxW="250px">
+					<Text color={textColor} fontSize='sm' fontWeight='700' noOfLines={2}>
+						{info.getValue()}
+					</Text>
+				</Box>
+			)
+		}),
 		columnHelper.accessor('createAt', {
 			id: 'createAt',
+			size: 50,
 			header: () => (
 				<Text
 					justifyContent='space-between'
@@ -156,43 +217,6 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 				</Flex>
 			)
 		}),
-		columnHelper.accessor('doctor_count', {
-			id: 'doctor_count',
-			header: () => (
-				<Box
-					width='100%'
-					display={'flex'} 
-					flexDirection={'row'}
-					alignItems={'center'}
-					justifyContent={'space-between'}
-					onClick={()=> props.getDataSortChange('doctor_count')}
-				>
-					<Text
-						justifyContent='space-between'
-						align='center'
-						fontSize={{ sm: '10px', lg: '12px' }}
-						color={orderTextColor}>
-						의사수
-					</Text>
-					{
-						orderName == 'doctor_count' && 
-						(
-							order == 'ASC' ?
-							<IoCaretUp width={16} height={16} />
-							:
-							<IoCaretDown width={16} height={16} />
-						)
-					}
-				</Box>
-			),
-			cell: (info:any) => (
-				<Flex align='center'>
-					<Text me='10px' color={textColor} fontSize='sm' fontWeight='700'>
-						{functions.numberWithCommas(info.getValue())}
-					</Text>
-				</Flex>
-			)
-		})
 	];
 	
 	const table = useReactTable({
@@ -208,11 +232,6 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 	});
 	return (
 		<Card flexDirection='column' w='100%' px='0px' overflowX={{ sm: 'scroll', lg: 'hidden' }}>
-			<Flex px='25px' mb="8px" justifyContent='space-between' align='center'>
-				<Text color={textColor} fontSize='22px' fontWeight='700' lineHeight='100%'>
-					병원리스트
-				</Text>
-			</Flex>
 			{
 				isLoading ?
 				<Flex px='25px' mb="30px" mt="30px">
@@ -301,29 +320,6 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 						}
 					</Table>
 				</Box>
-			}
-			{
-				isOpenModal && (    
-					<Modal
-						onClose={() => setIsOpenModal(false)}
-						finalFocusRef={formBtnRef}
-						isOpen={isOpenModal}
-						scrollBehavior={'inside'}
-						>
-						<ModalOverlay />
-						<ModalContent maxW={`${mConstants.modalMaxWidth}px`} bg={sidebarBackgroundColor}>
-							<ModalHeader>{"병원 상세정보"}</ModalHeader>
-							<ModalCloseButton />
-							<ModalBody >
-							<HospitalDetail
-								isOpen={isOpenModal}
-								setClose={() => 	(false)}
-								hospitalData={selectedHospital}
-							/>
-							</ModalBody>
-						</ModalContent>
-					</Modal>
-				)
 			}
 		</Card>
 	);

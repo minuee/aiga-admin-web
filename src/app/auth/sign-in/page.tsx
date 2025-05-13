@@ -1,9 +1,8 @@
 'use client';
 
-
 import React from 'react';
 // Chakra imports
-import { Box,Button,Checkbox,Flex,FormControl,FormLabel,Heading,Icon,Input,InputGroup,InputRightElement,Text,useColorModeValue,useToast} from '@chakra-ui/react';
+import { Box,Button,Checkbox,Flex,FormControl,FormLabel,Heading,Icon,Input,InputGroup,InputRightElement,Text,useColorModeValue,useToast,Spinner} from '@chakra-ui/react';
 import { redirect } from 'next/navigation';
 // Custom components
 import { authProvider } from "services/auth";
@@ -18,6 +17,7 @@ import UserStateStore from 'store/userStore';
 
 export default function SignIn() {
   const setLoginUserInfo = UserStateStore((state) => state.setUserState);
+  const [isLoading, setIsLoading] = React.useState(false);
   // Chakra color mode
   const textColor = useColorModeValue('navy.700', 'white');
   const textColorSecondary = 'gray.400';
@@ -51,7 +51,8 @@ export default function SignIn() {
   };
 
   const handleLogin = async () => {
-    toast.closeAll()
+    toast.closeAll();
+    
     if (login.staff_id.trim() == '') {
       functions.simpleToast(toast,`아이디를 입력해주세요`);
     } else if (login.staff_pw.trim() == '') {
@@ -59,14 +60,17 @@ export default function SignIn() {
     } else if (login.staff_pw.trim().length < 4) {
       functions.simpleToast(toast,`비밀번호를 제대로 입력해주세요`);
     } else {
+      setIsLoading(true);
       try {
         const ret = await authProvider.signin(login.staff_id.trim(), login.staff_pw.trim());
         if (!ret.is_ok ) {
+          setIsLoading(false);
           functions.simpleToast(toast,`잘못된 정보입니다.`);
           return {
             error: "Invalid login attempt",
           };
         }else{
+          setIsLoading(false);
           setLoginUserInfo(
             true,
             login.staff_id,
@@ -80,6 +84,7 @@ export default function SignIn() {
         // username/password combinations - just like validating the inputs
         // above
         functions.simpleToast(toast,`잘못된 정보입니다.`);
+        setIsLoading(false);
         return {
           error: "Invalid login attempt",
         };
@@ -110,6 +115,13 @@ export default function SignIn() {
         mt={{ base: '40px', md: '14vh' }}
         flexDirection="column"
       >
+        {
+          isLoading && (
+            <Box display="flex" justifyContent="center" alignItems="center" w="100%" h="100%" position="absolute" top="0" left="0" bg="rgba(0, 0, 0, 0.5)" opacity="0.5" zIndex="1000">
+              <Spinner size="lg" />
+            </Box>
+          )
+        }
         <Box me="auto">
           <Heading color={textColor} fontSize="36px" mb="10px">
             Sign In
@@ -121,7 +133,7 @@ export default function SignIn() {
             fontWeight="400"
             fontSize="md"
           >
-            Enter your email and password to sign in!
+            AIGA 전용 Admin Page ( 비밀번호와 패스워드는 관리자에게 문의하세요 )
           </Text>
         </Box>
         <Flex
@@ -225,6 +237,7 @@ export default function SignIn() {
           </FormControl>
           
         </Flex>
+        
       </Flex>
     </DefaultAuthLayout>
   );

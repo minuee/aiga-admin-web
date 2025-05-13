@@ -1,19 +1,25 @@
 import { 
-	Box, Flex, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue, Skeleton, SkeletonCircle, SkeletonText,
-	 Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody 
+	Box, Flex, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue, Skeleton, Button, SkeletonText,
+	 Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Drawer, DrawerOverlay, DrawerContent, DrawerHeader, DrawerBody, DrawerFooter, DrawerCloseButton
 } from '@chakra-ui/react';
 import { createColumnHelper,flexRender,getCoreRowModel,getSortedRowModel,SortingState,useReactTable } from '@tanstack/react-table';
+import { renderThumb,renderTrack,renderView } from 'components/scrollbar/Scrollbar';
 // Custom components
 import Card from 'components/card/Card';
 import HospitalDetail from 'components/modal/HospitalDetail';
+import DoctorList from 'components/drawer/DoctorList';
 import { format } from 'date-fns';
 import * as React from 'react';
 import functions from 'utils/functions';
 import mConstants from 'utils/constants';
-
+import { useRouter } from 'next/navigation';
 // Assets
 import { IoCaretUp,IoCaretDown } from "react-icons/io5";
-
+import dynamic from 'next/dynamic';
+const Scrollbars = dynamic(
+	() => import('react-custom-scrollbars-2').then((mod) => mod.Scrollbars),
+	{ ssr: true },
+);
 type RowObj = {
 	hid: string;
 	baseName: any;
@@ -28,17 +34,20 @@ const columnHelper = createColumnHelper<RowObj>();
 export default function ComplexTable(props: { tableData: any,page:number, order : string , orderName: string ,getDataSortChange : (str: string) => void}) {
 	
 	const { tableData,page ,order,orderName} = props;
+	const router = useRouter();
 	const [ isLoading, setLoading ] = React.useState(true);
 	const [ sorting, setSorting ] = React.useState<SortingState>([]);
 	const [ data, setTableData ] = React.useState([]);
+	const [ isOpenDrawer, setIsOpenDrawer ] = React.useState(false);
 	const [ isOpenModal, setIsOpenModal ] = React.useState(false);
-	const [ selectedHospital, setSelectedHospital ] = React.useState('');
+	const [ selectedHospital, setSelectedHospital ] = React.useState<any>(null);
 	const textColor = useColorModeValue('secondaryGray.900', 'white');
 	const orderTextColor = useColorModeValue('black', 'white');
 	const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
+	const bgColor = useColorModeValue('white', 'gray.700');
 	const formBtnRef = React.useRef(null);
 	const sidebarBackgroundColor = useColorModeValue('white', 'gray.700');
-
+	const btnRef = React.useRef(null);
 
 
 	const setData = React.useCallback(
@@ -59,6 +68,13 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 			setSelectedHospital(hospitalData);
 			setIsOpenModal(true);
 		}
+	}
+
+	const onHandleDoctors = (hospitalData: any) => {
+		console.log("hospitalData",hospitalData)
+		setSelectedHospital(hospitalData);
+		setIsOpenDrawer(true);
+		//router.push(`/admin/hospital/doctors?hospitalId=${hospitalData?.hid}`);
 	}
 
 	
@@ -186,7 +202,7 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 				</Box>
 			),
 			cell: (info:any) => (
-				<Flex align='center'>
+				<Flex align='center' onClick={()=> onHandleDoctors(info.row.original)} cursor={'pointer'}>
 					<Text me='10px' color={textColor} fontSize='sm' fontWeight='700'>
 						{functions.numberWithCommas(info.getValue())}
 					</Text>
@@ -312,7 +328,7 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 						>
 						<ModalOverlay />
 						<ModalContent maxW={`${mConstants.modalMaxWidth}px`} bg={sidebarBackgroundColor}>
-							<ModalHeader>{"병원 상세정보"}</ModalHeader>
+							<ModalHeader>{`${selectedHospital?.baseName} 상세정보`}</ModalHeader>
 							<ModalCloseButton />
 							<ModalBody >
 							<HospitalDetail
@@ -323,6 +339,46 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 							</ModalBody>
 						</ModalContent>
 					</Modal>
+				)
+			}
+			{
+				isOpenDrawer && (
+				<Drawer
+					isOpen={isOpenDrawer}
+					onClose={()=>setIsOpenDrawer(false)}
+					placement={'bottom'}
+					finalFocusRef={btnRef}
+					closeOnOverlayClick={false}
+					size={'full'}
+				>
+					<DrawerOverlay />
+					<DrawerContent 
+						h="calc( 100vh - 30px)" 
+						overflow='scroll'
+						backgroundColor={bgColor}
+					>
+					<DrawerCloseButton
+						zIndex="3"
+						onClick={()=>setIsOpenDrawer(false)}
+						_focus={{ boxShadow: 'none' }}
+						_hover={{ boxShadow: 'none' }}
+					/>
+					<DrawerHeader sx={{borderBottom:'1px solid #ebebeb'}}>{selectedHospital?.baseName} 의사리스트</DrawerHeader>
+					<DrawerBody w="calc(100% - 20px)"  padding="10px">
+						<Scrollbars
+							autoHide
+							renderTrackVertical={renderTrack}
+							renderThumbVertical={renderThumb}
+							renderView={renderView}
+							universal={true}
+						>
+							<DoctorList 
+								hospitalData={selectedHospital}
+							/>
+						</Scrollbars>
+					</DrawerBody>
+					</DrawerContent>
+				</Drawer>
 				)
 			}
 		</Card>

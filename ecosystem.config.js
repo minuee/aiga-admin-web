@@ -17,7 +17,7 @@ module.exports = {
         // 운영환경 설정 실행시 --env production 옵션으로 지정할 수 있다.
         env_production: {
           NODE_ENV: "production",
-          PORT: "8080",
+          PORT: "6001",
         },
       },
     ],
