@@ -2,7 +2,7 @@
 import React, { PropsWithChildren } from 'react';
 
 // chakra imports
-import { Box,Flex,Button,Text,SkeletonCircle,SkeletonText,Divider,Icon,Textarea,Input, FormControl, FormLabel, RadioGroup, Radio, Stack} from '@chakra-ui/react';
+import { Box,Flex,Button,Text,SkeletonCircle,SkeletonText,Divider,Icon,Textarea,Input, FormControl, FormLabel, RadioGroup, Radio, Stack, useColorModeValue} from '@chakra-ui/react';
 
 
 export interface InquiryDetailProps extends PropsWithChildren {
@@ -21,7 +21,8 @@ function InquiryDetail(props: InquiryDetailProps) {
     req_phone : '',
     req_comment : '',
   });
-
+  const skeletonColor = useColorModeValue('white', 'navy.700');
+  
   React.useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
@@ -34,7 +35,7 @@ function InquiryDetail(props: InquiryDetailProps) {
 
   if ( isLoading ) {
     return (
-      <Box padding='6' boxShadow='lg' bg='white'>
+      <Box padding='6' boxShadow='lg' bg={skeletonColor}>
         <SkeletonCircle size='10' />
         <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
       </Box>

@@ -15,6 +15,17 @@ export function getDoctorList(props: PaginationProps): ApiResponse<any> {
         return api.get(`/api/v1/doctors/hid/${props.hospitalId}?orderName=${props.orderName}&order=${props.order}&page=${props.page}&take=${props.take}`);
     }else{
         return null;
-    }
-    
+    } 
+}
+
+
+interface PaperProps {
+    doctorId: string;
+}
+export function getDoctorPaperList(props: PaperProps): ApiResponse<any> {
+    if ( !functions.isEmpty(props.doctorId)  ) {
+        return api.get(`/api/v1/doctors/paper/${props.doctorId}`);
+    }else{
+        return null;
+    } 
 }

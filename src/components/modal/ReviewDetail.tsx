@@ -2,7 +2,7 @@
 import React, { PropsWithChildren } from 'react';
 
 // chakra imports
-import { Box,Flex,Button,Text,SkeletonCircle,SkeletonText,Divider,Icon,Textarea,Input, FormControl, FormLabel, RadioGroup, Radio, Stack} from '@chakra-ui/react';
+import { Box,Flex,Button,Text,SkeletonCircle,SkeletonText,Divider,Icon,Textarea,Input, FormControl, FormLabel, RadioGroup, Radio, Stack, useColorModeValue} from '@chakra-ui/react';
 import Slider from 'components/etc/Slider';
 import { MdDiversity1 } from 'react-icons/md';
 export interface ReviewDetailProps extends PropsWithChildren {
@@ -32,14 +32,15 @@ function ReviewDetail(props: ReviewDetailProps) {
       setIsLoading(false);
     }, 1000);
   }, [isOpen]);
-
+  const skeletonColor = useColorModeValue('white', 'navy.700');
+  
   const onHandleRegistReview = (data:any) => {
     console.log('onHandleRegistReview', data);
   }
 
   if ( isLoading ) {
     return (
-      <Box padding='6' boxShadow='lg' bg='white'>
+      <Box padding='6' boxShadow='lg' bg={skeletonColor}>
         <SkeletonCircle size='10' />
         <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
       </Box>

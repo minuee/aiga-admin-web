@@ -2,7 +2,7 @@
 import React, { PropsWithChildren } from 'react';
 
 // chakra imports
-import { Box,Flex,Button,Text,SkeletonCircle,SkeletonText,Divider,Icon,Textarea,Input, FormControl, FormLabel, RadioGroup, Radio, Stack} from '@chakra-ui/react';
+import { Box,Flex,Button,Text,SkeletonCircle,SkeletonText,Divider,Icon,Textarea,Input, FormControl, FormLabel, RadioGroup, Radio, Stack, useColorModeValue} from '@chakra-ui/react';
 import functions from 'utils/functions';
 
 
@@ -28,10 +28,11 @@ function MemberDetail(props: MemberDetailProps) {
       setIsLoading(false);
     }, 1000);
   }, [isOpen]);
-
+  const skeletonColor = useColorModeValue('white', 'navy.700');
+  
   if ( isLoading ) {
     return (
-      <Box padding='6' boxShadow='lg' bg='white'>
+      <Box padding='6' boxShadow='lg' bg={skeletonColor}>
         <SkeletonCircle size='10' />
         <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
       </Box>
@@ -87,7 +88,7 @@ function MemberDetail(props: MemberDetailProps) {
                   <Radio colorScheme='blue' value='3' onClick={() => setInputs({...inputs, relation: '3'})}>
                     Silver
                   </Radio>
-                  <Radio colorScheme='blue' value='3' onClick={() => setInputs({...inputs, relation: '3'})}>
+                  <Radio colorScheme='blue' value='4' onClick={() => setInputs({...inputs, relation: '4'})}>
                     Bronze
                   </Radio>
                 </Stack>

@@ -3,7 +3,8 @@ import React from "react";
 export default function RootHead() {
 	return <>
 			<link rel="apple-touch-icon" href="/logo192.png" />
-			<link rel="manifest" href="/manifest.json" />
+			<link rel="/manifest" href="/manifest.json" />
+			<link rel="robots" href="/robots.txt" />
 			<link
 				rel="shortcut icon"
 				type="image/x-icon"
@@ -13,5 +14,5 @@ export default function RootHead() {
 		  	<title>AIGA Admin Page</title>
 			<meta name="viewport" content="width=device-width, initial-scale=1" />
 			<meta name="theme-color" content="#000000" />
-			</>
+		</>
 }

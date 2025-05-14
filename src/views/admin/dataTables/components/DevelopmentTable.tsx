@@ -39,11 +39,8 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 	const formBtnRef = React.useRef(null);
 	const sidebarBackgroundColor = useColorModeValue('white', 'gray.700');
 
-
-
 	const setData = React.useCallback(
 		async() => {
-			console.log("tableData 222",tableData)
 			setTableData(tableData);
 			setLoading(false);
 		},[tableData]
@@ -54,7 +51,6 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 	}, [setData]);
 
 	const onHandleOpenModal = (hospitalData: any) => {
-		console.log("hospitalId",hospitalData?.hid)
 		if( !functions.isEmpty(hospitalData?.hid) ) {
 			setSelectedHospital(hospitalData);
 			setIsOpenModal(true);

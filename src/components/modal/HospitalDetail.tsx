@@ -29,7 +29,8 @@ function HospitalDetail(props: HospitalDetailProps) {
 
   const textColor = useColorModeValue('secondaryGray.900', 'white');
   const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
-
+  const skeletonColor = useColorModeValue('white', 'navy.700');
+  
   React.useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
@@ -42,7 +43,7 @@ function HospitalDetail(props: HospitalDetailProps) {
 
   if ( isLoading ) {
     return (
-      <Box padding='6' boxShadow='lg' bg='white'>
+      <Box padding='6' boxShadow='lg' bg={skeletonColor}>
         <SkeletonCircle size='10' />
         <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
       </Box>

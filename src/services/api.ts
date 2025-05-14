@@ -17,7 +17,6 @@ axios.interceptors.request.use(
     return config;
   },
   function (error) {
-    console.log('request error : ', { error });
     return Promise.reject(error);
   },
 );
@@ -36,10 +35,6 @@ axios.interceptors.response.use(
     const response = err.response;
     if (response) {
       let message = response.data ? response.data.message : response.message;
-      console.log({
-        statusCode: response.data.statusCode,
-        message: message,
-      });
     } else {
       console.log('response err : ', { err });
     }

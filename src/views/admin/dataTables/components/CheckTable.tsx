@@ -50,7 +50,6 @@ export default function CheckTable(props: { tableData: any }) {
 				order:'ASC',
 				orderName:'hospital.hid'
 			});
-			console.log("res",res)
 		},[tableData]
 	  );
 	

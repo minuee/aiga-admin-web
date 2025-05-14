@@ -16,7 +16,6 @@ export default function Pagination({
   total,
   className,
 }: PaginationProps) {
-  console.log("dddd",page,pageSize,total)
   const totalPages = Math.ceil(total / pageSize);
   const startPage = Math.max(1, page - 6);
   const endPage = Math.min(totalPages, page + 6);

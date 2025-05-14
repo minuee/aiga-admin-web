@@ -45,6 +45,8 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 	const orderTextColor = useColorModeValue('black', 'white');
 	const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
 	const bgColor = useColorModeValue('white', 'gray.700');
+	const tdColorOdd = useColorModeValue('white', 'gray.700');
+	const tdColorEven = useColorModeValue('#f4f7fe', 'navy.700');
 	const formBtnRef = React.useRef(null);
 	const sidebarBackgroundColor = useColorModeValue('white', 'gray.700');
 	const btnRef = React.useRef(null);
@@ -52,7 +54,6 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 
 	const setData = React.useCallback(
 		async() => {
-			console.log("tableData 222",tableData)
 			setTableData(tableData);
 			setLoading(false);
 		},[tableData]
@@ -63,7 +64,6 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 	}, [setData]);
 
 	const onHandleOpenModal = (hospitalData: any) => {
-		console.log("hospitalId",hospitalData?.hid)
 		if( !functions.isEmpty(hospitalData?.hid) ) {
 			setSelectedHospital(hospitalData);
 			setIsOpenModal(true);
@@ -71,7 +71,6 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 	}
 
 	const onHandleDoctors = (hospitalData: any) => {
-		console.log("hospitalData",hospitalData)
 		setSelectedHospital(hospitalData);
 		setIsOpenDrawer(true);
 		//router.push(`/admin/hospital/doctors?hospitalId=${hospitalData?.hid}`);
@@ -305,7 +304,9 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 														key={cell.id}
 														fontSize={{ sm: '14px' }}
 														minW={{ sm: '150px', md: '200px', lg: 'auto' }}
-														borderColor='transparent'>
+														borderColor='transparent'
+														backgroundColor={index % 2 == 0 ? tdColorEven+ ' !important' : tdColorOdd+ ' !important'}
+													>
 														{flexRender(cell.column.columnDef.cell, cell.getContext())}
 													</Td>
 												);

@@ -5,7 +5,6 @@ import styled from '@emotion/styled';
 import * as React from 'react';
 import * as DoctorService from "services/doctor/index";
 import Pagination from 'components/etc/Pagination';
-import { renderThumb,renderTrack,renderView } from 'components/scrollbar/Scrollbar';
 import dynamic from 'next/dynamic';
 
 const Scrollbars = dynamic(
@@ -71,6 +70,7 @@ export default function DoctorList(props: { hospitalData: any }) {
           //renderView={renderView}
         >
         <DoctorsTable 
+          hospitalData={props.hospitalData}
           tableData={data} 
           order={order}
           orderName={orderName}

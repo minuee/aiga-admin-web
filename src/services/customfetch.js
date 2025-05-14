@@ -10,7 +10,6 @@ class CustomAPiFetch {
     // call API with timeout Function, default limit = 30 seconds
     callAPI = async (url, options = null, FETCH_TIMEOUT = 30000, requiredLogin = false, signal = null) => {
         const myTimeout = this.isEmpty(FETCH_TIMEOUT) ? 30000 : FETCH_TIMEOUT;
-        ///console.log("optionsoptions 222", options.headers)
         return this.requestAPI(url, options, myTimeout, signal);
     };
 

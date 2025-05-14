@@ -662,19 +662,21 @@ const functions = {
     return charBytes;
   },
 
-/*   exportToXlsx( exportData:any = [], excelFileName:string = "리스트" , customHeader:any = null) {
-    //const exportData = rows.map((row:any) => row.original);
-    console.log("exportData",exportData)
-
-    const wb = utils.book_new();
-    const ws = utils.json_to_sheet(exportData);
-    if ( customHeader != null ) {
-      utils.sheet_add_aoa(ws, customHeader);
+  categorizeByDynamicType(data:any) {
+    const result:any = {};
+      if ( data.length > 0 ) {
+      data.forEach((item:any) => {
+        const type = item.type;
+    
+        if (!result[type]) {
+          result[type] = [];
+        }
+    
+        result[type].push(item);
+      });
     }
-    utils.book_append_sheet(wb, ws, 'sheet');
-    writeFile(wb, `${excelFileName}.xlsx`);
-  }, */
-
+    return result;
+  }
 };
 
 export default functions;

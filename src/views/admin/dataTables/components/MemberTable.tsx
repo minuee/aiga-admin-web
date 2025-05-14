@@ -191,7 +191,6 @@ export default function MemberTable(props: { tableData: any }) {
 	});
 
 	const onHandleOpenDetail = (id:string) => {
-		console.log(id);
 		if ( !functions.isEmpty(id) ) setIsOpenRequestModal(true);
 	}
 

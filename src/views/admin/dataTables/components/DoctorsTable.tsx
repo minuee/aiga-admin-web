@@ -1,8 +1,10 @@
 import { 
-	Box, Flex, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue, Skeleton, Icon
+	Box, Flex, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue, Skeleton, Icon,
+	Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody
 } from '@chakra-ui/react';
 import { createColumnHelper,flexRender,getCoreRowModel,getSortedRowModel,SortingState,useReactTable } from '@tanstack/react-table';
 // Custom components
+import DoctorDetail from 'components/modal/DoctorDetail';
 import Card from 'components/card/Card';
 import { format } from 'date-fns';
 import * as React from 'react';
@@ -12,7 +14,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 // Assets
 import { IoCaretUp,IoCaretDown,IoPerson} from "react-icons/io5";
-
+import Link from 'next/link';
 
 type RowObj = {
 	hid : string;
@@ -29,9 +31,9 @@ type RowObj = {
 const columnHelper = createColumnHelper<RowObj>();
 
 // const columns = columnsDataCheck;
-export default function DoctorsTable(props: { tableData: any,page:number, order : string , orderName: string ,getDataSortChange : (str: string) => void}) {
+export default function DoctorsTable(props: { tableData: any,page:number, order : string , orderName: string ,getDataSortChange : (str: string) => void, hospitalData: any}) {
 	
-	const { tableData,page ,order,orderName} = props;
+	const { tableData,page ,order,orderName, hospitalData} = props;
 	const router = useRouter();
 	const [ isLoading, setLoading ] = React.useState(true);
 	const [ sorting, setSorting ] = React.useState<SortingState>([]);
@@ -39,16 +41,18 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 	const [ isOpenDrawer, setIsOpenDrawer ] = React.useState(false);
 	const [ isOpenModal, setIsOpenModal ] = React.useState(false);
 	const [ selectedHospital, setSelectedHospital ] = React.useState<any>(null);
+	const [ DoctorData, setDoctorData ] = React.useState<any>(null);
 	const textColor = useColorModeValue('secondaryGray.900', 'white');
 	const orderTextColor = useColorModeValue('black', 'white');
 	const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
 	const bgColor = useColorModeValue('white', 'gray.700');
 	const formBtnRef = React.useRef(null);
+	const tdColorOdd = useColorModeValue('white', 'gray.700');
+	const tdColorEven = useColorModeValue('#f4f7fe', 'navy.700');
 	const sidebarBackgroundColor = useColorModeValue('white', 'gray.700');
-
+	
 	const setData = React.useCallback(
 		async() => {
-			console.log("tableData 222",tableData)
 			setTableData(tableData);
 			setLoading(false);
 		},[tableData]
@@ -58,19 +62,11 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 		setData();
 	}, [setData]);
 
-	const onHandleOpenModal = (hospitalData: any) => {
-		console.log("hospitalId",hospitalData?.hid)
-		if( !functions.isEmpty(hospitalData?.hid) ) {
-			setSelectedHospital(hospitalData);
+	const onHandleOpenModal = (doctorData: any) => {
+		if( !functions.isEmpty(doctorData?.doctorname) ) {
+			setDoctorData({...hospitalData, ...doctorData});
 			setIsOpenModal(true);
 		}
-	}
-
-	const onHandleDoctors = (hospitalData: any) => {
-		console.log("hospitalData",hospitalData)
-		setSelectedHospital(hospitalData);
-		setIsOpenDrawer(true);
-		//router.push(`/admin/hospital/doctors?hospitalId=${hospitalData?.hid}`);
 	}
 
 	
@@ -127,7 +123,7 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 				</Text>
 			),
 			cell: (info) => (
-				<Flex align='center' onClick={()=> onHandleOpenModal(info.row.original)}>
+				<Flex align='center' onClick={()=> onHandleOpenModal(info.row.original)} cursor={'pointer'}>
 					<Text color={textColor} fontSize='sm' fontWeight='700'>
 						{info.getValue()}
 					</Text>
@@ -148,13 +144,14 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 			),
 			cell: (info) => (
 				functions.isEmpty(info.getValue()) ?
-				<Flex display={'flex'} alignItems={'center'} justifyContent={'center'}>
+				<Flex alignItems={'center'} justifyContent={'center'}>
 					<Icon as={IoPerson} />
 				</Flex>
 				:
-				<Flex display={'flex'} alignItems={'center'} justifyContent={'center'}>
-					<Icon as={IoPerson} />
-					{/* <Image src={info.getValue()} alt='profile' width={50} height={50} /> */}
+				<Flex alignItems={'center'} justifyContent={'flex-start'} >
+					<Link href={info.getValue()} target='_blank'>
+						<Image src={info.getValue().trimEnd()} alt='profile' width={50} height={50} />
+					</Link>
 				</Flex>
 			)
 		}),
@@ -247,7 +244,7 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 				</Flex>
 				:
 				<Box>
-					<Table variant='striped' colorScheme='blackAlpha' mb='24px' mt="12px" size={{sm:'sm',md:'md'}}>
+					<Table variant='striped' colorScheme='blackAlpha' mb='24px' size={{sm:'sm',md:'md'}}>
 						<Thead>
 							{table.getHeaderGroups().map((headerGroup) => (
 								<Tr key={headerGroup.id}>
@@ -281,7 +278,7 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 							?
 							<Tbody >
 								<Tr >
-									<Th colSpan={5} >
+									<Th colSpan={6} >
 										<Box
 											display={'flex'}
 											width={'100%'}
@@ -308,7 +305,9 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 														key={cell.id}
 														fontSize={{ sm: '14px' }}
 														minW={{ sm: '150px', md: '200px', lg: 'auto' }}
-														borderColor='transparent'>
+														borderColor='transparent'
+														backgroundColor={index % 2 == 0 ? tdColorEven+ ' !important' : tdColorOdd+ ' !important'}
+													>
 														{flexRender(cell.column.columnDef.cell, cell.getContext())}
 													</Td>
 												);
@@ -320,6 +319,30 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 						}
 					</Table>
 				</Box>
+			}
+			{
+				isOpenModal && (    
+					<Modal
+						onClose={() => setIsOpenModal(false)}
+						finalFocusRef={formBtnRef}
+						isOpen={isOpenModal}
+						scrollBehavior={'inside'}
+						size={'full'}
+					>
+					<ModalOverlay />
+					<ModalContent maxW={`${mConstants.modalMaxWidth}px`} bg={sidebarBackgroundColor}>
+						<ModalHeader>{`${DoctorData?.doctorname?.replace('의사', '')} 의사  상세정보`}</ModalHeader>
+						<ModalCloseButton />
+						<ModalBody >
+						<DoctorDetail
+							isOpen={isOpenModal}
+							setClose={() => setIsOpenModal(false)}
+							DoctorData={DoctorData}
+						/>
+						</ModalBody>
+					</ModalContent>
+					</Modal>
+				)
 			}
 		</Card>
 	);

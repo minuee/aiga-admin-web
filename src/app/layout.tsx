@@ -1,7 +1,19 @@
 import { Box } from '@chakra-ui/react';
 import React, { ReactNode } from 'react';
 import AppWrappers  from './AppWrappers';
-import Head from "./head"
+import Head from "./head";
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: {
+    default: 'AIGA Admin',
+    template: '%s',
+  },
+  description: 'AIGA Admin',
+  icons: {
+    icon: '/img/push/512.png',
+  },
+}
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
