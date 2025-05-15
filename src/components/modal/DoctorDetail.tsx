@@ -60,10 +60,9 @@ function DoctorDetail(props: DoctorDetailProps) {
           doctorId: props.DoctorData?.rid
         });
         setDoctorPapers(res?.data);
-        setIsLoading(false);
       }catch(e){
         setDoctorPapers([]);
-        setIsLoading(false);
+        
       }
     }
     },[props.DoctorData?.rid]
@@ -89,7 +88,7 @@ function DoctorDetail(props: DoctorDetailProps) {
         books: careerData['저서'],
         conferences: careerData['학회']
       });
-      
+      setIsLoading(false);
     }, 1000);
   }, [isOpen]);
 
@@ -116,7 +115,12 @@ function DoctorDetail(props: DoctorDetailProps) {
           <Flex flex={1} alignItems={'center'} justifyContent={'center'}>
             {
             functions.isEmpty(inputs?.profileimgurl) ?
-            <Icon as={IoPerson} />
+            <Image
+                width="200"
+                height="200"
+                src={require("../../../public/img/avatars/doctor.png")}
+                alt={'doctor1'}
+            />
             :
             <Image src={inputs?.profileimgurl.trimEnd()} alt='profile' width={150} height={150} />
             }
