@@ -6,54 +6,73 @@ import * as React from 'react';
 import * as DoctorService from "services/doctor/index";
 import Pagination from 'components/etc/Pagination';
 import dynamic from 'next/dynamic';
+import functions from 'utils/functions';
 
 const Scrollbars = dynamic(
   () => import('react-custom-scrollbars-2').then((mod) => mod.Scrollbars),
   { ssr: true },
 );
 
-export default function DoctorList(props: { hospitalData: any }) {
+export default function DoctorList(props: { hospitalData: any,inputs : any }) {
 
   const [ data, setData ] = React.useState<any>([]);
-  const [ order, setOrder ] = React.useState('ASC');
-  const [ orderName, setOrderName ] = React.useState('deptname');
-  const [ totalCount, setTotalCount ] = React.useState(0);
-  const [ pageIndex, setPageIndex ] = React.useState(0);
-  const [ pageSize, setPageSize ] = React.useState(10);
-  const [ page, setPage ] = React.useState(1);
+  const [ inputs, setInputs ] = React.useState({
+		orderName : "deptname",
+		orderBy : "ASC",
+		keyword : "",
+    pageIndex : 0,
+    pageSize : 10,
+    page : 1,
+    totalCount : 0
+	});
 
   const getData = React.useCallback(
       async() => {
         try{
+          console.log("props.inputs 2",inputs)
           const res:any = await DoctorService.getDoctorList({
             hospitalId: props.hospitalData?.hid,
-            page,
-            take: pageSize,
-            order,
-            orderName
+            page: inputs.page,
+            take: inputs.pageSize,
+            order : inputs.orderBy,
+            orderName : inputs.orderName,
+            keyword : inputs.keyword
           });
           
           if ( res?.data?.meta?.totalCount > 0 ) {
             setData(res?.data?.data);
-            setTotalCount(res?.data.meta?.totalCount)
-            setPageIndex(parseInt(res?.data?.meta?.currentPage)+1)
+            setInputs({...inputs, totalCount : res?.data.meta?.totalCount, pageIndex: parseInt(res?.data?.meta?.currentPage)+1})
           }else{
             setData([]);
           }
         }catch(e){
           setData([]);
         }
-      },[page,orderName,order]
+      },[inputs.page,inputs.orderName,inputs.orderBy,inputs.keyword]
     );
     
+    React.useEffect(() => {
+      console.log("props.inputs",props.inputs)
+      setInputs({
+        ...inputs,
+        orderBy : props.inputs?.orderBy,
+        orderName : !functions.isEmpty(props.inputs?.orderName) ? props.inputs?.orderName : "deptname",
+        keyword : props.inputs?.keyword
+      })
+    }, [props.inputs]);
+
     React.useEffect(() => {
       getData()
     }, [getData]);
 
   const getDataSortChange = (str:string) => {
-    setPage(1);
-    setOrderName(str)
-    setOrder(order == 'ASC' ? 'DESC' : 'ASC')
+    setInputs({
+      ...inputs,
+      page :  1,
+      orderName : str,
+      orderBy : inputs.orderBy == 'ASC' ? 'DESC' : 'ASC'
+    })
+
   }
 
   return (
@@ -64,7 +83,10 @@ export default function DoctorList(props: { hospitalData: any }) {
         spacing={{ base: '20px', xl: '20px' }}
       >
         <Scrollbars 
-          universal={true} autoHeight={true} autoHeightMin={0} autoHeightMax={600}
+          universal={true} 
+          autoHeight={true} 
+          autoHeightMin={0} 
+          autoHeightMax={'calc( 100vh - 100px )'}
           //renderTrackVertical={renderTrack}
           //renderThumbVertical={renderThumb}
           //renderView={renderView}
@@ -72,21 +94,26 @@ export default function DoctorList(props: { hospitalData: any }) {
         <DoctorsTable 
           hospitalData={props.hospitalData}
           tableData={data} 
-          order={order}
-          orderName={orderName}
-          page={page}
+          order={inputs.orderBy}
+          orderName={inputs.orderName}
+          page={inputs.page}
           getDataSortChange={getDataSortChange}
         />
         
         </Scrollbars>
         <Box 
-          display={totalCount > pageSize ? 'block' : 'none'}
+          display={inputs.totalCount > inputs.pageSize ? 'block' : 'none'}
+          position='absolute'
+          bottom={0}
+          left={0}
+          width="100%"
+          height={"50px"}
         >
           <PaginationWrapper
-            total={totalCount}
-            page={page}
-            pageSize={pageSize}
-            onPageChange={(page:number) => setPage(page)}
+            total={inputs.totalCount}
+            page={inputs.page}
+            pageSize={inputs.pageSize}
+            onPageChange={(page:number) => setInputs({...inputs,page})}
           />
         </Box>
       </SimpleGrid>

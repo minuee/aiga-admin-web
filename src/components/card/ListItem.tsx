@@ -1,5 +1,5 @@
 import React from 'react';
-import { useColorMode,Flex,Text,Divider,Box,List,ListItem,FormControl,Input, useColorModeValue, SkeletonText, Icon ,Modal,ModalOverlay,ModalContent,ModalHeader,ModalCloseButton,ModalBody} from '@chakra-ui/react';
+import { Flex,Text,Divider,Box,List,ListItem,FormControl,Input, useColorModeValue, SkeletonText, Icon ,Modal,ModalOverlay,ModalContent,ModalHeader,ModalCloseButton,ModalBody } from '@chakra-ui/react';
 import { MdDelete,MdAssignment } from 'react-icons/md';
 import mConstants from 'utils/constants';
 import functions from 'utils/functions';
@@ -12,7 +12,6 @@ type ListItemScreenProps = {
     limintView: number;
     marginTop?: number;
 };
-  
 
 const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limintView = 3, marginTop = 2 }:ListItemScreenProps) => {
     const [expandedCount, setExpandedCount] = React.useState<any>(content?.length > limintView ? limintView : undefined);
@@ -22,15 +21,14 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
     const textColor = useColorModeValue('secondaryGray.900', 'white');
     const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
     const skeletonColor = useColorModeValue('white', 'navy.700');
-    const sidebarBackgroundColor = useColorModeValue('secondaryGray.100', 'navy.700');
     const formBtnRef = React.useRef();
 
     const [inputs, setInputs] = React.useState<any>([{
-        targetData: null,
+        targetData: '',
         text: '',
         type: type,
         url: '',
-        issuer : null
+        issuer : ''
     }]);
 
     React.useEffect(() => {
@@ -87,7 +85,7 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                             borderColor={borderColor}
                                             color={textColor}
                                             placeholder='doi' 
-                                            value={item?.doi}
+                                            value={functions.isEmpty(item?.doi) ? '' : item?.doi}
                                             size='sm'
                                             onChange={(e) => {
                                                setInputs(inputs.map((input:any,idx:number) => idx === index ? {...input, doi: e.target.value} : input));
@@ -99,7 +97,7 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                             borderColor={borderColor}
                                             color={textColor}
                                             placeholder="제목" 
-                                            value={item?.title}
+                                            value={functions.isEmpty(item?.title) ? '' : item?.title}
                                             size='sm'
                                             onChange={(e) => {
                                                setInputs(inputs.map((input:any,idx:number) => idx === index ? {...input, title: e.target.value} : input));
@@ -111,7 +109,7 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                             borderColor={borderColor}
                                             color={textColor}
                                             placeholder='pmId' 
-                                            value={item?.pmid}
+                                            value={functions.isEmpty(item?.pmid) ? '' : item?.pmid}
                                             size='sm'
                                             onChange={(e) => {
                                                setInputs(inputs.map((input:any,idx:number) => idx === index ? {...input, pmid: e.target.value} : input));
@@ -155,7 +153,7 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                             borderColor={borderColor}
                                             color={textColor}
                                             placeholder='일자' 
-                                            value={item?.targetDate}
+                                            value={functions.isEmpty(item?.targetDate) ? "" : item?.targetDate}
                                             size='sm'
                                             onChange={(e) => {
                                                setInputs(inputs.map((input:any,idx:number) => idx === index ? {...input, targetDate: e.target.value} : input));
@@ -167,7 +165,7 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                             borderColor={borderColor}
                                             color={textColor}
                                             placeholder='내용' 
-                                            value={item?.text}
+                                            value={functions.isEmpty(item?.text) ? "" : item?.text}
                                             size='sm'
                                             onChange={(e) => {
                                                setInputs(inputs.map((input:any,idx:number) => idx === index ? {...input, text: e.target.value} : input));
@@ -179,7 +177,7 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                             borderColor={borderColor}
                                             color={textColor}
                                             placeholder='발행처' 
-                                            value={item?.issuer}
+                                            value={functions.isEmpty(item?.issuer) ? "" : item?.issuer}
                                             size='sm'
                                             onChange={(e) => {
                                                setInputs(inputs.map((input:any,idx:number) => idx === index ? {...input, issuer: e.target.value} : input));

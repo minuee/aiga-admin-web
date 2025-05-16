@@ -14,6 +14,7 @@ import functions from 'utils/functions';
 import * as DoctorService from "services/doctor/index";
 import ListItem from 'components/card/ListItem';
 
+const defaultImage = require("../../..//public/img/avatars/no_image01.png");
 
 export interface DoctorDetailProps extends PropsWithChildren {
   isOpen : boolean;
@@ -118,11 +119,17 @@ function DoctorDetail(props: DoctorDetailProps) {
             <Image
                 width="200"
                 height="200"
-                src={require("../../../public/img/avatars/doctor.png")}
+                src={defaultImage}
                 alt={'doctor1'}
             />
             :
-            <Image src={inputs?.profileimgurl.trimEnd()} alt='profile' width={150} height={150} />
+            <Image 
+              src={inputs?.profileimgurl.trimEnd()} 
+              alt='profile' 
+              width={150} 
+              height={150} 
+              //onError={(e) => {e.currentTarget.src = defaultImage;}}
+            />
             }
           </Flex>
           <Flex flex={2} flexDirection={'column'} minHeight={'50px'} padding={'0 10px'} >

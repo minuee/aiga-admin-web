@@ -72,7 +72,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 borderColor={borderColor}
                 color={textColor}
                 placeholder='PaperId' 
-                value={inputs?.paper_id}
+                value={functions.isEmpty(inputs?.paper_id) ? '' : inputs?.paper_id}
                 readOnly
               />
             </FormControl>
@@ -85,7 +85,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 borderColor={borderColor}
                 color={textColor}
                 placeholder='의사명' 
-                value={inputs?.doctorName}
+                value={functions.isEmpty(inputs?.doctorName) ? '' : inputs?.doctorName}
                 readOnly
               />
             </FormControl>
@@ -109,7 +109,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 borderColor={borderColor}
                 color={textColor}
                 placeholder='페이지 URL' 
-                value={inputs?.paper_url}
+                value={functions.isEmpty(inputs?.paper_url) ? '' : inputs?.paper_url}
                 readOnly
               />
             </FormControl>
@@ -124,7 +124,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 borderColor={borderColor}
                 color={textColor}
                 placeholder='저널명' 
-                value={inputs?.journalName}
+                value={functions.isEmpty(inputs?.journalName) ? '' : inputs?.journalName}
                 readOnly
               />
             </FormControl>
@@ -137,7 +137,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 borderColor={borderColor}
                 color={textColor}
                 placeholder='PMID' 
-                value={inputs?.pmid}
+                value={functions.isEmpty(inputs?.pmid) ? '' : inputs?.pmid}
                 readOnly
               />
             </FormControl>
@@ -153,7 +153,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 borderColor={borderColor}
                 color={textColor}
                 placeholder='ImpactFactor' 
-                value={inputs?.impactFactor}
+                value={functions.isEmpty(inputs?.impactFactor) ? '' : inputs?.impactFactor}
                 readOnly
               />
             </FormControl>
@@ -166,7 +166,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 borderColor={borderColor}
                 color={textColor}
                 placeholder='인용수' 
-                value={inputs?.totalCitations}
+                value={functions.isEmpty(inputs?.totalCitations) ? '' : inputs?.totalCitations}
                 readOnly
               />
             </FormControl>
@@ -186,7 +186,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 size={'sm'} 
                 borderColor={borderColor}
                 color={textColor}
-                value={inputs?.authors}
+                value={functions.isEmpty(inputs?.authors) ? '' : inputs?.authors}
               />
             </FormControl>
           </Box>   
@@ -205,7 +205,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 size={'sm'} 
                 borderColor={borderColor}
                 color={textColor}
-                value={inputs?.title}
+                value={functions.isEmpty(inputs?.title) ? '' : inputs?.title}
               />
             </FormControl>
           </Box>   
@@ -223,7 +223,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 size={'sm'} 
                 borderColor={borderColor}
                 color={textColor}
-                value={inputs?.title_pubmed}
+                value={functions.isEmpty(inputs?.title_pubmed) ? '' : inputs?.title_pubmed}
               />
             </FormControl>
           </Box>   

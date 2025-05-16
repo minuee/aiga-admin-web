@@ -15,6 +15,7 @@ import Image from 'next/image';
 // Assets
 import { IoCaretUp,IoCaretDown,IoPerson} from "react-icons/io5";
 import Link from 'next/link';
+const defaultImage = require("../../../../../public/img/avatars/no_image01.png");
 
 type RowObj = {
 	hid : string;
@@ -22,6 +23,7 @@ type RowObj = {
 	doctor_id: string;
 	doctorname: string;
 	createAt: Date;
+	updateDt : Date;
 	doctor_count: number;
 	doctor_url: string;
 	profileimgurl: string;
@@ -150,7 +152,13 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 				:
 				<Flex alignItems={'center'} justifyContent={'flex-start'} >
 					<Link href={info.getValue()} target='_blank'>
-						<Image src={info.getValue().trimEnd()} alt='profile' width={50} height={50} />
+						<Image 
+							src={info.getValue().trimEnd()} 
+							alt='profile' 
+							width={50} 
+							height={50} 
+							//onError={(e) => {e.currentTarget.src = defaultImage;}}
+						/>
 					</Link>
 				</Flex>
 			)
@@ -204,6 +212,26 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 					fontSize={{ sm: '10px', lg: '12px' }}
 					color='gray.400'>
 					등록일
+				</Text>
+			),
+			cell: (info:any) => (
+				<Flex align='center'>
+					<Text me='10px' color={textColor} fontSize='sm' fontWeight='700'>
+						{info.getValue() ? format(info.getValue(), 'yyyy-MM-dd') : ""}
+					</Text>
+				</Flex>
+			)
+		}),
+		columnHelper.accessor('updateDt', {
+			id: 'updateDt',
+			size: 50,
+			header: () => (
+				<Text
+					justifyContent='space-between'
+					align='center'
+					fontSize={{ sm: '10px', lg: '12px' }}
+					color='gray.400'>
+					수정일
 				</Text>
 			),
 			cell: (info:any) => (
@@ -278,14 +306,14 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 							?
 							<Tbody >
 								<Tr >
-									<Th colSpan={6} >
+									<Th colSpan={7} >
 										<Box
 											display={'flex'}
 											width={'100%'}
 											height={{base : "100px" , md : '200px'}}
 											justifyContent={'center'}
 											alignItems={'center'}
-											bg="#ffffff"
+											bg={bgColor}
 										>
 											<Text color={textColor} fontSize={{base : "15px", md:'20px'}} fontWeight='normal' lineHeight='100%'>
 												데이터가 없습니다.

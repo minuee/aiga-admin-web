@@ -1,15 +1,8 @@
 
 import * as React from 'react';
-import {
-	createColumnHelper,
-	flexRender,
-	getCoreRowModel,
-	getSortedRowModel,
-	SortingState,
-	useReactTable
-} from '@tanstack/react-table';
+import { createColumnHelper,flexRender,getCoreRowModel,getSortedRowModel,SortingState,useReactTable } from '@tanstack/react-table';
 import { 
-	Flex, Box, Table, Checkbox, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue,Drawer,DrawerBody,DrawerFooter,Tooltip,
+	Flex, Box, Table, Checkbox, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue,Drawer,DrawerBody,DrawerFooter,
 	DrawerHeader,DrawerOverlay,Input,DrawerContent,DrawerCloseButton,Button,Select,Modal,ModalOverlay,ModalContent,ModalHeader,ModalCloseButton,ModalBody
 } from '@chakra-ui/react';
 // Custom components
@@ -24,7 +17,6 @@ const Scrollbars = dynamic(
 );
 
 import ReviewDetail from 'components/modal/ReviewDetail';
-
 import NoticeForm from "views/admin/notice/View";
 import functions from 'utils/functions';
 import mConstants from 'utils/constants';
@@ -36,7 +28,6 @@ export default function ReviewTable(props: { tableData: any }) {
 	const { tableData } = props;
 	const [ sorting, setSorting ] = React.useState<SortingState>([]);
 	const [ isOpenRequestModal, setIsOpenRequestModal ] = React.useState(false);
-	const [ data_9, setData9 ] = React.useState<any>([]);
 	const textColor = useColorModeValue('secondaryGray.900', 'white');
 	const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
 	const bgColor = useColorModeValue(' .300', 'navy.900');

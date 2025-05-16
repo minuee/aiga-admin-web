@@ -1,6 +1,6 @@
 import { 
-	Box, Flex, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue, Skeleton, Button, SkeletonText,
-	 Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Drawer, DrawerOverlay, DrawerContent, DrawerHeader, DrawerBody, DrawerFooter, DrawerCloseButton
+	Box, Flex, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue, Skeleton, Button,Select,Input,
+	Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Drawer, DrawerOverlay, DrawerContent, DrawerHeader, DrawerBody, DrawerCloseButton
 } from '@chakra-ui/react';
 import { createColumnHelper,flexRender,getCoreRowModel,getSortedRowModel,SortingState,useReactTable } from '@tanstack/react-table';
 import { renderThumb,renderTrack,renderView } from 'components/scrollbar/Scrollbar';
@@ -12,7 +12,6 @@ import { format } from 'date-fns';
 import * as React from 'react';
 import functions from 'utils/functions';
 import mConstants from 'utils/constants';
-import { useRouter } from 'next/navigation';
 // Assets
 import { IoCaretUp,IoCaretDown } from "react-icons/io5";
 import dynamic from 'next/dynamic';
@@ -34,10 +33,15 @@ const columnHelper = createColumnHelper<RowObj>();
 export default function ComplexTable(props: { tableData: any,page:number, order : string , orderName: string ,getDataSortChange : (str: string) => void}) {
 	
 	const { tableData,page ,order,orderName} = props;
-	const router = useRouter();
 	const [ isLoading, setLoading ] = React.useState(true);
 	const [ sorting, setSorting ] = React.useState<SortingState>([]);
 	const [ data, setTableData ] = React.useState([]);
+	const [ keyword, setKeyword ] = React.useState('');
+	const [ inputs, setInputs ] = React.useState({
+		orderName : "deptname",
+		orderBy : "ASC",
+		keyword : ""
+	});
 	const [ isOpenDrawer, setIsOpenDrawer ] = React.useState(false);
 	const [ isOpenModal, setIsOpenModal ] = React.useState(false);
 	const [ selectedHospital, setSelectedHospital ] = React.useState<any>(null);
@@ -61,6 +65,11 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 
 	React.useEffect(() => {
 		setData();
+		setInputs({
+			orderName : "deptname",
+			orderBy : "ASC",
+			keyword : ""
+		})
 	}, [setData]);
 
 	const onHandleOpenModal = (hospitalData: any) => {
@@ -74,6 +83,13 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 		setSelectedHospital(hospitalData);
 		setIsOpenDrawer(true);
 		//router.push(`/admin/hospital/doctors?hospitalId=${hospitalData?.hid}`);
+	}
+
+	const onHandleSubmit = () => {
+		setInputs({
+			...inputs,
+			keyword 
+		})
 	}
 
 	
@@ -364,7 +380,39 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 						_focus={{ boxShadow: 'none' }}
 						_hover={{ boxShadow: 'none' }}
 					/>
-					<DrawerHeader sx={{borderBottom:'1px solid #ebebeb'}}>{selectedHospital?.baseName} 의사리스트</DrawerHeader>
+					<DrawerHeader sx={{borderBottom:'1px solid #ebebeb'}}>
+						<Flex justifyContent='space-between' alignItems='center'>
+							<Text>{selectedHospital?.baseName} 의사리스트</Text>
+							<Box display='flex' mr="10" justifyContent={'center'} alignItems={'center'}>
+								<Select value={inputs.orderName} placeholder='정렬기준' onChange={(e:any) =>setInputs({...inputs,orderName : e.target.value})} size={'sm'}>
+									<option value='deptname'>진료과목명순</option>
+									<option value='doctorname'>의사명</option>
+									<option value='updatedate'>수정일자순</option>
+								</Select>
+								<Select value={inputs.orderBy} placeholder='오름기준' onChange={(e:any) =>setInputs({...inputs,orderBy : e.target.value})} size={'sm'}>
+									<option value='ASC'>순차적</option>
+									<option value='DESC'>역순적</option>
+								</Select>
+								<Input 
+									placeholder='키워드를 입력하세요' 
+									value={keyword} 
+									onChange={(e:any) => setKeyword(e.target.value)} 
+									color={textColor}
+									size='sm'
+								/>
+								<Button
+									size='sm'
+									loadingText='Loading'
+									variant="solid"
+									colorScheme='blue'
+									sx={{borderRadius:'5px',width:'140px'}}
+									onClick={()=> onHandleSubmit()}
+								>
+									검색
+								</Button>
+							</Box>
+						</Flex>
+					</DrawerHeader>
 					<DrawerBody w="calc(100% - 20px)"  padding="10px">
 						<Scrollbars
 							autoHide
@@ -375,6 +423,7 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 						>
 							<DoctorList 
 								hospitalData={selectedHospital}
+								inputs={inputs}
 							/>
 						</Scrollbars>
 					</DrawerBody>
