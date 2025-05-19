@@ -1,13 +1,6 @@
 
 import * as React from 'react';
-import {
-	createColumnHelper,
-	flexRender,
-	getCoreRowModel,
-	getSortedRowModel,
-	SortingState,
-	useReactTable
-} from '@tanstack/react-table';
+import { createColumnHelper,flexRender,getCoreRowModel,getSortedRowModel,SortingState,useReactTable } from '@tanstack/react-table';
 import { 
 	Flex, Box, Table, Checkbox, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue,Drawer,DrawerBody,DrawerFooter,Tooltip,
 	DrawerHeader,DrawerOverlay,Input,DrawerContent,DrawerCloseButton,Button,Select,Modal,ModalOverlay,ModalContent,ModalHeader,ModalCloseButton,ModalBody
@@ -24,7 +17,6 @@ const Scrollbars = dynamic(
 );
 
 import InquiryDetail from 'components/modal/InquiryDetail';
-
 import NoticeForm from "views/admin/notice/View";
 import functions from 'utils/functions';
 import mConstants from 'utils/constants';
@@ -141,7 +133,8 @@ export default function InquiryTable(props: { tableData: any }) {
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+					color='gray.400'
+				>
 					등록일자
 				</Text>
 			),
@@ -214,7 +207,8 @@ export default function InquiryTable(props: { tableData: any }) {
 												justifyContent='space-between'
 												align='center'
 												fontSize={{ sm: '10px', lg: '12px' }}
-												color='gray.400'>
+												color='gray.400'
+											>
 												{flexRender(header.column.columnDef.header, header.getContext())}{{
 													asc: '',
 													desc: '',

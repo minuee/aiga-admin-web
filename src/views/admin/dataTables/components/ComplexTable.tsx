@@ -1,20 +1,11 @@
 import { Box, Flex, Icon, Progress, Table, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue } from '@chakra-ui/react';
-import {
-	createColumnHelper,
-	flexRender,
-	getCoreRowModel,
-	getSortedRowModel,
-	SortingState,
-	useReactTable
-} from '@tanstack/react-table';
+import { createColumnHelper,flexRender,getCoreRowModel,getSortedRowModel,SortingState,useReactTable } from '@tanstack/react-table';
 // Custom components
 import Card from 'components/card/Card';
 import Menu from 'components/menu/MainMenu';
 import * as React from 'react';
 // Assets
 import { MdCancel, MdCheckCircle, MdOutlineError } from 'react-icons/md';
-
-
 
 type RowObj = {
 	name: string;
@@ -27,11 +18,13 @@ const columnHelper = createColumnHelper<RowObj>();
 
 // const columns = columnsDataCheck;
 export default function ComplexTable(props: { tableData: any }) {
+
 	const { tableData } = props;
 	const [ sorting, setSorting ] = React.useState<SortingState>([]);
 	const textColor = useColorModeValue('secondaryGray.900', 'white');
 	const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
 	let defaultData = tableData;
+	
 	const columns = [
 		columnHelper.accessor('name', {
 			id: 'name',
@@ -40,7 +33,8 @@ export default function ComplexTable(props: { tableData: any }) {
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+					color='gray.400'
+				>
 					NAME
 				</Text>
 			),
@@ -59,7 +53,8 @@ export default function ComplexTable(props: { tableData: any }) {
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+					color='gray.400'
+				>
 					STATUS
 				</Text>
 			),
@@ -101,7 +96,8 @@ export default function ComplexTable(props: { tableData: any }) {
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+					color='gray.400'
+				>
 					DATE
 				</Text>
 			),
@@ -118,7 +114,8 @@ export default function ComplexTable(props: { tableData: any }) {
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+					color='gray.400'
+				>
 					PROGRESS
 				</Text>
 			),
@@ -162,12 +159,14 @@ export default function ComplexTable(props: { tableData: any }) {
 											pe='10px'
 											borderColor={borderColor}
 											cursor='pointer'
-											onClick={header.column.getToggleSortingHandler()}>
+											onClick={header.column.getToggleSortingHandler()}
+										>
 											<Flex
 												justifyContent='space-between'
 												align='center'
 												fontSize={{ sm: '10px', lg: '12px' }}
-												color='gray.400'>
+												color='gray.400'
+											>
 												{flexRender(header.column.columnDef.header, header.getContext())}{{
 													asc: '',
 													desc: '',
@@ -189,7 +188,8 @@ export default function ComplexTable(props: { tableData: any }) {
 												key={cell.id}
 												fontSize={{ sm: '14px' }}
 												minW={{ sm: '150px', md: '200px', lg: 'auto' }}
-												borderColor='transparent'>
+												borderColor='transparent'
+											>
 												{flexRender(cell.column.columnDef.cell, cell.getContext())}
 											</Td>
 										);

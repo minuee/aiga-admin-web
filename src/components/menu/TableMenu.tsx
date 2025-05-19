@@ -1,36 +1,13 @@
 import React from 'react';
 
 // Chakra imports
-import {
-	Icon,
-	Flex,
-	Text,
-	Menu,
-	MenuButton,
-	MenuItem,
-	MenuList,
-	useDisclosure,
-	useColorModeValue
-} from '@chakra-ui/react';
-// Assets
-import {
-	MdOutlineMoreHoriz,
-	MdOutlinePerson,
-	MdOutlineCardTravel,
-	MdEdit,
-	MdOutlineDeleteForever
-} from 'react-icons/md';
-
-
+import { Icon,Flex,Text,Menu,MenuButton,MenuItem,MenuList,useDisclosure,useColorModeValue } from '@chakra-ui/react';
+import { MdOutlineMoreHoriz,MdEdit,MdOutlineDeleteForever } from 'react-icons/md';
 
 export default function TableMenu({onHandleToggle,...rest}: {onHandleToggle: (bool: boolean) => any;[x: string]: any;}) {
-	
 
 	const textColor = useColorModeValue('secondaryGray.500', 'white');
-	const textHover = useColorModeValue(
-		{ color: 'secondaryGray.900', bg: 'unset' },
-		{ color: 'secondaryGray.500', bg: 'unset' }
-	);
+	const textHover = useColorModeValue({ color: 'secondaryGray.900', bg: 'unset' },{ color: 'secondaryGray.500', bg: 'unset'} );
 	const iconColor = useColorModeValue('brand.500', 'white');
 	const bgList = useColorModeValue('white', 'whiteAlpha.100');
 	const bgShadow = useColorModeValue('14px 17px 40px 4px rgba(112, 144, 176, 0.08)', 'unset');
@@ -40,7 +17,6 @@ export default function TableMenu({onHandleToggle,...rest}: {onHandleToggle: (bo
 
 	// Ellipsis modals
 	const { isOpen: isOpen1, onOpen: onOpen1, onClose: onClose1 } = useDisclosure();
-	
 
 	return (
 		<Menu isOpen={isOpen1} onClose={onClose1}>
@@ -111,7 +87,6 @@ export default function TableMenu({onHandleToggle,...rest}: {onHandleToggle: (bo
 						</Text>
 					</Flex>
 				</MenuItem>
-				
 			</MenuList>
 		</Menu>
 	);

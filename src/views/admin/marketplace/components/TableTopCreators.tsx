@@ -1,30 +1,8 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Flex,
-  Progress,
-  Table,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-  useColorModeValue,
-} from '@chakra-ui/react';
-import {
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
-  SortingState,
-  useReactTable,
-} from '@tanstack/react-table';
+import { Avatar,Box,Button,Flex,Progress,Table,Tbody,Td,Text,Th,Thead,Tr,useColorModeValue } from '@chakra-ui/react';
+import { createColumnHelper,flexRender,getCoreRowModel,getSortedRowModel,SortingState,useReactTable } from '@tanstack/react-table';
 // Custom components
 import * as React from 'react';
 // Assets
-
 type RowObj = {
   name: string[];
   artworks: number;

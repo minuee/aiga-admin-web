@@ -139,7 +139,8 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+					color='gray.400'
+				>
 					기본병원명
 				</Text>
 			),
@@ -158,7 +159,8 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+					color='gray.400'
+				>
 					약칭명
 				</Text>
 			),
@@ -175,7 +177,8 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+					color='gray.400'
+				>
 					등록일
 				</Text>
 			),
@@ -202,7 +205,8 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 						justifyContent='space-between'
 						align='center'
 						fontSize={{ sm: '10px', lg: '12px' }}
-						color={orderTextColor}>
+						color={orderTextColor}
+					>
 						의사수
 					</Text>
 					{

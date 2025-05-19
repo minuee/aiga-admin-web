@@ -149,8 +149,7 @@ function HospitalDetail(props: HospitalDetailProps) {
               />
             </FormControl>
           </Box> 
-        </Flex> 
-        
+        </Flex>
         <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'}>
           <Box mt={5} width={'100%'}>
             <FormControl variant="floatingLabel">

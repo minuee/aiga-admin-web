@@ -27,11 +27,11 @@ export default function ReactEditor(props: ReactEditorProps) {
     useEffect(() => {
         // Dynamically import Quill and register the module
         if (typeof window !== 'undefined') {
-          import('react-quill-new').then(({ Quill }) => {
-            Quill.register('modules/imageResize', ImageResize)
-          })
+            import('react-quill-new').then(({ Quill }) => {
+                Quill.register('modules/resize', ImageResize)
+            })
         }
-      }, [])
+    }, [])
 
     const formats:string[] = [
         "header", "size", "font",
@@ -41,7 +41,6 @@ export default function ReactEditor(props: ReactEditorProps) {
         "script", "code-block", "clean"
     ];
 
-    
     const modules:{} = useMemo(() => ({
         toolbar: {
             container: "#toolBar",
@@ -51,7 +50,10 @@ export default function ReactEditor(props: ReactEditorProps) {
             delay: 500,
             maxStack: 100,
             userOnly: true,
-          },
+        },
+        ImageResize: {
+            modules: ['Resize', 'DisplaySize']
+        }
     }), []);
 
     return (
@@ -70,4 +72,3 @@ export default function ReactEditor(props: ReactEditorProps) {
         </div>
     )
 }
-

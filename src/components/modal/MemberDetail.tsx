@@ -5,7 +5,6 @@ import React, { PropsWithChildren } from 'react';
 import { Box,Flex,Button,Text,SkeletonCircle,SkeletonText,Divider,Icon,Textarea,Input, FormControl, FormLabel, RadioGroup, Radio, Stack, useColorModeValue} from '@chakra-ui/react';
 import functions from 'utils/functions';
 
-
 export interface MemberDetailProps extends PropsWithChildren {
   isOpen : boolean;
   setClose : () => void;
@@ -116,12 +115,10 @@ function MemberDetail(props: MemberDetailProps) {
             </FormControl>
           </Box>   
         </Flex>
-        
         <Box height={'50px'} />
       </>
     )
   }
 }
-
 
 export default MemberDetail;

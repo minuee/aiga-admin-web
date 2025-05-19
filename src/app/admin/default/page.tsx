@@ -53,15 +53,15 @@ export default function Default() {
         
         <MiniStatistics
           startContent={
-          <IconBox
-            w="56px"
-            h="56px"
-            bg={boxBg}
-            icon={
-              <Icon w="32px" h="32px" as={MdBarChart} color={brandColor} />
-            }
-          />
-        }
+            <IconBox
+              w="56px"
+              h="56px"
+              bg={boxBg}
+              icon={
+                <Icon w="32px" h="32px" as={MdBarChart} color={brandColor} />
+              }
+            />
+          } 
           name="일간 사용 토큰수"
           value="1,000"
         />

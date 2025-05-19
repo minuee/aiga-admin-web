@@ -19,13 +19,7 @@ export default function Projects (props: { [x: string]: any }) {
   )
   return (
     <Card mb={{ base: '0px', '2xl': '20px' }} {...rest}>
-      <Text
-        color={textColorPrimary}
-        fontWeight='bold'
-        fontSize='2xl'
-        mt='10px'
-        mb='4px'
-      >
+      <Text color={textColorPrimary} fontWeight='bold' fontSize='2xl' mt='10px' mb='4px'>
         All projects
       </Text>
       <Text color={textColorSecondary} fontSize='md' me='26px' mb='40px'>

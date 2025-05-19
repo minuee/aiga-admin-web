@@ -2,14 +2,11 @@
 import React, { PropsWithChildren } from 'react';
 
 // chakra imports
-import { 
-  Box,Flex,Button,Text,SkeletonCircle,SkeletonText,Divider,Icon,Textarea,Input, FormControl, FormLabel, RadioGroup, Radio, Stack, useColorModeValue,
-  Tabs, TabList, TabPanels, Tab, TabPanel
-} from '@chakra-ui/react';
+import { Box,Flex,Button,SkeletonCircle,SkeletonText,Divider,Icon,Textarea,Input, FormControl, FormLabel, RadioGroup, Radio, Stack, useColorModeValue,Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import Image from 'next/image';
 // Assets
 import Link from 'next/link';
-import { IoLink,IoCaretDown,IoPerson} from "react-icons/io5";
+import { IoLink } from "react-icons/io5";
 import functions from 'utils/functions';
 import * as DoctorService from "services/doctor/index";
 import ListItem from 'components/card/ListItem';
@@ -23,6 +20,7 @@ export interface DoctorDetailProps extends PropsWithChildren {
 }
 
 function DoctorDetail(props: DoctorDetailProps) {
+
   const { isOpen, setClose, DoctorData } = props;
   const [isLoading, setIsLoading] = React.useState(true);  
   const [inputs, setInputs] = React.useState<any>({
@@ -56,16 +54,15 @@ function DoctorDetail(props: DoctorDetailProps) {
   const getData = React.useCallback(
     async() => {
       if ( !functions.isEmpty(props.DoctorData?.rid) ) {
-      try{
-        const res:any = await DoctorService.getDoctorPaperList({
-          doctorId: props.DoctorData?.rid
-        });
-        setDoctorPapers(res?.data);
-      }catch(e){
-        setDoctorPapers([]);
-        
+        try{
+          const res:any = await DoctorService.getDoctorPaperList({
+            doctorId: props.DoctorData?.rid
+          });
+          setDoctorPapers(res?.data);
+        }catch(e){
+          setDoctorPapers([]);
+        }
       }
-    }
     },[props.DoctorData?.rid]
   );
   
@@ -115,21 +112,10 @@ function DoctorDetail(props: DoctorDetailProps) {
         <Flex flexDirection={'row'} minHeight={'50px'} padding={'0 10px'} >
           <Flex flex={1} alignItems={'center'} justifyContent={'center'}>
             {
-            functions.isEmpty(inputs?.profileimgurl) ?
-            <Image
-                width="200"
-                height="200"
-                src={defaultImage}
-                alt={'doctor1'}
-            />
-            :
-            <Image 
-              src={inputs?.profileimgurl.trimEnd()} 
-              alt='profile' 
-              width={150} 
-              height={150} 
-              //onError={(e) => {e.currentTarget.src = defaultImage;}}
-            />
+              functions.isEmpty(inputs?.profileimgurl) ?
+              <Image width="200" height="200" src={defaultImage} alt={'doctor1'} />
+              :
+              <Image src={inputs?.profileimgurl.trimEnd()} alt='profile' width={150} height={150} />
             }
           </Flex>
           <Flex flex={2} flexDirection={'column'} minHeight={'50px'} padding={'0 10px'} >
@@ -201,7 +187,6 @@ function DoctorDetail(props: DoctorDetailProps) {
                     </Link>
                   )
                 }
-                
               </FormLabel>
               <Input 
                 type="text" 
@@ -396,6 +381,5 @@ function DoctorDetail(props: DoctorDetailProps) {
     )
   }
 }
-
 
 export default DoctorDetail;

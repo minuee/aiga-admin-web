@@ -17,31 +17,31 @@ export default function DataTables() {
   const [ page, setPage ] = React.useState(1);
 
   const getData = React.useCallback(
-      async() => {
-        try{
-          const res:any = await NoticeService.getHospitalList({
-            page,
-            take: pageSize,
-            order,
-            orderName
-          });
-          
-          if ( res?.data?.meta?.totalCount > 0 ) {
-            setData(res?.data?.data);
-            setTotalCount(res?.data.meta?.totalCount)
-            setPageIndex(parseInt(res?.data?.meta?.currentPage)+1)
-          }else{
-            setData([]);
-          }
-        }catch(e){
+    async() => {
+      try{
+        const res:any = await NoticeService.getHospitalList({
+          page,
+          take: pageSize,
+          order,
+          orderName
+        });
+        
+        if ( res?.data?.meta?.totalCount > 0 ) {
+          setData(res?.data?.data);
+          setTotalCount(res?.data.meta?.totalCount)
+          setPageIndex(parseInt(res?.data?.meta?.currentPage)+1)
+        }else{
           setData([]);
         }
-      },[page,orderName,order]
-    );
+      }catch(e){
+        setData([]);
+      }
+    },[page,orderName,order]
+  );
     
-    React.useEffect(() => {
-      getData()
-    }, [getData]);
+  React.useEffect(() => {
+    getData()
+  }, [getData]);
 
   const getDataSortChange = (str:string) => {
     setPage(1);

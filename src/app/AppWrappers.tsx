@@ -30,10 +30,11 @@ import theme from '../theme/theme';
 const _NoSSR = ({ children }: any) => (
     <React.Fragment>{children}</React.Fragment>
 );
+
 export default function AppWrappers({ children }: { children: ReactNode }) {
     return (
       // <NoSSR>
       <ChakraProvider theme={theme}>{children}</ChakraProvider>
       // </NoSSR>
     );
-  }
+}

@@ -62,7 +62,6 @@ function InquiryDetail(props: InquiryDetailProps) {
                 type="text" 
                 placeholder='연락처' 
                 readOnly
-                
               />
             </FormControl>
           </Box>

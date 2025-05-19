@@ -20,7 +20,8 @@ export default function Default(props: {
 				my='auto'
 				h='100%'
 				align={{ base: 'center', xl: 'center' }}
-				justify={{ base: 'center', xl: 'center' }}>
+				justify={{ base: 'center', xl: 'center' }}
+			>
 				{startContent}
 
 				<Stat my='auto' ms={startContent ? '18px' : '0px'}>
@@ -29,14 +30,16 @@ export default function Default(props: {
 						color={textColorSecondary}
 						fontSize={{
 							base: 'sm'
-						}}>
+						}}
+					>
 						{name}
 					</StatLabel>
 					<StatNumber
 						color={textColor}
 						fontSize={{
 							base: '2xl'
-						}}>
+						}}
+					>
 						{value}
 					</StatNumber>
 					{growth ? (

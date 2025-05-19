@@ -72,7 +72,6 @@ export default function DoctorList(props: { hospitalData: any,inputs : any }) {
       orderName : str,
       orderBy : inputs.orderBy == 'ASC' ? 'DESC' : 'ASC'
     })
-
   }
 
   return (
@@ -99,7 +98,6 @@ export default function DoctorList(props: { hospitalData: any,inputs : any }) {
           page={inputs.page}
           getDataSortChange={getDataSortChange}
         />
-        
         </Scrollbars>
         <Box 
           display={inputs.totalCount > inputs.pageSize ? 'block' : 'none'}

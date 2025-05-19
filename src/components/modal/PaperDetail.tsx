@@ -2,14 +2,10 @@
 import React, { PropsWithChildren } from 'react';
 
 // chakra imports
-import { 
-  Box,Flex,Button,Text,SkeletonCircle,SkeletonText,Divider,Icon,Textarea,Input, FormControl, FormLabel, RadioGroup, Radio, Stack, useColorModeValue,
-  Tabs, TabList, TabPanels, Tab, TabPanel
-} from '@chakra-ui/react';
-import Image from 'next/image';
+import { Box,Flex,Button,Text,SkeletonCircle,SkeletonText,Icon,Textarea,Input, FormControl, FormLabel, RadioGroup, Radio, Stack, useColorModeValue } from '@chakra-ui/react';
 // Assets
 import Link from 'next/link';
-import { IoLink,IoCaretDown,IoPerson} from "react-icons/io5";
+import { IoLink } from "react-icons/io5";
 import functions from 'utils/functions';
 
 export interface DoctorDetailProps extends PropsWithChildren {
@@ -143,7 +139,6 @@ function DoctorDetail(props: DoctorDetailProps) {
             </FormControl>
           </Box> 
         </Flex> 
-
         <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'} mt={5}>
           <Box flex={1}>
             <FormControl variant="floatingLabel">
@@ -172,7 +167,6 @@ function DoctorDetail(props: DoctorDetailProps) {
             </FormControl>
           </Box> 
         </Flex> 
-
         <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'}>
           <Box mt={5} width={'100%'}>
             <FormControl variant="floatingLabel">
@@ -191,7 +185,6 @@ function DoctorDetail(props: DoctorDetailProps) {
             </FormControl>
           </Box>   
         </Flex>
-        
         <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'}>
           <Box mt={5} width={'100%'}>
             <FormControl variant="floatingLabel">
@@ -245,8 +238,6 @@ function DoctorDetail(props: DoctorDetailProps) {
             </FormControl>
           </Box>
         </Flex>
-   
-        
         <Box display={'flex'} flexDirection={'row'} justifyContent={'center'}  width={'98%'} mt={5}>
             <Button 
               colorScheme='blue' 

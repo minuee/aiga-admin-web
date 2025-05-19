@@ -2,9 +2,8 @@
 import React, { PropsWithChildren } from 'react';
 
 // chakra imports
-import { Box,Flex,Button,Text,SkeletonCircle,SkeletonText,Divider,Icon,Textarea,Input, FormControl, FormLabel, RadioGroup, Radio, Stack, useColorModeValue} from '@chakra-ui/react';
+import { Box,Flex,Button,Text,SkeletonCircle,SkeletonText,Divider,Textarea,Input, FormControl, FormLabel, RadioGroup, Radio, Stack, useColorModeValue} from '@chakra-ui/react';
 import Slider from 'components/etc/Slider';
-import { MdDiversity1 } from 'react-icons/md';
 export interface ReviewDetailProps extends PropsWithChildren {
   isOpen : boolean;
   setClose : () => void;
@@ -132,7 +131,6 @@ function ReviewDetail(props: ReviewDetailProps) {
                     />
                   </Box>
                 </Box>
-
                 <Box display={'flex'} flexDirection={'row'} justifyContent={'center'}  width={'98%'} mb={10}>
                   <Box flex={1} display={'flex'} justifyContent={'flex-end'} alignItems={'center'} pr={3}>
                     <Text fontSize={'14px'} fontWeight={'bold'}>쉽고 명쾌한 설명</Text>
@@ -145,7 +143,6 @@ function ReviewDetail(props: ReviewDetailProps) {
                     />
                   </Box>
                 </Box>
-
                 <Box display={'flex'} flexDirection={'row'} justifyContent={'center'}  width={'98%'} mb={10}>
                   <Box flex={1} display={'flex'} justifyContent={'flex-end'} alignItems={'center'} pr={3}>
                     <Text fontSize={'14px'} fontWeight={'bold'}>추천 여부</Text>
@@ -158,7 +155,7 @@ function ReviewDetail(props: ReviewDetailProps) {
                     />
                   </Box>
                 </Box>
-                </Flex>
+              </Flex>
             </FormControl>
           </Box>   
         </Flex>

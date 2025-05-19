@@ -1,14 +1,6 @@
 import { Flex, Box, Table, Checkbox, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue } from '@chakra-ui/react';
 import * as React from 'react';
-
-import {
-	createColumnHelper,
-	flexRender,
-	getCoreRowModel,
-	getSortedRowModel,
-	SortingState,
-	useReactTable
-} from '@tanstack/react-table';
+import { createColumnHelper,flexRender,getCoreRowModel,getSortedRowModel,SortingState,useReactTable } from '@tanstack/react-table';
 
 // Custom components
 import Card from 'components/card/Card';
@@ -137,12 +129,14 @@ export default function CheckTable(props: { tableData: any }) {
 											pe='10px' 
 											borderColor={borderColor}
 											cursor='pointer'
-											onClick={header.column.getToggleSortingHandler()}>
+											onClick={header.column.getToggleSortingHandler()}
+										>
 											<Flex
 												justifyContent='space-between'
 												align='center'
 												fontSize={{ sm: '10px', lg: '12px' }}
-												color='gray.400'>
+												color='gray.400'
+											>
 												{flexRender(header.column.columnDef.header, header.getContext())}{{
 													asc: '',
 													desc: '',
@@ -164,7 +158,8 @@ export default function CheckTable(props: { tableData: any }) {
 												key={cell.id}
 												fontSize={{ sm: '14px' }}
 												minW={{ sm: '150px', md: '200px', lg: 'auto' }}
-												borderColor='transparent'>
+												borderColor='transparent'
+											>
 												{flexRender(cell.column.columnDef.cell, cell.getContext())}
 											</Td>
 										);

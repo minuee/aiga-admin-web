@@ -1,17 +1,5 @@
 // Chakra imports
-import {
-  AvatarGroup,
-  Avatar,
-  Box,
-  Button,
-  Flex,
-  Icon,
-  Image,
-  Link,
-  Text,
-  useColorModeValue,
-  AspectRatio,
-} from '@chakra-ui/react';
+import { AvatarGroup,Avatar,Box,Button,Flex,Icon,Image,Link,Text,useColorModeValue,AspectRatio } from '@chakra-ui/react';
 // Custom components
 import Card from 'components/card/Card';
 // Assets
@@ -30,6 +18,7 @@ export default function NFT(props: {
   const [like, setLike] = useState(false);
   const textColor = useColorModeValue('navy.700', 'white');
   const textColorBid = useColorModeValue('brand.500', 'white');
+  
   return (
     <Card p="20px">
       <Flex direction={{ base: 'column' }} justify="center">

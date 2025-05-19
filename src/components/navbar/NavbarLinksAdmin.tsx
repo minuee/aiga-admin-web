@@ -31,10 +31,7 @@ export default function HeaderLinks(props: {
   const borderColor = useColorModeValue('#E6ECFA', 'rgba(135, 140, 189, 0.3)');
   const ethBg = useColorModeValue('secondaryGray.300', 'navy.900');
   const ethBox = useColorModeValue('white', 'navy.800');
-  const shadow = useColorModeValue(
-    '14px 17px 40px 4px rgba(112, 144, 176, 0.18)',
-    '14px 17px 40px 4px rgba(112, 144, 176, 0.06)',
-  );
+  const shadow = useColorModeValue( '14px 17px 40px 4px rgba(112, 144, 176, 0.18)','14px 17px 40px 4px rgba(112, 144, 176, 0.06)');
   const borderButton = useColorModeValue('secondaryGray.500', 'whiteAlpha.200');
   const setLoginUserInfo = UserStateStore((state) => state.setUserState);
   const { nickName, ...userInfo } = UserStateStore(state => state);
@@ -59,11 +56,8 @@ export default function HeaderLinks(props: {
       borderRadius="30px"
       boxShadow={shadow}
     >
-
       <SidebarResponsive routes={routes} />
       <SidebarPCResponsive routes={routes} />
-    
-
       <Button
         variant="no-hover"
         bg="transparent"

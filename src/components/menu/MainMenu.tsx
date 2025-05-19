@@ -1,36 +1,15 @@
 import React from 'react';
 
 // Chakra imports
-import {
-	Icon,
-	Flex,
-	Text,
-	Menu,
-	MenuButton,
-	MenuItem,
-	MenuList,
-	useDisclosure,
-	useColorModeValue
-} from '@chakra-ui/react';
+import { Icon,Flex,Text,Menu,MenuButton,MenuItem,MenuList,useDisclosure,useColorModeValue } from '@chakra-ui/react';
 // Assets
-import {
-	MdOutlineMoreHoriz,
-	MdOutlinePerson,
-	MdOutlineCardTravel,
-	MdOutlineLightbulb,
-	MdOutlineSettings
-} from 'react-icons/md';
-
-
+import { MdOutlineMoreHoriz,MdOutlinePerson,MdOutlineCardTravel,MdOutlineLightbulb,MdOutlineSettings } from 'react-icons/md';
 
 export default function Banner(props: { [x: string]: any }) {
 	const { ...rest } = props;
 
 	const textColor = useColorModeValue('secondaryGray.500', 'white');
-	const textHover = useColorModeValue(
-		{ color: 'secondaryGray.900', bg: 'unset' },
-		{ color: 'secondaryGray.500', bg: 'unset' }
-	);
+	const textHover = useColorModeValue({ color: 'secondaryGray.900', bg: 'unset' },{ color: 'secondaryGray.500', bg: 'unset'} );
 	const iconColor = useColorModeValue('brand.500', 'white');
 	const bgList = useColorModeValue('white', 'whiteAlpha.100');
 	const bgShadow = useColorModeValue('14px 17px 40px 4px rgba(112, 144, 176, 0.08)', 'unset');
@@ -41,7 +20,6 @@ export default function Banner(props: { [x: string]: any }) {
 	// Ellipsis modals
 	const { isOpen: isOpen1, onOpen: onOpen1, onClose: onClose1 } = useDisclosure();
 	
-
 	return (
 		<Menu isOpen={isOpen1} onClose={onClose1}>
 			<MenuButton

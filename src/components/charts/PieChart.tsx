@@ -9,7 +9,6 @@ const PieChart = (props: any) => {
   const { chartData, chartOptions } = props;
 
   return (
-
     <Chart
       options={chartOptions}
       type="pie"

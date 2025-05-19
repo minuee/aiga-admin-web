@@ -21,7 +21,8 @@ function Dropzone(props: { content: JSX.Element | string; [x: string]: any }) {
 			minH='100%'
 			cursor='pointer'
 			{...getRootProps({ className: 'dropzone' })}
-			{...rest}>
+			{...rest}
+		>
 			<input {...getInputProps()} />
 			<Button variant='no-effects'>{content}</Button>
 		</Flex>

@@ -1,39 +1,16 @@
 import * as React from 'react';
-import {
-    Box,
-    Button,
-    Switch,
-    Flex,
-    Icon,
-    Input,
-    FormControl,
-    FormLabel,
-    FormErrorMessage,
-    FormHelperText,
-    Text,
-    InputGroup,
-    InputLeftElement,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
-    ModalBody,
-    ModalCloseButton,
-    useColorMode
-  } from '@chakra-ui/react'
+import { Box,Button,Switch,Flex,Icon,Input,FormControl,FormLabel,FormErrorMessage,Text,InputGroup,InputLeftElement,Modal,ModalOverlay,ModalContent,ModalHeader,ModalFooter,ModalBody,ModalCloseButton,useColorMode } from '@chakra-ui/react'
 // The below import defines which components come from formik
 import { Field, Form, Formik } from 'formik';
 import { MdChevronLeft,MdChevronRight, MdOutlineEventAvailable } from 'react-icons/md';
 import Calendar from 'react-calendar';
-
 import { format } from 'date-fns';
-
 import Editor from "components/editor";
 
 interface ViewFormProps {
     data: any;
 }
+
 export default function ViewForm(props: ViewFormProps) {
     const { colorMode, toggleColorMode } = useColorMode();
     const [defaultDate, setDefaultDate] = React.useState(format(new Date(), 'yyyy-MM-dd') );
@@ -149,4 +126,4 @@ export default function ViewForm(props: ViewFormProps) {
             }
         </Box>
     )
-  }
+}

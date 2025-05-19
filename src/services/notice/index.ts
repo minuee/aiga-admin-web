@@ -15,5 +15,4 @@ export function getHospitalList(props: PaginationProps): ApiResponse<any> {
     }else{
         return null;
     }
-    
 }

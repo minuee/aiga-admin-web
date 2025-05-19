@@ -26,14 +26,8 @@ export default function SignIn() {
   const brandStars = useColorModeValue('brand.500', 'brand.400');
   const googleBg = useColorModeValue('secondaryGray.300', 'whiteAlpha.200');
   const googleText = useColorModeValue('navy.700', 'white');
-  const googleHover = useColorModeValue(
-    { bg: 'gray.200' },
-    { bg: 'whiteAlpha.300' },
-  );
-  const googleActive = useColorModeValue(
-    { bg: 'secondaryGray.300' },
-    { bg: 'whiteAlpha.200' },
-  );
+  const googleHover = useColorModeValue({ bg: 'gray.200' },{ bg: 'whiteAlpha.300' });
+  const googleActive = useColorModeValue({ bg: 'secondaryGray.300' },{ bg: 'whiteAlpha.200' });
   const toast = useToast();
 
   const [show, setShow] = React.useState(false);
@@ -235,9 +229,7 @@ export default function SignIn() {
               Sign In
             </Button>
           </FormControl>
-          
         </Flex>
-        
       </Flex>
     </DefaultAuthLayout>
   );

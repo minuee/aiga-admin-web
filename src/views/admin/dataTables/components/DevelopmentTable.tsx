@@ -1,7 +1,4 @@
-import { 
-	Box, Flex, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue, Skeleton, SkeletonCircle, SkeletonText,
-	 Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody 
-} from '@chakra-ui/react';
+import { Box, Flex, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue, Skeleton,Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody } from '@chakra-ui/react';
 import { createColumnHelper,flexRender,getCoreRowModel,getSortedRowModel,SortingState,useReactTable } from '@tanstack/react-table';
 // Custom components
 import Card from 'components/card/Card';
@@ -104,7 +101,8 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+					color='gray.400'
+				>
 					기본병원명
 				</Text>
 			),
@@ -123,7 +121,8 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+					color='gray.400'
+				>
 					약칭명
 				</Text>
 			),
@@ -140,7 +139,8 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+					color='gray.400'
+				>
 					등록일
 				</Text>
 			),
@@ -167,7 +167,8 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 						justifyContent='space-between'
 						align='center'
 						fontSize={{ sm: '10px', lg: '12px' }}
-						color={orderTextColor}>
+						color={orderTextColor}
+					>
 						의사수
 					</Text>
 					{
@@ -241,7 +242,8 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 													justifyContent='space-between'
 													align='center'
 													fontSize={{ sm: '10px', lg: '12px' }}
-													color='gray.400'>
+													color='gray.400'
+												>
 													{flexRender(header.column.columnDef.header, header.getContext())}{{
 														asc: '',
 														desc: '',
@@ -285,7 +287,8 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 														key={cell.id}
 														fontSize={{ sm: '14px' }}
 														minW={{ sm: '150px', md: '200px', lg: 'auto' }}
-														borderColor='transparent'>
+														borderColor='transparent'
+													>
 														{flexRender(cell.column.columnDef.cell, cell.getContext())}
 													</Td>
 												);

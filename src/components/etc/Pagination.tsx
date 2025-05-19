@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { IoArrowBack, IoArrowForward,IoCaretBackOutline,IoCaretForwardOutline } from "react-icons/io5";
+import { IoArrowForward,IoCaretForwardOutline } from "react-icons/io5";
 
 interface PaginationProps {
   total: number;

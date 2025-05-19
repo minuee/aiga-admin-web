@@ -19,7 +19,8 @@ export default function Conversion(props: { [x: string]: any }) {
 				justifyContent='space-between'
 				alignItems='center'
 				w='100%'
-				mb='8px'>
+				mb='8px'
+			>
 				<Text color={textColor} fontSize='md' fontWeight='600' mt='4px'>
 					Your Pie Chart
 				</Text>
@@ -39,7 +40,8 @@ export default function Conversion(props: { [x: string]: any }) {
 				p='15px'
 				px='20px'
 				mt='15px'
-				mx='auto'>
+				mx='auto'
+			>
 				<Flex direction='column' py='5px'>
 					<Flex align='center'>
 						<Box h='8px' w='8px' bg='brand.500' borderRadius='50%' me='4px' />

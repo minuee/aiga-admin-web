@@ -2,25 +2,10 @@
 import React, { PropsWithChildren } from 'react';
 
 // chakra imports
-import {
-  Box,
-  Flex,
-  Drawer,
-  DrawerBody,
-  Icon,
-  useColorModeValue,
-  DrawerOverlay,
-  useDisclosure,
-  DrawerContent,
-  DrawerCloseButton,
-} from '@chakra-ui/react';
+import { Box,Flex,Drawer,DrawerBody,Icon,useColorModeValue,DrawerOverlay,useDisclosure,DrawerContent,DrawerCloseButton } from '@chakra-ui/react';
 import Content from 'components/sidebar/components/Content';
 import SmallContent from 'components/sidebar/components/SmallContent';
-import {
-  renderThumb,
-  renderTrack,
-  renderView,
-} from 'components/scrollbar/Scrollbar';
+import { renderThumb,renderTrack,renderView } from 'components/scrollbar/Scrollbar';
 import dynamic from 'next/dynamic';
 
 //Left Sidebar 전역상태
@@ -54,10 +39,7 @@ function Sidebar(props: SidebarProps) {
   const isSmall = LnbSmallStateStore(state => state.isSmall);
 
   let variantChange = '0.2s linear';
-  let shadow = useColorModeValue(
-    '14px 17px 40px 4px rgba(112, 144, 176, 0.08)',
-    'unset',
-  );
+  let shadow = useColorModeValue('14px 17px 40px 4px rgba(112, 144, 176, 0.08)','unset');
   // Chakra Color Mode
   let sidebarBg = useColorModeValue('white', 'navy.800');
   let sidebarMargins = '0px';
@@ -104,7 +86,6 @@ function Sidebar(props: SidebarProps) {
     </Box>
   );
 }
-
 // FUNCTIONS
 
 export function SidebarResponsive(props: SidebarResponsiveProps) {
@@ -189,16 +170,8 @@ export function SidebarResponsive(props: SidebarResponsiveProps) {
           </Drawer>
         )
       }
-      
     </Flex>
   );
 }
-// PROPS
-
-type WindowSize = {
-  width: number
-  height: number
-}
-
 
 export default Sidebar;

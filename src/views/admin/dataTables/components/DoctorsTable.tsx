@@ -1,7 +1,4 @@
-import { 
-	Box, Flex, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue, Skeleton, Icon,
-	Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody
-} from '@chakra-ui/react';
+import { Box, Flex, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue, Skeleton, Icon,Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody } from '@chakra-ui/react';
 import { createColumnHelper,flexRender,getCoreRowModel,getSortedRowModel,SortingState,useReactTable } from '@tanstack/react-table';
 // Custom components
 import DoctorDetail from 'components/modal/DoctorDetail';
@@ -40,9 +37,7 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 	const [ isLoading, setLoading ] = React.useState(true);
 	const [ sorting, setSorting ] = React.useState<SortingState>([]);
 	const [ data, setTableData ] = React.useState([]);
-	const [ isOpenDrawer, setIsOpenDrawer ] = React.useState(false);
 	const [ isOpenModal, setIsOpenModal ] = React.useState(false);
-	const [ selectedHospital, setSelectedHospital ] = React.useState<any>(null);
 	const [ DoctorData, setDoctorData ] = React.useState<any>(null);
 	const textColor = useColorModeValue('secondaryGray.900', 'white');
 	const orderTextColor = useColorModeValue('black', 'white');
@@ -71,7 +66,6 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 		}
 	}
 
-	
 	const columns = [
 		columnHelper.accessor('deptname', {
 			id: 'deptname',
@@ -120,7 +114,8 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+					color='gray.400'
+				>
 					의사명
 				</Text>
 			),
@@ -140,7 +135,8 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+					color='gray.400'
+				>
 					프로필사진
 				</Text>
 			),
@@ -171,7 +167,8 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+					color='gray.400'
+				>
 					의사ID
 				</Text>
 			),
@@ -190,7 +187,8 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+					color='gray.400'
+				>
 					진료분야
 				</Text>
 			),
@@ -210,7 +208,8 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+					color='gray.400'
+				>
 					등록일
 				</Text>
 			),
@@ -230,7 +229,8 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+					color='gray.400'
+				>
 					수정일
 				</Text>
 			),
@@ -289,7 +289,8 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 													justifyContent='space-between'
 													align='center'
 													fontSize={{ sm: '10px', lg: '12px' }}
-													color='gray.400'>
+													color='gray.400'
+												>
 													{flexRender(header.column.columnDef.header, header.getContext())}{{
 														asc: '',
 														desc: '',

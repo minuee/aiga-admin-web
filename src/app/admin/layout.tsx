@@ -1,24 +1,14 @@
 'use client';
 // Chakra imports
-import {
-  Portal,
-  Box,
-  useDisclosure,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import { Portal,Box,useDisclosure,useColorModeValue } from '@chakra-ui/react';
 import Footer from 'components/footer/FooterAdmin';
 // Layout components
 import Navbar from 'components/navbar/NavbarAdmin';
 import Sidebar from 'components/sidebar/Sidebar';
-import { SidebarContext } from 'contexts/SidebarContext';
 import { PropsWithChildren, useEffect, useState } from 'react';
 import routes from 'routes';
 import { usePathname } from 'next/navigation';
-import {
-  getActiveNavbar,
-  getActiveNavbarText,
-  getActiveRoute,
-} from 'utils/navigation';
+import { getActiveNavbar,getActiveNavbarText,getActiveRoute } from 'utils/navigation';
 //로그인 전역상태
 import LnbStateStore from 'store/lnbStore';
 import LnbSmallStateStore from 'store/lnbSmallStore';
@@ -78,13 +68,7 @@ export default function AdminLayout(props: DashboardLayoutProps) {
             </Box>
           </Portal>
 
-          <Box
-            mx="auto"
-            p={{ base: '20px', md: '30px' }}
-            pe="20px"
-            minH="100vh"
-            pt="50px"
-          >
+          <Box mx="auto" p={{ base: '20px', md: '30px' }} pe="20px" minH="100vh" pt="50px">
             {children}
           </Box>
           <Box>

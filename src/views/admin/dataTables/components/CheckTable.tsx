@@ -1,15 +1,7 @@
 
 import * as React from 'react';
-import {
-	createColumnHelper,
-	flexRender,
-	getCoreRowModel,
-	getSortedRowModel,
-	SortingState,
-	useReactTable
-} from '@tanstack/react-table';
-import { Flex, Box, Table, Checkbox, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue,Drawer,DrawerBody,DrawerFooter,
-  DrawerHeader,DrawerOverlay,useDisclosure,DrawerContent,DrawerCloseButton,Button } from '@chakra-ui/react';
+import { createColumnHelper,flexRender,getCoreRowModel,getSortedRowModel,SortingState,useReactTable } from '@tanstack/react-table';
+import { Flex, Box, Table, Checkbox, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue,Drawer,DrawerBody,DrawerFooter,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,Button } from '@chakra-ui/react';
 // Custom components
 import Card from 'components/card/Card';
 import TableMenu from 'components/menu/TableMenu';
@@ -78,9 +70,11 @@ export default function CheckTable(props: { tableData: any }) {
 			cell: (info: any) => (
 				<Flex align='center'>
 					<Checkbox defaultChecked={info.getValue()[1]} colorScheme='brandScheme' mr='10px' />
-					<Text color={textColor} fontSize='sm' fontWeight='700'>
-						{info.getValue()[0]}
-					</Text>
+					<Box  onClick={()=> onHandleToggle(true)} cursor={"pointer"}>
+						<Text color={textColor} fontSize='sm' fontWeight='700'>
+							{info.getValue()[0]}
+						</Text>
+					</Box>
 				</Flex>
 			)
 		}),

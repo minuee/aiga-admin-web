@@ -23,22 +23,8 @@ export default function Banner(props: {
   );
   return (
     <Card mb={{ base: '0px', lg: '20px' }} alignItems="center" {...rest}>
-      <Box
-        bg={`url(${banner})`}
-        bgSize="cover"
-        borderRadius="16px"
-        h="131px"
-        w="100%"
-      />
-      <Avatar
-        mx="auto"
-        src={avatar.src}
-        h="87px"
-        w="87px"
-        mt="-43px"
-        border="4px solid"
-        borderColor={borderColor}
-      />
+      <Box bg={`url(${banner})`} bgSize="cover" borderRadius="16px" h="131px" w="100%" />
+      <Avatar mx="auto" src={avatar.src} h="87px" w="87px" mt="-43px" border="4px solid" borderColor={borderColor} />
       <Text color={textColorPrimary} fontWeight="bold" fontSize="xl" mt="10px">
         {name}
       </Text>

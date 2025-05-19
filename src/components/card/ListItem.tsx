@@ -4,6 +4,7 @@ import { MdDelete,MdAssignment } from 'react-icons/md';
 import mConstants from 'utils/constants';
 import functions from 'utils/functions';
 import PaperDetail from 'components/modal/PaperDetail';
+
 type ListItemScreenProps = {
     isTitle: boolean;
     title: string;
@@ -32,7 +33,6 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
     }]);
 
     React.useEffect(() => {
-
         setInputs(content);
         setTimeout(() => {
             setIsLoading(false);
