@@ -87,7 +87,7 @@ export default function ViewForm(props: ViewFormProps) {
                             내용
                         </FormLabel>
                         <Editor 
-                            height={500}
+                            height={700}
                             colorMode={colorMode}
                         />
                     </Flex>
