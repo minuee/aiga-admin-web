@@ -13,7 +13,7 @@ interface PaginationProps {
 
 export function getDoctorList(props: PaginationProps): ApiResponse<any> {
     if ( !functions.isEmpty(props.page) && !functions.isEmpty(props.take) && !functions.isEmpty(props.order) && !functions.isEmpty(props.orderName) ) {
-        return api.get(`/api/v1/doctors/hid/${props.hospitalId}?orderName=${props.orderName}&order=${props.order}&page=${props.page}&take=${props.take}&keyword=${props.keyword}`);
+        return api.get(`/doctors/hid/${props.hospitalId}?orderName=${props.orderName}&order=${props.order}&page=${props.page}&take=${props.take}&keyword=${props.keyword}`);
     }else{
         return null;
     } 
@@ -24,7 +24,7 @@ interface PaperProps {
 }
 export function getDoctorPaperList(props: PaperProps): ApiResponse<any> {
     if ( !functions.isEmpty(props.doctorId)  ) {
-        return api.get(`/api/v1/doctors/paper/${props.doctorId}`);
+        return api.get(`/doctors/paper/${props.doctorId}`);
     }else{
         return null;
     } 
