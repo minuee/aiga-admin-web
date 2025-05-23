@@ -48,6 +48,7 @@ function MemberDetail(props: MemberDetailProps) {
                 type="text" 
                 placeholder='이름' 
                 onChange={(e) => setInputs({...inputs, req_name: e.target.value})}
+                id='req_name'
               />
             </FormControl>
           </Box>              
@@ -58,6 +59,7 @@ function MemberDetail(props: MemberDetailProps) {
                 type="text" 
                 placeholder='이메일주소' 
                 onChange={(e) => setInputs({...inputs, req_phone: e.target.value})}
+                id='email'
               />
             </FormControl>
           </Box>
@@ -70,6 +72,7 @@ function MemberDetail(props: MemberDetailProps) {
                 type="text" 
                 placeholder='등록일자' 
                 onChange={(e) => setInputs({...inputs, req_name: e.target.value})}
+                id='regDate'
               />
             </FormControl>
           </Box>              

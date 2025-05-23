@@ -33,6 +33,7 @@ export default function FixedPlugin (props: { [x: string]: any }) {
       p='0px'
       alignItems='center'
       justifyContent='center'
+      id="button_toggle_mode"
     >
       <Icon
         h={{base : "20px", md:'24px'}}

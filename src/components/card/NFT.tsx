@@ -41,6 +41,7 @@ export default function NFT(props: {
             onClick={() => {
               setLike(!like);
             }}
+            id="button_like"
           >
             <Icon
               transition="0.2s linear"
@@ -148,6 +149,7 @@ export default function NFT(props: {
                 borderRadius="70px"
                 px="24px"
                 py="5px"
+                id="button_placebid"
               >
                 Place Bid
               </Button>

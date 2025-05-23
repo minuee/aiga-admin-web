@@ -406,6 +406,7 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 									onChange={(e:any) => setKeyword(e.target.value)} 
 									color={textColor}
 									size='sm'
+									id='keyword'
 								/>
 								<Button
 									size='sm'

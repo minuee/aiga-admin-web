@@ -227,13 +227,14 @@ export default function ReviewTable(props: { tableData: any }) {
 						<option value='option2'>작성자이름순</option>
 						<option value='option3'>병원이름순</option>
 					</Select>
-					<Input placeholder='키워드를 입력하세요' />
+					<Input placeholder='키워드를 입력하세요' id='keyword' />
 					<Button
 						size='md'
 						loadingText='Loading'
 						variant="solid"
 						colorScheme='blue'
 						sx={{borderRadius:'5px'}}
+						id="button_search"
 					>
 						검색
 					</Button>
@@ -340,10 +341,10 @@ export default function ReviewTable(props: { tableData: any }) {
 						</Scrollbars>
 					</DrawerBody>
 					<DrawerFooter sx={{borderTop:'1px solid #ebebeb'}}>
-						<Button variant='outline' mr={3} onClick={()=>setShow(false)}>
+						<Button variant='outline' mr={3} onClick={()=>setShow(false)} id="button_cancel">
 						Cancel
 						</Button>
-						<Button colorScheme='blue'>Save</Button>
+						<Button colorScheme='blue' id="button_save">Save</Button>
 					</DrawerFooter>
 					</DrawerContent>
 				</Drawer>

@@ -22,18 +22,18 @@ const ReactModule = () => {
                 <select className="ql-font" defaultValue="sans-serif" />
             </div>
             <div className="ql-formats">
-                <button className="ql-bold" />
-                <button className="ql-italic" />
-                <button className="ql-underline" />
-                <button className="ql-strike" />
-                <button className="ql-blockquote" />
+                <button className="ql-bold" id="ql-formats-bold" />
+                <button className="ql-italic" id="ql-formats-italic" />
+                <button className="ql-underline" id="ql-formats-underline" />
+                <button className="ql-strike" id="ql-formats-strike" />
+                <button className="ql-blockquote" id="ql-formats-blockquote" />
             </div>
 
             <div className="ql-formats">
-                <button className="ql-list" value="ordered" />
-                <button className="ql-list" value="bullet" />
-                <button className="ql-indent" value="-1" />
-                <button className="ql-indent" value="+1" />
+                <button className="ql-list" value="ordered" id="ql-formats-list-ordered" />
+                <button className="ql-list" value="bullet" id="ql-formats-list-bullet" />
+                <button className="ql-indent" value="-1" id="ql-formats-indent-minus" />
+                <button className="ql-indent" value="+1" id="ql-formats-index-plus" />
             </div>
             <div className="ql-formats">
                 <select className="ql-color" />
@@ -41,9 +41,9 @@ const ReactModule = () => {
                 <select className="ql-align" />
             </div>
             <div className="ql-formats">
-                <button className="ql-code-block" />
-                <button className="ql-link" />
-                <button className="ql-image" />
+                <button className="ql-code-block" id="ql-formats-code-block" />
+                <button className="ql-link" id="ql-formats-link" />
+                <button className="ql-image" id="ql-format-image" />
             </div>
         </>
     )

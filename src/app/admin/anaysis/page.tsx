@@ -36,7 +36,7 @@ export default function DataTables() {
       }catch(e){
         setData([]);
       }
-    },[page,orderName,order]
+    },[page,orderName,order,pageSize]
   );
     
   React.useEffect(() => {

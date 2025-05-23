@@ -46,7 +46,7 @@ function DoctorDetail(props: DoctorDetailProps) {
       });
       setIsLoading(false);
     }, 500);
-  }, [isOpen]);
+  }, [PaperData]);
 
   if ( isLoading ) {
     return (
@@ -70,6 +70,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 placeholder='PaperId' 
                 value={functions.isEmpty(inputs?.paper_id) ? '' : inputs?.paper_id}
                 readOnly
+                id='paperId'
               />
             </FormControl>
           </Box>  
@@ -83,6 +84,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 placeholder='의사명' 
                 value={functions.isEmpty(inputs?.doctorName) ? '' : inputs?.doctorName}
                 readOnly
+                id='doctorName'
               />
             </FormControl>
           </Box>   
@@ -107,6 +109,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 placeholder='페이지 URL' 
                 value={functions.isEmpty(inputs?.paper_url) ? '' : inputs?.paper_url}
                 readOnly
+                id='paper_url'
               />
             </FormControl>
           </Box>              
@@ -122,6 +125,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 placeholder='저널명' 
                 value={functions.isEmpty(inputs?.journalName) ? '' : inputs?.journalName}
                 readOnly
+                id='journalName'
               />
             </FormControl>
           </Box>              
@@ -135,6 +139,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 placeholder='PMID' 
                 value={functions.isEmpty(inputs?.pmid) ? '' : inputs?.pmid}
                 readOnly
+                id='pmid'
               />
             </FormControl>
           </Box> 
@@ -150,6 +155,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 placeholder='ImpactFactor' 
                 value={functions.isEmpty(inputs?.impactFactor) ? '' : inputs?.impactFactor}
                 readOnly
+                id='impactFactor'
               />
             </FormControl>
           </Box>              
@@ -163,6 +169,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 placeholder='인용수' 
                 value={functions.isEmpty(inputs?.totalCitations) ? '' : inputs?.totalCitations}
                 readOnly
+                id='totalCitations'
               />
             </FormControl>
           </Box> 
@@ -181,6 +188,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 borderColor={borderColor}
                 color={textColor}
                 value={functions.isEmpty(inputs?.authors) ? '' : inputs?.authors}
+                id='authors'
               />
             </FormControl>
           </Box>   
@@ -199,6 +207,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 borderColor={borderColor}
                 color={textColor}
                 value={functions.isEmpty(inputs?.title) ? '' : inputs?.title}
+                id='title'
               />
             </FormControl>
           </Box>   
@@ -217,6 +226,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 borderColor={borderColor}
                 color={textColor}
                 value={functions.isEmpty(inputs?.title_pubmed) ? '' : inputs?.title_pubmed}
+                id='title_pubmed'
               />
             </FormControl>
           </Box>   
@@ -245,6 +255,7 @@ function DoctorDetail(props: DoctorDetailProps) {
               width={'200px'} 
               borderRadius={'10px'}
               onClick={() => onHandlePaperModify(inputs)}
+              id="button_modify"
             >
               수정
             </Button>

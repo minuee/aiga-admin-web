@@ -67,6 +67,7 @@ function HospitalDetail(props: HospitalDetailProps) {
                 color={textColor}
                 value={hospitalData?.hid}
                 readOnly
+                id='hid'
               />
             </FormControl>
           </Box>              
@@ -82,6 +83,7 @@ function HospitalDetail(props: HospitalDetailProps) {
                 textAlign={'right'}
                 value={hospitalData?.doctor_count}
                 readOnly
+                id='doctor_count'
               />
             </FormControl>
           </Box>   
@@ -97,6 +99,7 @@ function HospitalDetail(props: HospitalDetailProps) {
                 value={hospitalData?.baseName}
                 placeholder='병원명' 
                 readOnly
+                id='baseName'
               />
             </FormControl>
           </Box>              
@@ -110,6 +113,7 @@ function HospitalDetail(props: HospitalDetailProps) {
                 value={hospitalData?.shortName}
                 placeholder='의사명' 
                 readOnly
+                id='shortName'
               />
             </FormControl>
           </Box> 
@@ -124,6 +128,7 @@ function HospitalDetail(props: HospitalDetailProps) {
                 color={textColor}
                 placeholder='주소' 
                 readOnly
+                id='address'
               />
             </FormControl>
           </Box>              
@@ -138,6 +143,7 @@ function HospitalDetail(props: HospitalDetailProps) {
                 color={textColor}
                 placeholder='위도를 입력해주세요' 
                 readOnly
+                id='latitude'
               />
             </FormControl>
           </Box>              
@@ -150,6 +156,7 @@ function HospitalDetail(props: HospitalDetailProps) {
                 color={textColor}
                 placeholder='경도를 입력해주세요' 
                 readOnly
+                id='longitude'
               />
             </FormControl>
           </Box> 
@@ -164,6 +171,7 @@ function HospitalDetail(props: HospitalDetailProps) {
                 color={textColor}
                 placeholder='예약사이트' 
                 readOnly
+                id="reservation_site"
               />
             </FormControl>
           </Box>              
@@ -176,6 +184,7 @@ function HospitalDetail(props: HospitalDetailProps) {
                 color={textColor}
                 placeholder='예약전화번호' 
                 readOnly
+                id="reservation_tel"
               />
             </FormControl>
           </Box> 
@@ -195,6 +204,7 @@ function HospitalDetail(props: HospitalDetailProps) {
                 readOnly
                 borderColor={borderColor}
                 color={textColor}
+                id='req_comment'
               />
             </FormControl>
           </Box>   
@@ -223,6 +233,7 @@ function HospitalDetail(props: HospitalDetailProps) {
             width={'200px'} 
             borderRadius={'10px'}
             onClick={() => onHandleRegistReview(inputs)}
+            id="button_modify"
           >
             수정
           </Button>

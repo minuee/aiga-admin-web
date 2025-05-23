@@ -50,6 +50,7 @@ export default function Banner () {
           py='20px'
           px='27'
           me='38px'
+          id="button_discover"
         >
           Discover now
         </Button>

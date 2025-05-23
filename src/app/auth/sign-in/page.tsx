@@ -227,6 +227,7 @@ export default function SignIn() {
               h="50"
               mb="24px"
               onClick={handleLogin}
+              id="button_signin"
             >
               Sign In
             </Button>

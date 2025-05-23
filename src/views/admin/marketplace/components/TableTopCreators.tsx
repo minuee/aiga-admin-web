@@ -114,7 +114,7 @@ export default function TopCreatorTable(props: { tableData: any }) {
         <Text color={textColor} fontSize="xl" fontWeight="600">
           Top Creators
         </Text>
-        <Button variant="action">See all</Button>
+        <Button variant="action" id='button_seeall'>See all</Button>
       </Flex>
       <Box>
         <Table variant="simple" color="gray.500" mt="12px">

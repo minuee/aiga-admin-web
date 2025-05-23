@@ -52,6 +52,7 @@ export default function TotalSpent(props: { [x: string]: any }) {
 						lineHeight='100%'
 						borderRadius='10px'
 						{...rest}
+						id='button_chart'
 					>
 						<Icon as={MdBarChart} color={iconColor} w='24px' h='24px' />
 					</Button>

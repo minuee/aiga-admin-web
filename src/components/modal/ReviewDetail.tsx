@@ -56,6 +56,7 @@ function ReviewDetail(props: ReviewDetailProps) {
                 type="text" 
                 placeholder='이름' 
                 readOnly
+                id='reqName'
               />
             </FormControl>
           </Box>              
@@ -66,6 +67,7 @@ function ReviewDetail(props: ReviewDetailProps) {
                 type="text" 
                 placeholder='이메일' 
                 readOnly
+                id='reqEmail'
               />
             </FormControl>
           </Box>
@@ -76,6 +78,7 @@ function ReviewDetail(props: ReviewDetailProps) {
                 type="text" 
                 placeholder='등록일자' 
                 readOnly
+                id='regDate'
               />
             </FormControl>
           </Box>   
@@ -88,6 +91,7 @@ function ReviewDetail(props: ReviewDetailProps) {
                 type="text" 
                 placeholder='병원명' 
                 readOnly
+                id='hospitalName'
               />
             </FormControl>
           </Box>              
@@ -98,6 +102,7 @@ function ReviewDetail(props: ReviewDetailProps) {
                 type="text" 
                 placeholder='의사명' 
                 readOnly
+                id='doctorName'
               />
             </FormControl>
           </Box> 
@@ -172,6 +177,7 @@ function ReviewDetail(props: ReviewDetailProps) {
                 width={'100%'}
                 size={'sm'} 
                 readOnly
+                id='req_comment'
               />
             </FormControl>
           </Box>   
@@ -185,6 +191,7 @@ function ReviewDetail(props: ReviewDetailProps) {
                 type="text" 
                 placeholder='간략히 적으세요' 
                 readOnly
+                id='comment'
               />
             </FormControl>
           </Box>   
@@ -216,6 +223,7 @@ function ReviewDetail(props: ReviewDetailProps) {
             width={'200px'} 
             borderRadius={'10px'}
             onClick={() => onHandleRegistReview(inputs)}
+            id="button_modify"
           >
             수정
           </Button>

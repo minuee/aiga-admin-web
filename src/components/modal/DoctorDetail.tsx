@@ -89,7 +89,7 @@ function DoctorDetail(props: DoctorDetailProps) {
       });
       setIsLoading(false);
     }, 1000);
-  }, [isOpen]);
+  }, [DoctorData]);
 
   const onHandleUpdateBasicInfo = (data:any) => {
     console.log('onHandleUpdateBasicInfo', data);
@@ -130,6 +130,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                   value={inputs?.doctor_id || ''}
                   placeholder='의사ID' 
                   readOnly
+                  id='doctor_id'
                 />
               </FormControl>
             </Box>              
@@ -143,6 +144,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                   value={inputs?.doctorname}
                   placeholder='의사명' 
                   readOnly
+                  id='doctorname'
                 />
               </FormControl>
             </Box> 
@@ -157,6 +159,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                   color={textColor}
                   value={inputs?.hid}
                   readOnly
+                  id='hid'
                 />
               </FormControl>
             </Box>              
@@ -171,6 +174,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                   placeholder='병원명' 
                   value={inputs?.baseName}
                   readOnly
+                  id='baseName'
                 />
               </FormControl>
             </Box>   
@@ -196,6 +200,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 placeholder='주소' 
                 value={inputs?.doctor_url}
                 readOnly
+                id='doctor_url'
               />
             </FormControl>
           </Box>              
@@ -211,6 +216,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 placeholder='진료분야' 
                 value={inputs?.deptname}
                 readOnly
+                id='deptname'
               />
             </FormControl>
           </Box>              
@@ -222,6 +228,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 borderColor={borderColor}
                 color={textColor}
                 placeholder='예약전화번호' 
+                id='reservation_tel'
               />
             </FormControl>
           </Box> 
@@ -241,6 +248,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 borderColor={borderColor}
                 color={textColor}
                 value={inputs?.specialties}
+                id='specialties'
               />
             </FormControl>
           </Box>   
@@ -269,6 +277,7 @@ function DoctorDetail(props: DoctorDetailProps) {
             width={'200px'} 
             borderRadius={'10px'}
             onClick={() => onHandleUpdateBasicInfo(inputs)}
+            id="button_modify2"
           >
             기본정보 수정
           </Button>
@@ -394,6 +403,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 width={'200px'} 
                 borderRadius={'10px'}
                 onClick={() => onHandleUpdateCareerInfo(inputs)}
+                id="button_modify"
               >
                 경력정보 수정
               </Button>

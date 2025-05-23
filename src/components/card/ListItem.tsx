@@ -90,6 +90,7 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                             onChange={(e) => {
                                                setInputs(inputs.map((input:any,idx:number) => idx === index ? {...input, doi: e.target.value} : input));
                                             }}
+                                            id={`doi_${index}`}
                                         />
                                         <Input                                           
                                             flex={3}
@@ -102,6 +103,7 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                             onChange={(e) => {
                                                setInputs(inputs.map((input:any,idx:number) => idx === index ? {...input, title: e.target.value} : input));
                                             }}
+                                            id={`title_${index}`}
                                         />
                                         <Input 
                                             flex={1}
@@ -114,6 +116,7 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                             onChange={(e) => {
                                                setInputs(inputs.map((input:any,idx:number) => idx === index ? {...input, pmid: e.target.value} : input));
                                             }}
+                                            id={`pmid_${index}`}
                                         />
                                         <Box 
                                             flex={0.5} 
@@ -158,6 +161,7 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                             onChange={(e) => {
                                                setInputs(inputs.map((input:any,idx:number) => idx === index ? {...input, targetDate: e.target.value} : input));
                                             }}
+                                            id={`targetDate_${index}`}
                                         />
                                         <Input                                           
                                             flex={3}
@@ -170,6 +174,7 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                             onChange={(e) => {
                                                setInputs(inputs.map((input:any,idx:number) => idx === index ? {...input, text: e.target.value} : input));
                                             }}
+                                            id={`text_${index}`}
                                         />
                                         <Input 
                                             flex={1}
@@ -182,6 +187,7 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                             onChange={(e) => {
                                                setInputs(inputs.map((input:any,idx:number) => idx === index ? {...input, issuer: e.target.value} : input));
                                             }}
+                                            id={`issuer_${index}`}
                                         />
                                         <Box 
                                             flex={0.5} 

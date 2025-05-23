@@ -206,7 +206,7 @@ export default function MemberTable(props: { tableData: any }) {
 						<option value='option2'>이름순</option>
 						<option value='option3'>사용토큰 많은순</option>
 					</Select>
-					<Input placeholder='키워드를 입력하세요' />
+					<Input placeholder='키워드를 입력하세요' id='keyword' />
 					<Button
 						size='md'
 						loadingText='Loading'
@@ -319,10 +319,10 @@ export default function MemberTable(props: { tableData: any }) {
 						</Scrollbars>
 					</DrawerBody>
 					<DrawerFooter sx={{borderTop:'1px solid #ebebeb'}}>
-						<Button variant='outline' mr={3} onClick={()=>setShow(false)}>
+						<Button variant='outline' mr={3} onClick={()=>setShow(false)} id="button_cancel">
 						Cancel
 						</Button>
-						<Button colorScheme='blue'>Save</Button>
+						<Button colorScheme='blue' id="button_save">Save</Button>
 					</DrawerFooter>
 					</DrawerContent>
 				</Drawer>

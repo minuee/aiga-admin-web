@@ -23,10 +23,10 @@ const CustomAlert = ( msg: string = null) => {
           {msg}
         </AlertDialogBody>
           <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={onClose}>
+            <Button ref={cancelRef} onClick={onClose} id="button_no">
               아니요
             </Button>
-            <Button colorScheme='red' onClick={onClose} ml={3}>
+            <Button colorScheme='red' onClick={onClose} ml={3} id="button_yes">
               네
             </Button>
           </AlertDialogFooter>

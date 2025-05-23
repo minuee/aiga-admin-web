@@ -48,7 +48,7 @@ export default function DoctorList(props: { hospitalData: any,inputs : any }) {
         }catch(e){
           setData([]);
         }
-      },[inputs.page,inputs.orderName,inputs.orderBy,inputs.keyword]
+      },[props.hospitalData?.hid,inputs.page,inputs.orderName,inputs.orderBy,inputs.keyword]
     );
     
     React.useEffect(() => {
@@ -59,7 +59,7 @@ export default function DoctorList(props: { hospitalData: any,inputs : any }) {
         orderName : !functions.isEmpty(props.inputs?.orderName) ? props.inputs?.orderName : "deptname",
         keyword : props.inputs?.keyword
       })
-    }, [props.inputs]);
+    }, []);
 
     React.useEffect(() => {
       getData()

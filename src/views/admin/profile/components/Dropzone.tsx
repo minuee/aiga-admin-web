@@ -23,7 +23,7 @@ function Dropzone(props: { content: JSX.Element | string; [x: string]: any }) {
 			{...getRootProps({ className: 'dropzone' })}
 			{...rest}
 		>
-			<input {...getInputProps()} />
+			<input {...getInputProps()} id='id' />
 			<Button variant='no-effects'>{content}</Button>
 		</Flex>
 	);

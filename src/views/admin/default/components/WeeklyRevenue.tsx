@@ -33,6 +33,7 @@ export default function WeeklyRevenue (props: { [x: string]: any }) {
           Weekly Data
         </Text>
         <Button
+          id="button_chart"
           alignItems='center'
           justifyContent='center'
           bg={bgButton}

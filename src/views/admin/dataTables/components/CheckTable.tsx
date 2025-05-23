@@ -280,8 +280,8 @@ export default function CheckTable(props: { tableData: any }) {
 						</Scrollbars>
 					</DrawerBody>
 					<DrawerFooter sx={{borderTop:'1px solid #ebebeb'}}>
-						<Button variant='outline' mr={3} onClick={()=>setShow(false)}>Cancel</Button>
-						<Button colorScheme='blue'>Save</Button>
+						<Button variant='outline' mr={3} onClick={()=>setShow(false)} id="buttin_cancel">Cancel</Button>
+						<Button colorScheme='blue' id="button_save">Save</Button>
 					</DrawerFooter>
 					</DrawerContent>
 				</Drawer>

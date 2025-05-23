@@ -58,6 +58,7 @@ export default function SidebarDocs() {
           fontSize="sm"
           minW="185px"
           mx="auto"
+          id="button_upgrade"
         >
           Upgrade to PRO
         </Button>

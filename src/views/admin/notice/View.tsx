@@ -83,6 +83,7 @@ export default function ViewForm(props: ViewFormProps) {
                                 color={textColor} 
                                 onChange={(e:any) => setInputs({...inputs,title:e.target.value})}
                                 //readOnly={!functions.isEmpty(inputs.noticeId)}
+                                id='title'
                             />
                             <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                             </FormControl>
@@ -110,6 +111,7 @@ export default function ViewForm(props: ViewFormProps) {
                                     readOnly  
                                     value={inputs?.openDate || defaultDate} 
                                     color={textColor} 
+                                    id='openDate'
                                 />
                             </InputGroup>
                             
@@ -151,8 +153,8 @@ export default function ViewForm(props: ViewFormProps) {
                         </ModalBody>
 
                         <ModalFooter>
-                            <Button colorScheme='gray' mr={3} onClick={()=>setShowCalendar(false)}>취소</Button>
-                            <Button variant='ghost'  onClick={onSelectDate}>선택</Button>
+                            <Button colorScheme='gray' mr={3} onClick={()=>setShowCalendar(false)} id="button_cancel">취소</Button>
+                            <Button variant='ghost'  onClick={onSelectDate} id="button_select">선택</Button>
                         </ModalFooter>
                         </ModalContent>
                     </Modal>

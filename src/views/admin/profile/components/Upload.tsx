@@ -61,7 +61,9 @@ export default function Upload(props: { used?: number; total?: number; [x: strin
 							minW='140px'
 							mt={{ base: '20px', '2xl': 'auto' }}
 							variant='brand'
-							fontWeight='500'>
+							fontWeight='500'
+							id="button_publish"
+						>
 							Publish now
 						</Button>
 					</Flex>
