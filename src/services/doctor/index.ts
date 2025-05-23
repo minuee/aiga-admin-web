@@ -19,7 +19,6 @@ export function getDoctorList(props: PaginationProps): ApiResponse<any> {
     } 
 }
 
-
 interface PaperProps {
     doctorId: string;
 }

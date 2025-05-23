@@ -1,21 +1,12 @@
 
 import * as React from 'react';
-import {
-	createColumnHelper,
-	flexRender,
-	getCoreRowModel,
-	getSortedRowModel,
-	SortingState,
-	useReactTable
-} from '@tanstack/react-table';
+import { createColumnHelper,flexRender,getCoreRowModel,getSortedRowModel,SortingState,useReactTable } from '@tanstack/react-table';
 import { 
 	Flex, Box, Table, Checkbox, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue,Drawer,DrawerBody,DrawerFooter,
 	DrawerHeader,DrawerOverlay,Input,DrawerContent,DrawerCloseButton,Button,Select,Modal,ModalOverlay,ModalContent,ModalHeader,ModalCloseButton,ModalBody
 } from '@chakra-ui/react';
 // Custom components
 import Card from 'components/card/Card';
-import TableMenu from 'components/menu/TableMenu';
-import CustomAlert from 'components/etc/CustomAlert';
 
 import { RowObj } from 'views/admin/dataTables/variables/tableDataMembers';
 import { renderThumb,renderTrack,renderView } from 'components/scrollbar/Scrollbar';
@@ -196,11 +187,20 @@ export default function MemberTable(props: { tableData: any }) {
 
 	return (
 		<Card flexDirection='column' w='100%' px='0px' overflowX={{ sm: 'scroll', lg: 'hidden' }}>
-			<Flex px='25px' mb="8px" justifyContent='space-between' align='center'>
-				<Text color={textColor} fontSize='22px' mb="4px" fontWeight='700' lineHeight='100%'>
-					회원 리스트
-				</Text>
-				<Box display='flex' gap='10px'>
+			<Flex 
+				flexDirection={{base : 'column', md : 'row'}}
+				px={{base : '10px', xl : '25px'}}
+				mb="8px" 
+				justifyContent={{base : 'center', md : 'space-between' }}
+				align='center'
+			>
+				<Box display='flex' alignItems='center' width={{base : '100%', xl : 'auto'}}>
+					<Text color={textColor} fontSize='22px' mb="4px" fontWeight='700' lineHeight='100%'>
+						회원 리스트
+					</Text>
+					
+				</Box>
+				<Box display='flex' alignItems={'flex-end'} width={{base : '100%', xl : 'auto'}}>
 					<Select placeholder='정렬기준'>
 						<option value='option1'>최신 등록순</option>
 						<option value='option2'>이름순</option>

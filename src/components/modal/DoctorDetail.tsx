@@ -50,6 +50,7 @@ function DoctorDetail(props: DoctorDetailProps) {
   const textColor = useColorModeValue('secondaryGray.900', 'white');
   const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
   const skeletonColor = useColorModeValue('white', 'navy.700');
+  const tabSelectColor = useColorModeValue('navy.700', 'white');
 
   const getData = React.useCallback(
     async() => {
@@ -109,16 +110,16 @@ function DoctorDetail(props: DoctorDetailProps) {
 
     return (
       <>
-        <Flex flexDirection={'row'} minHeight={'50px'} padding={'0 10px'} >
+        <Flex flexDirection={{base : 'column' , 'mobile' : 'row'}} minHeight={'50px'} padding={{base : "0", 'mobile' : '0 10px'}} >
           <Flex flex={1} alignItems={'center'} justifyContent={'center'}>
             {
               functions.isEmpty(inputs?.profileimgurl) ?
-              <Image width="200" height="200" src={defaultImage} alt={'doctor1'} />
+              <Image width="150" height="150" src={defaultImage} alt={'doctor1'} />
               :
               <Image src={inputs?.profileimgurl.trimEnd()} alt='profile' width={150} height={150} />
             }
           </Flex>
-          <Flex flex={2} flexDirection={'column'} minHeight={'50px'} padding={'0 10px'} >
+          <Flex flex={2} flexDirection={'column'} minHeight={'50px'} padding={{base : "0", 'mobile' : '0 10px'}} >
             <Box flex={1}>
               <FormControl variant="floatingLabel">
                 <FormLabel>의사ID</FormLabel>
@@ -175,7 +176,7 @@ function DoctorDetail(props: DoctorDetailProps) {
             </Box>   
           </Flex> 
         </Flex>
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'} mt={5}>
+        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={{base : "0", 'mobile' : '0 10px'}} mt={5}>
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>
@@ -199,7 +200,7 @@ function DoctorDetail(props: DoctorDetailProps) {
             </FormControl>
           </Box>              
         </Flex> 
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'} mt={5}>
+        <Flex display={'flex'} flexDirection={{base : 'column' , 'mobile' : 'row'}} minHeight={'50px'} padding={{base : "0", 'mobile' : '0 10px'}} mt={5}>
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>진료과</FormLabel>
@@ -213,7 +214,7 @@ function DoctorDetail(props: DoctorDetailProps) {
               />
             </FormControl>
           </Box>              
-          <Box flex={1}>
+          <Box flex={1} mt={{base : 5, 'mobile' : 0}}>
             <FormControl variant="floatingLabel">
               <FormLabel>예약전화번호<span style={{color:"red",fontSize:"10px"}}> * 수정가능</span></FormLabel>
               <Input 
@@ -226,7 +227,7 @@ function DoctorDetail(props: DoctorDetailProps) {
           </Box> 
         </Flex> 
         
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'}>
+        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={{base : "0", 'mobile' : '0 10px'}}>
           <Box mt={5} width={'100%'}>
             <FormControl variant="floatingLabel">
               <FormLabel>진료분야<span style={{color:"red",fontSize:"10px"}}> * 수정가능</span></FormLabel>
@@ -244,7 +245,7 @@ function DoctorDetail(props: DoctorDetailProps) {
             </FormControl>
           </Box>   
         </Flex>
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'} mt={5}>           
+        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={{base : "0", 'mobile' : '0 10px'}} mt={5}>           
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>공개여부<span style={{color:"red",fontSize:"10px"}}> * 수정가능</span></FormLabel>
@@ -273,20 +274,43 @@ function DoctorDetail(props: DoctorDetailProps) {
           </Button>
         </Box>
         <Divider my={5} />
-        <Flex>
+        <Flex
+          position="sticky"
+          top="0"
+          bgColor="primary.100"
+          zIndex="sticky"
+          //height="60px"
+          alignItems="center"
+          flexWrap="nowrap"
+          overflowX="auto"
+          px={{base : 0, 'mobile': "2"}}
+          css={{
+            WebkitOverflowScrolling: "touch",
+            msOverflowStyle: "-ms-autohiding-scrollbar"
+          }}
+        >
           <Tabs variant='enclosed' width={'100%'}>
-            <TabList>
-              <Tab onClick={()=>setCurrentTab('education')}>학력({inputs?.education?.length > 0 ? inputs?.education?.length : 0})</Tab>
-              <Tab onClick={()=>setCurrentTab('career')}>경력({inputs?.career?.length > 0 ? inputs?.career?.length : 0})</Tab>
-              <Tab onClick={()=>setCurrentTab('awards')}>수상({inputs?.awards?.length > 0 ? inputs?.awards?.length : 0})</Tab>
-              <Tab onClick={()=>setCurrentTab('publications')}>학술({inputs?.publications?.length > 0 ? inputs?.publications?.length : 0})</Tab>
-              <Tab onClick={()=>setCurrentTab('articles')}>언론({inputs?.articles?.length > 0 ? inputs?.articles?.length : 0})</Tab>
-              <Tab onClick={()=>setCurrentTab('books')}>저서({inputs?.books?.length > 0 ? inputs?.books?.length : 0})</Tab>
-              <Tab onClick={()=>setCurrentTab('conferences')}>학회({inputs?.conferences?.length > 0 ? inputs?.conferences?.length : 0})</Tab>
-              <Tab onClick={()=>setCurrentTab('papers')}>논문({doctorPapers?.length > 0 ? doctorPapers?.length : 0})</Tab>
+            <TabList
+              overflowY="hidden"
+              sx={{
+                //borderBottom: "0px",
+                scrollbarWidth: 'none',
+                '::-webkit-scrollbar': {
+                  display: 'none',
+                },
+              }}
+            >
+              <Tab onClick={()=>setCurrentTab('education')} _selected={{bg: tabSelectColor,color:skeletonColor}}>학력({inputs?.education?.length > 0 ? inputs?.education?.length : 0})</Tab>
+              <Tab onClick={()=>setCurrentTab('career')} _selected={{bg: tabSelectColor,color:skeletonColor}}>경력({inputs?.career?.length > 0 ? inputs?.career?.length : 0})</Tab>
+              <Tab onClick={()=>setCurrentTab('awards')} _selected={{bg: tabSelectColor,color:skeletonColor}}>수상({inputs?.awards?.length > 0 ? inputs?.awards?.length : 0})</Tab>
+              <Tab onClick={()=>setCurrentTab('publications')} _selected={{bg: tabSelectColor,color:skeletonColor}}>학술({inputs?.publications?.length > 0 ? inputs?.publications?.length : 0})</Tab>
+              <Tab onClick={()=>setCurrentTab('articles')} _selected={{bg: tabSelectColor,color:skeletonColor}}>언론({inputs?.articles?.length > 0 ? inputs?.articles?.length : 0})</Tab>
+              <Tab onClick={()=>setCurrentTab('books')} _selected={{bg: tabSelectColor,color:skeletonColor}}>저서({inputs?.books?.length > 0 ? inputs?.books?.length : 0})</Tab>
+              <Tab onClick={()=>setCurrentTab('conferences')} _selected={{bg: tabSelectColor,color:skeletonColor}}>학회({inputs?.conferences?.length > 0 ? inputs?.conferences?.length : 0})</Tab>
+              <Tab onClick={()=>setCurrentTab('papers')} _selected={{bg: tabSelectColor,color:skeletonColor}}>논문({doctorPapers?.length > 0 ? doctorPapers?.length : 0})</Tab>
             </TabList>
             <TabPanels>
-              <TabPanel>
+              <TabPanel padding={0}>
                 <ListItem 
                   isTitle={false}
                   title='학력'

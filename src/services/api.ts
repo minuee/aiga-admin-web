@@ -6,9 +6,7 @@ export type ServiceResponse<T> = {
   state: State;
 } & T;
 
-const baseURL =
-  process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:9999';
-
+const baseURL = process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:9999';
 axios.defaults.withCredentials = true;
 
 axios.interceptors.request.use(
@@ -28,6 +26,7 @@ axios.interceptors.response.use(
       }
     }else{
       // Toast(res?.data?.message? res.data.message : '오류가 발생하였습니다.')
+      console.log("error of error ")
     }
     return res;
   },

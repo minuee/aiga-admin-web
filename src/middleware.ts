@@ -16,11 +16,12 @@ export async function middleware(request: NextRequest) {
         }
         
     }else{
-         console.log('pathname',pathname)
+        console.log('pathname',pathname)
         if ( pathname === "/auth/sign-in") {
             return NextResponse.next();
             
         }else{
+            console.log('pathname else',pathname)
             // 로그인이 필요 없는 페이지는 그냥 다음 요청으로 진행
             return NextResponse.rewrite(new URL("/auth/sign-in", request.url));
         }
@@ -28,9 +29,16 @@ export async function middleware(request: NextRequest) {
 }
 
 
-export const config = {
+/* export const config = {
     matcher: [
       '/((?!api|_next/static|_next/image|favicon.ico|fonts|images|manifest.json|.*\\.png$).*)',
+    ],
+  }; */
+  
+
+  export const config = {
+    matcher: [
+      '/((?!api|_next/static|_next/image|favicon.ico|fonts|images|manifest.json|manifest.webmanifest|.*\\.png$).*)',
     ],
   };
   

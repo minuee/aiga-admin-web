@@ -68,7 +68,13 @@ export default function AdminLayout(props: DashboardLayoutProps) {
             </Box>
           </Portal>
 
-          <Box mx="auto" p={{ base: '20px', md: '30px' }} pe="20px" minH="100vh" pt="50px">
+          <Box 
+            mx="auto" 
+            p={{ base: '20px', md: '30px' }} 
+            pe="20px" 
+            minH={{base : "100%", xl : "100vh"}} 
+            pt={{base : "0px", xl : "50px"}}
+          >
             {children}
           </Box>
           <Box>

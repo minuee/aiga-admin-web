@@ -1,12 +1,12 @@
 import { create } from "zustand";
 import { devtools, persist } from 'zustand/middleware'
 import * as Cookies from 'utils/cookies';
-interface UserData {
+interface AdminUserData {
     is_state : boolean;
     staff_id: string;
     is_master:boolean;
     nickName : string
-    setUserState: (
+    setAdminUserState: (
         state : boolean,
         staff_id: string,
         is_master:boolean,
@@ -14,7 +14,7 @@ interface UserData {
     ) => void;
 }
 
-const UserStateStore = create<UserData>()(
+const AdminUserStateStore = create<AdminUserData>()(
     devtools(
         persist(
             (set) => ({
@@ -22,18 +22,19 @@ const UserStateStore = create<UserData>()(
                 staff_id: '',
                 is_master: false,
                 nickName :'',
-                setUserState: (is_state,staff_id,is_master,nickName) => {
+                setAdminUserState: (is_state,staff_id,is_master,nickName) => {
                     set((state) => ({ is_state,staff_id,is_master,nickName }));
                     if ( is_state ) {
-                        Cookies.setCookie('LoginUser',JSON.stringify({is_state,staff_id,is_master}));
+                        Cookies.setCookie('AdminLoginUser',JSON.stringify({is_state,staff_id,is_master}));
                     }else{
-                        Cookies.removeCookie('LoginUser');
+                        console.log("AdminLoginUser out")
+                        Cookies.removeCookie('AdminLoginUser');
                     }
                 },
             }),
-            { name: 'UserStateStore' }
+            { name: 'AdminUserStateStore' }
         )
     )
 );
 
-export default UserStateStore;
+export default AdminUserStateStore;

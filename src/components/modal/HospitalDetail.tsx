@@ -24,7 +24,11 @@ function HospitalDetail(props: HospitalDetailProps) {
     ratingTreatment: 3,
     ratingDialog: 3,
     ratingRecommend: 3,
-    comment: ''
+    comment: '',
+    latitude: '',
+    longitude: '',
+    reservation_site: '',
+    reservation_phone: ''
   });
 
   const textColor = useColorModeValue('secondaryGray.900', 'white');
@@ -52,7 +56,7 @@ function HospitalDetail(props: HospitalDetailProps) {
 
     return (
       <>
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'}>
+        <Flex display={'flex'} flexDirection={{base : 'column' , xl : 'row'}} minHeight={'50px'} padding={'0 10px'}>
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>병원코드(HID)</FormLabel>
@@ -67,7 +71,7 @@ function HospitalDetail(props: HospitalDetailProps) {
             </FormControl>
           </Box>              
           
-          <Box flex={1}>
+          <Box flex={1} mt={{base : 5, xl : 0}}>
             <FormControl variant="floatingLabel">
               <FormLabel>등록의사수</FormLabel>
               <Input 
@@ -82,7 +86,7 @@ function HospitalDetail(props: HospitalDetailProps) {
             </FormControl>
           </Box>   
         </Flex> 
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'} mt={5}>
+        <Flex display={'flex'} flexDirection={{base : 'column' , xl : 'row'}} minHeight={'50px'} padding={'0 10px'} mt={5}>
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>기본병원명</FormLabel>
@@ -96,7 +100,7 @@ function HospitalDetail(props: HospitalDetailProps) {
               />
             </FormControl>
           </Box>              
-          <Box flex={1}>
+          <Box flex={1} mt={{base : 5, xl : 0}}>
             <FormControl variant="floatingLabel">
               <FormLabel>숏병원명</FormLabel>
               <Input 
@@ -110,7 +114,7 @@ function HospitalDetail(props: HospitalDetailProps) {
             </FormControl>
           </Box> 
         </Flex> 
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'} mt={5}>
+        <Flex display={'flex'} flexDirection={{base : 'column' , xl : 'row'}} minHeight={'50px'} padding={'0 10px'} mt={5}>
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>주소</FormLabel>
@@ -124,7 +128,33 @@ function HospitalDetail(props: HospitalDetailProps) {
             </FormControl>
           </Box>              
         </Flex> 
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'} mt={5}>
+        <Flex display={'flex'} flexDirection={{base : 'column' , xl : 'row'}} minHeight={'50px'} padding={'0 10px'} mt={5}>
+          <Box flex={1}>
+            <FormControl variant="floatingLabel">
+              <FormLabel>좌표(위도)</FormLabel>
+              <Input 
+                type="text" 
+                borderColor={borderColor}
+                color={textColor}
+                placeholder='위도를 입력해주세요' 
+                readOnly
+              />
+            </FormControl>
+          </Box>              
+          <Box flex={1} mt={{base : 5, xl : 0}}>
+            <FormControl variant="floatingLabel">
+              <FormLabel>좌표(경도)</FormLabel>
+              <Input 
+                type="text"   
+                borderColor={borderColor}
+                color={textColor}
+                placeholder='경도를 입력해주세요' 
+                readOnly
+              />
+            </FormControl>
+          </Box> 
+        </Flex>
+        <Flex display={'flex'} flexDirection={{base : 'column' , xl : 'row'}} minHeight={'50px'} padding={'0 10px'} mt={5}>
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>예약사이트</FormLabel>
@@ -137,7 +167,7 @@ function HospitalDetail(props: HospitalDetailProps) {
               />
             </FormControl>
           </Box>              
-          <Box flex={1}>
+          <Box flex={1} mt={{base : 5, xl : 0}}>
             <FormControl variant="floatingLabel">
               <FormLabel>예약전화번호</FormLabel>
               <Input 
@@ -150,7 +180,7 @@ function HospitalDetail(props: HospitalDetailProps) {
             </FormControl>
           </Box> 
         </Flex>
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'}>
+        <Flex display={'flex'} flexDirection={{base : 'column' , xl : 'row'}}minHeight={'50px'} padding={'0 10px'}>
           <Box mt={5} width={'100%'}>
             <FormControl variant="floatingLabel">
               <FormLabel>특이사항</FormLabel>
@@ -169,7 +199,7 @@ function HospitalDetail(props: HospitalDetailProps) {
             </FormControl>
           </Box>   
         </Flex>
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'} mt={5}>           
+        <Flex display={'flex'} flexDirection={{base : 'column' , xl : 'row'}} minHeight={'50px'} padding={'0 10px'} mt={5}>           
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>공개여부</FormLabel>
@@ -186,7 +216,7 @@ function HospitalDetail(props: HospitalDetailProps) {
             </FormControl>
           </Box>
         </Flex>
-        <Box display={'flex'} flexDirection={'row'} justifyContent={'center'}  width={'98%'} mt={5}>
+        <Box display={'flex'} flexDirection={{base : 'column' , xl : 'row'}} justifyContent={'center'}  width={'98%'} mt={5}>
           <Button 
             colorScheme='blue' 
             variant='solid' 

@@ -54,7 +54,6 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 		}
 	}
 
-	
 	const columns = [
 		columnHelper.accessor('hid', {
 			id: 'hid',

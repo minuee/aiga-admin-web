@@ -105,8 +105,10 @@ export default function DoctorList(props: { hospitalData: any,inputs : any }) {
           bottom={0}
           left={0}
           width="100%"
-          height={"50px"}
+          height={{base : '100px', xl:'50px'}}
+          //overflowX={{base : 'auto', xl:'hidden'}}
         >
+          
           <PaginationWrapper
             total={inputs.totalCount}
             page={inputs.page}

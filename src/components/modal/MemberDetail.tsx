@@ -40,7 +40,7 @@ function MemberDetail(props: MemberDetailProps) {
 
     return (
       <>
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'}>
+        <Flex display={'flex'} flexDirection={{base : 'column', xl : 'row'}} minHeight={'50px'} padding={{base : '0', xl : '0 10px'}}>
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>이름</FormLabel>
@@ -51,7 +51,7 @@ function MemberDetail(props: MemberDetailProps) {
               />
             </FormControl>
           </Box>              
-          <Box flex={1}>
+          <Box flex={1} mt={{base : '10px', xl : '0px'}}>
             <FormControl variant="floatingLabel">
               <FormLabel>이메일주소</FormLabel>
               <Input 
@@ -62,7 +62,7 @@ function MemberDetail(props: MemberDetailProps) {
             </FormControl>
           </Box>
         </Flex> 
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'} mt={5}>
+        <Flex display={'flex'} flexDirection={{base : 'column', xl : 'row'}} minHeight={'50px'} padding={{base : '0', xl : '0 10px'}} mt={5}>
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>등록일자</FormLabel>
@@ -73,11 +73,11 @@ function MemberDetail(props: MemberDetailProps) {
               />
             </FormControl>
           </Box>              
-          <Box flex={1}>
+          <Box flex={1} mt={{base : '10px', xl : '0px'}}>
             <FormControl variant="floatingLabel">
               <FormLabel>등급</FormLabel>
               <RadioGroup defaultValue='1'>
-                <Stack spacing={5} direction='row' padding={'10px'}>
+                <Stack spacing={5} direction={{base : 'column', md : 'row'}} padding={{base : '0', md : '10px'}}>
                   <Radio colorScheme='red' value='1' onClick={() => setInputs({...inputs, relation: '1'})}>
                     Platinum
                   </Radio>
@@ -100,7 +100,7 @@ function MemberDetail(props: MemberDetailProps) {
             <FormControl variant="floatingLabel">
               <FormLabel>가입경로</FormLabel>
               <RadioGroup defaultValue='1'>
-                <Stack spacing={5} direction='row'>
+                <Stack spacing={5} direction={{base : 'column', md : 'row'}} padding={{base : '0', md : '10px'}}>
                   <Radio colorScheme='red' value='1' onClick={() => setInputs({...inputs, relation: '1'})}>
                     AIGA
                   </Radio>

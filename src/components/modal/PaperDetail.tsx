@@ -59,7 +59,7 @@ function DoctorDetail(props: DoctorDetailProps) {
 
     return (
       <>
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'}>
+        <Flex display={'flex'} flexDirection={{base : 'column' , 'mobile' : 'row'}} minHeight={'50px'} padding={{base : "0", 'mobile' : '0 10px'}}>
           <Box flex={1} width={'100%'}>
             <FormControl variant="floatingLabel">
               <FormLabel>Paper Id</FormLabel>
@@ -73,7 +73,7 @@ function DoctorDetail(props: DoctorDetailProps) {
               />
             </FormControl>
           </Box>  
-          <Box flex={1} width={'100%'}>
+          <Box flex={1} width={'100%'} mt={{base : "10px", 'mobile' : '0'}}>
             <FormControl variant="floatingLabel">
               <FormLabel>의사명</FormLabel>
               <Input 
@@ -87,7 +87,7 @@ function DoctorDetail(props: DoctorDetailProps) {
             </FormControl>
           </Box>   
         </Flex>
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'} mt={5}>
+        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={{base : "0", 'mobile' : '0 10px'}} mt={5}>
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>
@@ -111,7 +111,7 @@ function DoctorDetail(props: DoctorDetailProps) {
             </FormControl>
           </Box>              
         </Flex> 
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'} mt={5}>
+        <Flex display={'flex'} flexDirection={{base : 'column' , 'mobile' : 'row'}} minHeight={'50px'} padding={{base : "0", 'mobile' : '0 10px'}} mt={5}>
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>저널명</FormLabel>
@@ -125,7 +125,7 @@ function DoctorDetail(props: DoctorDetailProps) {
               />
             </FormControl>
           </Box>              
-          <Box flex={1}>
+          <Box flex={1} mt={{base : "10px", 'mobile' : '0'}}>
             <FormControl variant="floatingLabel">
               <FormLabel>PMID</FormLabel>
               <Input 
@@ -139,7 +139,7 @@ function DoctorDetail(props: DoctorDetailProps) {
             </FormControl>
           </Box> 
         </Flex> 
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'} mt={5}>
+        <Flex display={'flex'} flexDirection={{base : 'column' , 'mobile' : 'row'}} minHeight={'50px'} padding={{base : "0", 'mobile' : '0 10px'}} mt={5}>
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>ImpactFactor</FormLabel>
@@ -153,7 +153,7 @@ function DoctorDetail(props: DoctorDetailProps) {
               />
             </FormControl>
           </Box>              
-          <Box flex={1}>
+          <Box flex={1} mt={{base : "10px", 'mobile' : '0'}}>
             <FormControl variant="floatingLabel">
               <FormLabel>인용수</FormLabel>
               <Input 
@@ -167,7 +167,7 @@ function DoctorDetail(props: DoctorDetailProps) {
             </FormControl>
           </Box> 
         </Flex> 
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'}>
+        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={{base : "0", 'mobile' : '0 10px'}}>
           <Box mt={5} width={'100%'}>
             <FormControl variant="floatingLabel">
               <FormLabel>Authors</FormLabel>
@@ -175,7 +175,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 variant={'outline'} 
                 onChange={(e) => setInputs({...inputs, specialties: e.target.value})} 
                 resize={'none'}  
-                minH={'60px'}
+                minH={'100px'}
                 width={'100%'}
                 size={'sm'} 
                 borderColor={borderColor}
@@ -185,7 +185,7 @@ function DoctorDetail(props: DoctorDetailProps) {
             </FormControl>
           </Box>   
         </Flex>
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'}>
+        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={{base : "0", 'mobile' : '0 10px'}}>
           <Box mt={5} width={'100%'}>
             <FormControl variant="floatingLabel">
               <FormLabel>Title<span style={{color:"red",fontSize:"10px"}}> * Original Title</span></FormLabel>
@@ -193,7 +193,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 variant={'outline'} 
                 onChange={(e) => setInputs({...inputs, specialties: e.target.value})} 
                 resize={'none'}  
-                minH={'60px'}
+                minH={'100px'}
                 width={'100%'}
                 size={'sm'} 
                 borderColor={borderColor}
@@ -203,7 +203,7 @@ function DoctorDetail(props: DoctorDetailProps) {
             </FormControl>
           </Box>   
         </Flex>
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'}>
+        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={{base : "0", 'mobile' : '0 10px'}}>
           <Box mt={5} width={'100%'}>
             <FormControl variant="floatingLabel">
               <FormLabel>Title<span style={{color:"red",fontSize:"10px"}}> * PubMed Title</span></FormLabel>
@@ -211,7 +211,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 variant={'outline'} 
                 onChange={(e) => setInputs({...inputs, title_pubmed: e.target.value})} 
                 resize={'none'}  
-                minH={'60px'}
+                minH={'100px'}
                 width={'100%'}
                 size={'sm'} 
                 borderColor={borderColor}
@@ -221,7 +221,7 @@ function DoctorDetail(props: DoctorDetailProps) {
             </FormControl>
           </Box>   
         </Flex>
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'} mt={5}>           
+        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={{base : "0", 'mobile' : '0 10px'}} mt={5}>           
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>공개여부</FormLabel>

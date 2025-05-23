@@ -44,7 +44,7 @@ function InquiryDetail(props: InquiryDetailProps) {
 
     return (
       <>
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'}>
+        <Flex display={'flex'} flexDirection={{base : 'column' , xl : 'row'}}  minHeight={'50px'} padding={'0 10px'}>
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>요청자 이름</FormLabel>
@@ -55,7 +55,7 @@ function InquiryDetail(props: InquiryDetailProps) {
               />
             </FormControl>
           </Box>              
-          <Box flex={1}>
+          <Box flex={1} mt={{base : 5, xl : 0}}>
             <FormControl variant="floatingLabel">
               <FormLabel>연락처</FormLabel>
               <Input 
@@ -66,7 +66,7 @@ function InquiryDetail(props: InquiryDetailProps) {
             </FormControl>
           </Box>
         </Flex> 
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'} mt={5}>
+        <Flex display={'flex'} flexDirection={{base : 'column' , xl : 'row'}}  minHeight={'50px'} padding={'0 10px'} mt={5}>
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>등록일자</FormLabel>
@@ -77,7 +77,7 @@ function InquiryDetail(props: InquiryDetailProps) {
               />
             </FormControl>
           </Box>              
-          <Box flex={1}>
+          <Box flex={1} mt={{base : 5, xl : 0}}>
             <FormControl variant="floatingLabel">
               <FormLabel>관계</FormLabel>
               <RadioGroup defaultValue='1'>
@@ -96,7 +96,7 @@ function InquiryDetail(props: InquiryDetailProps) {
             </FormControl>
           </Box>
         </Flex> 
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'}>
+        <Flex display={'flex'} flexDirection={{base : 'column' , xl : 'row'}}  minHeight={'50px'} padding={'0 10px'}>
           <Box mt={5} width={'100%'}>
             <FormControl variant="floatingLabel">
               <FormLabel>요청사항</FormLabel>
@@ -114,7 +114,7 @@ function InquiryDetail(props: InquiryDetailProps) {
           </Box>   
         </Flex>
         <Divider orientation='horizontal' py={2}/>
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'} mt={5}>
+        <Flex display={'flex'} flexDirection={{base : 'column' , xl : 'row'}}  minHeight={'50px'} padding={'0 10px'} mt={5}>
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>코멘트</FormLabel>
@@ -125,7 +125,7 @@ function InquiryDetail(props: InquiryDetailProps) {
               />
             </FormControl>
           </Box>              
-          <Box flex={1}>
+          <Box flex={1} mt={{base : 5, xl : 0}}>
             <FormControl variant="floatingLabel">
               <FormLabel>처리</FormLabel>
               <RadioGroup defaultValue='1'>

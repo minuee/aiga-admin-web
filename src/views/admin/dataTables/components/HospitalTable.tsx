@@ -55,7 +55,6 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 	const sidebarBackgroundColor = useColorModeValue('white', 'gray.700');
 	const btnRef = React.useRef(null);
 
-
 	const setData = React.useCallback(
 		async() => {
 			setTableData(tableData);
@@ -91,7 +90,6 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 			keyword 
 		})
 	}
-
 	
 	const columns = [
 		columnHelper.accessor('hid', {
@@ -280,7 +278,8 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 													justifyContent='space-between'
 													align='center'
 													fontSize={{ sm: '10px', lg: '12px' }}
-													color='gray.400'>
+													color='gray.400'
+												>
 													{flexRender(header.column.columnDef.header, header.getContext())}{{
 														asc: '',
 														desc: '',
@@ -385,9 +384,13 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 						_hover={{ boxShadow: 'none' }}
 					/>
 					<DrawerHeader sx={{borderBottom:'1px solid #ebebeb'}}>
-						<Flex justifyContent='space-between' alignItems='center'>
+						<Flex 
+							flexDirection={{base : 'column', 'mobile':'row'}}
+							justifyContent='space-between' 
+							alignItems='center'
+						>
 							<Text>{selectedHospital?.baseName} 의사리스트</Text>
-							<Box display='flex' mr="10" justifyContent={'center'} alignItems={'center'}>
+							<Box display='flex' flexDirection={{base : 'column', 'mobile':'row'}} mr={{base : '0', 'mobile':'10'}} justifyContent={'center'} alignItems={'center'}>
 								<Select value={inputs.orderName} placeholder='정렬기준' onChange={(e:any) =>setInputs({...inputs,orderName : e.target.value})} size={'sm'}>
 									<option value='deptname'>진료과목명순</option>
 									<option value='doctorname'>의사명</option>

@@ -10,7 +10,7 @@ import routes from 'routes';
 import IconFullScreen from "components/icons/IconFullScreen";
 import functions from 'utils/functions';
 //로그인 전역상태
-import UserStateStore from 'store/userStore';
+import AdminUserStateStore from 'store/userStore';
 import { redirect } from 'next/navigation';
 
 export default function HeaderLinks(props: {
@@ -33,27 +33,29 @@ export default function HeaderLinks(props: {
   const ethBox = useColorModeValue('white', 'navy.800');
   const shadow = useColorModeValue( '14px 17px 40px 4px rgba(112, 144, 176, 0.18)','14px 17px 40px 4px rgba(112, 144, 176, 0.06)');
   const borderButton = useColorModeValue('secondaryGray.500', 'whiteAlpha.200');
-  const setLoginUserInfo = UserStateStore((state) => state.setUserState);
-  const { nickName, ...userInfo } = UserStateStore(state => state);
+  const setAdminLoginUserInfo = AdminUserStateStore((state) => state.setAdminUserState);
+  const { nickName, ...userInfo } = AdminUserStateStore(state => state);
 
   const onHandleClick = () => {
-    setLoginUserInfo(
+    setAdminLoginUserInfo(
       false,
       "",
       false,
       ""
     );
+
     setTimeout(() => redirect('/auth/sign-in'), 500);
   }
   return (
     <Flex
       w={{ sm: '100%', md: 'auto' }}
       alignItems="center"
+      justifyContent={'flex-end'}
       flexDirection="row"
       bg={menuBg}
       flexWrap={secondary ? { base: 'wrap', md: 'nowrap' } : 'unset'}
-      p="10px"
-      borderRadius="30px"
+      p={{base : "5px", xl : "10px"}}
+      borderRadius={{ base : "15px", xl : "30px"}}
       boxShadow={shadow}
     >
       <SidebarResponsive routes={routes} />
@@ -89,13 +91,13 @@ export default function HeaderLinks(props: {
             _hover={{ cursor: 'pointer' }}
             color="white"
             bg="#11047A"
-            w="40px"
-            h="40px"
+            w={{base : "30px", xl : "40px"}}
+            h={{base : "30px", xl : "40px"}}
             borderRadius={'50%'}
           />
           <Center top={0} left={0} position={'absolute'} w={'100%'} h={'100%'}>
             <Text fontSize={'xs'} fontWeight="bold" color={'white'}>
-              {nickName ? nickName?.substring(0,2) : "AI" }
+              {nickName ? nickName?.substring(0,2) : "??" }
             </Text>
           </Center>
         </MenuButton>

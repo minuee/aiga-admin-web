@@ -75,7 +75,7 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                     >
                         {
                         type === 'papers' ? (
-                            <List spacing={2}>
+                            <List spacing={{base : 0,'mobile' : 2}}>
                             {inputs?.map((item:any, index:number) => (
                                 <ListItem key={index}>
                                     <FormControl variant="floatingLabel" display={'flex'} flexDirection={'row'}>

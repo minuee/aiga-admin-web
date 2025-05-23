@@ -5,7 +5,6 @@ import { Flex, Box, Table, Checkbox, Tbody, Td, Text, Th, Thead, Tr, useColorMod
 // Custom components
 import Card from 'components/card/Card';
 import TableMenu from 'components/menu/TableMenu';
-import CustomAlert from 'components/etc/CustomAlert';
 import { renderThumb,renderTrack,renderView } from 'components/scrollbar/Scrollbar';
 import dynamic from 'next/dynamic';
 const Scrollbars = dynamic(
@@ -33,6 +32,21 @@ export default function CheckTable(props: { tableData: any }) {
 	const textColor = useColorModeValue('secondaryGray.900', 'white');
 	const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
 	const bgColor = useColorModeValue(' .300', 'navy.900');
+	let defaultData= tableData;
+	const [ data, setData ] = React.useState(() => [ ...defaultData ]);
+	const [ selectedData, setSelectedData ] = React.useState(null);
+	
+	const [ isShow, setShow ] = React.useState(false);
+	const btnRef = React.useRef();
+	
+	const onHandleToggle = (bool:boolean) => {
+		setShow(bool)
+	}
+
+	const onHandleOpenData = ( data : any ) => {
+		setSelectedData(data);
+		setTimeout(() => setShow(true), 300);
+	}
 
 	const getData = React.useCallback(
 		async() => {
@@ -43,14 +57,12 @@ export default function CheckTable(props: { tableData: any }) {
 				orderName:'hospital.hid'
 			});
 		},[tableData]
-	  );
+	)
 	
 	React.useEffect(() => {
 		getData().then((res) => setData9(res));
 	}, [getData]);
 	
-
-	let defaultData= tableData;
 	const columns = [
 		columnHelper.accessor('name', {
 			id: 'title',
@@ -70,7 +82,7 @@ export default function CheckTable(props: { tableData: any }) {
 			cell: (info: any) => (
 				<Flex align='center'>
 					<Checkbox defaultChecked={info.getValue()[1]} colorScheme='brandScheme' mr='10px' />
-					<Box  onClick={()=> onHandleToggle(true)} cursor={"pointer"}>
+					<Box  onClick={()=> onHandleOpenData(info.row.original)} cursor={"pointer"}>
 						<Text color={textColor} fontSize='sm' fontWeight='700'>
 							{info.getValue()[0]}
 						</Text>
@@ -146,9 +158,7 @@ export default function CheckTable(props: { tableData: any }) {
 			)
 		})
 	];
-	const [ data, setData ] = React.useState(() => [ ...defaultData ]);
-	const [ isShow, setShow ] = React.useState(false);
-	const btnRef = React.useRef();
+
 	const table = useReactTable({
 		data,
 		columns,
@@ -160,10 +170,6 @@ export default function CheckTable(props: { tableData: any }) {
 		getSortedRowModel: getSortedRowModel(),
 		debugTable: true
 	});
-
-	const onHandleToggle = (bool:boolean) => {
-		setShow(bool)
-	}
 
 	return (
 		<Card flexDirection='column' w='100%' px='0px' overflowX={{ sm: 'scroll', lg: 'hidden' }}>
@@ -269,14 +275,12 @@ export default function CheckTable(props: { tableData: any }) {
 							universal={true}
 						>
 						<NoticeForm
-							data={null}
+							data={selectedData}
 						/>
 						</Scrollbars>
 					</DrawerBody>
 					<DrawerFooter sx={{borderTop:'1px solid #ebebeb'}}>
-						<Button variant='outline' mr={3} onClick={()=>setShow(false)}>
-						Cancel
-						</Button>
+						<Button variant='outline' mr={3} onClick={()=>setShow(false)}>Cancel</Button>
 						<Button colorScheme='blue'>Save</Button>
 					</DrawerFooter>
 					</DrawerContent>

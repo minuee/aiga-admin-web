@@ -72,6 +72,7 @@ export default function AdminNavbar (props: {
       transitionTimingFunction='linear, linear, linear, linear'
       alignItems={{ xl: 'center' }}
       display={secondary ? 'block' : 'flex'}
+      flexDirection={{base : 'column', xl : 'column'}}
       minH='75px'
       justifyContent={{ xl: 'center' }}
       lineHeight='25.6px'
@@ -79,15 +80,10 @@ export default function AdminNavbar (props: {
       mt={secondaryMargin}
       pb='8px'
       right={{ base: '12px', md: '30px', lg: '30px', xl: '30px' }}
-      px={{
-        sm: paddingX,
-        md: '10px'
-      }}
-      ps={{
-        xl: '12px'
-      }}
+      px={{ sm: paddingX, md: '10px'}}
+      ps={{xl: '12px'}}
       pt='8px'
-      top={{ base: '12px', md: '0px', xl: '18px' }}
+      top={{ base: '6px', md: '0px' }}
       w={
         isSmall
         ?
@@ -109,12 +105,7 @@ export default function AdminNavbar (props: {
     }
     >
       <Flex
-        w='100%'
-        flexDirection={{
-          sm: 'column',
-          md: 'row'
-        }}
-        alignItems={{ xl: 'center' }}
+        w='100%'   
         mb={gap}
       >
         <Box mb={{ sm: '8px', md: '0px' }}>
@@ -131,6 +122,19 @@ export default function AdminNavbar (props: {
               </BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
+        </Box>
+      </Flex>
+      <Flex
+        w='100%'
+        alignItems={{ xl: 'center' }}
+        mb={gap}
+      >
+        <Box 
+          display={'flex'} 
+          flex={1}
+          alignItems={'center'}
+          mb={{ sm: '8px', md: '0px' }}
+        > 
           {/* Here we create navbar brand, based on route name */}
           <Link
             color={mainText}
@@ -138,7 +142,7 @@ export default function AdminNavbar (props: {
             bg='inherit'
             borderRadius='inherit'
             fontWeight='bold'
-            fontSize='34px'
+            fontSize={{base : '24px', xl : '34px'}}
             _hover={{ color: { mainText } }}
             _active={{
               bg: 'inherit',
@@ -152,7 +156,12 @@ export default function AdminNavbar (props: {
             {brandText}
           </Link>
         </Box>
-        <Box ms='auto' w={{ sm: '100%', md: 'unset' }}>
+        <Box
+          display={'flex'} 
+          flex={1}
+          ms='auto' w={{ sm: '100%', md: 'unset' }}
+          justifyContent={'flex-end'}
+        >
           <AdminNavbarLinks
             onOpen={props.onOpen}
             secondary={props.secondary}

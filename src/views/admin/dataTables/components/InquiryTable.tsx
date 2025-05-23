@@ -166,11 +166,19 @@ export default function InquiryTable(props: { tableData: any }) {
 
 	return (
 		<Card flexDirection='column' w='100%' px='0px' overflowX={{ sm: 'scroll', lg: 'hidden' }}>
-			<Flex px='25px' mb="8px" justifyContent='space-between' align='center'>
-				<Text color={textColor} fontSize='22px' mb="4px" fontWeight='700' lineHeight='100%'>
-					수정요청 리스트
-				</Text>
-				<Box display='flex' gap='10px'>
+			<Flex 
+				flexDirection={{base : 'column', md : 'row'}}
+				px={{base : '10px', xl : '25px'}}
+				mb="8px" 
+				justifyContent={{base : 'center', md : 'space-between' }}
+				align='center'
+			>
+				<Box display='flex' alignItems='center' width={{base : '100%', xl : 'auto'}}>
+					<Text color={textColor} fontSize='22px' mb="4px" fontWeight='700' lineHeight='100%'>
+						수정요청 리스트
+					</Text>
+				</Box>
+				<Box display='flex' alignItems={'flex-end'} width={{base : '100%', xl : 'auto'}}>
 					<Select placeholder='정렬기준'>
 						<option value='option1'>최신 등록순</option>
 						<option value='option2'>이름순</option>
@@ -188,7 +196,7 @@ export default function InquiryTable(props: { tableData: any }) {
 					</Button>
 				</Box>
 			</Flex>
-			<Box>
+			<Box minHeight={{base : "200px" , xl : "400px"}}>
 				<Table variant='simple' color='gray.500' mb='24px' mt="12px">
 					<Thead>
 						{table.getHeaderGroups().map((headerGroup) => (

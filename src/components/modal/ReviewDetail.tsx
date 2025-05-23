@@ -48,7 +48,7 @@ function ReviewDetail(props: ReviewDetailProps) {
 
     return (
       <>
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'}>
+        <Flex display={'flex'} flexDirection={{base : 'column' , xl : 'row'}} minHeight={'50px'} padding={{base : '0', xl : '0 10px'}}>
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>작성자 이름</FormLabel>
@@ -59,7 +59,7 @@ function ReviewDetail(props: ReviewDetailProps) {
               />
             </FormControl>
           </Box>              
-          <Box flex={2}>
+          <Box flex={2} mt={{base : 5, xl : 0}}>
             <FormControl variant="floatingLabel">
               <FormLabel>작성자 이메일</FormLabel>
               <Input 
@@ -69,7 +69,7 @@ function ReviewDetail(props: ReviewDetailProps) {
               />
             </FormControl>
           </Box>
-          <Box flex={1}>
+          <Box flex={1} mt={{base : 5, xl : 0}}>
             <FormControl variant="floatingLabel">
               <FormLabel>등록일자</FormLabel>
               <Input 
@@ -80,7 +80,7 @@ function ReviewDetail(props: ReviewDetailProps) {
             </FormControl>
           </Box>   
         </Flex> 
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'} mt={5}>
+        <Flex display={'flex'} flexDirection={{base : 'column' , xl : 'row'}} minHeight={'50px'} padding={{base : '0', xl : '0 10px'}} mt={5}>
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>병원명</FormLabel>
@@ -91,7 +91,7 @@ function ReviewDetail(props: ReviewDetailProps) {
               />
             </FormControl>
           </Box>              
-          <Box flex={1}>
+          <Box flex={1} mt={{base : 5, xl : 0}}>
             <FormControl variant="floatingLabel">
               <FormLabel>의사명</FormLabel>
               <Input 
@@ -102,11 +102,11 @@ function ReviewDetail(props: ReviewDetailProps) {
             </FormControl>
           </Box> 
         </Flex> 
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'}>
+        <Flex display={'flex'} flexDirection={{base : 'column' , xl : 'row'}} minHeight={'50px'} padding={{base : '0', xl : '0 10px'}}>
           <Box mt={5} width={'100%'}>
             <FormControl variant="floatingLabel">
               <FormLabel>평가</FormLabel>
-              <Flex display={'flex'} flexDirection={'column'} minHeight={'100px'} padding={'0 10px'} mt={5}>
+              <Flex display={'flex'} flexDirection={'column'} minHeight={'100px'} padding={{base : '0', xl : '0 10px'}} mt={{base : 5, xl : 0}}>
                 <Box display={'flex'} flexDirection={'row'} justifyContent={'center'}  width={'98%'} mb={10}>
                   <Box flex={1} display={'flex'} justifyContent={'flex-end'} alignItems={'center'} pr={3}>
                     <Text fontSize={'14px'} fontWeight={'bold'}>친절•배려</Text>
@@ -159,7 +159,7 @@ function ReviewDetail(props: ReviewDetailProps) {
             </FormControl>
           </Box>   
         </Flex>
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'}>
+        <Flex display={'flex'} flexDirection={{base : 'column' , xl : 'row'}} minHeight={'50px'} padding={{base : '0', xl : '0 10px'}}>
           <Box mt={5} width={'100%'}>
             <FormControl variant="floatingLabel">
               <FormLabel>내용</FormLabel>
@@ -177,7 +177,7 @@ function ReviewDetail(props: ReviewDetailProps) {
           </Box>   
         </Flex>
         <Divider orientation='horizontal' py={2}/>
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'} mt={5}>
+        <Flex display={'flex'} flexDirection={{base : 'column' , xl : 'row'}} minHeight={'50px'} padding={{base : '0', xl : '0 10px'}} mt={{base : 5, xl : 0}}>
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>코멘트</FormLabel>
@@ -189,7 +189,7 @@ function ReviewDetail(props: ReviewDetailProps) {
             </FormControl>
           </Box>   
         </Flex>
-        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={'0 10px'} mt={5}>           
+        <Flex display={'flex'} flexDirection={{base : 'column' , xl : 'row'}} minHeight={'50px'} padding={{base : '0', xl : '0 10px'}} mt={{base : 5, xl : 0}}>       
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>처리</FormLabel>

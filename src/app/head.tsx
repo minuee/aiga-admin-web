@@ -3,7 +3,7 @@ import React from "react";
 export default function RootHead() {
 	return <>
 			<link rel="apple-touch-icon" href="/logo192.png" />
-			<link rel="/manifest" href="/manifest.json" />
+			{/* <link rel="/manifest" href="/manifest.json" /> */}
 			<link rel="robots" href="/robots.txt" />
 			<link
 				rel="shortcut icon"

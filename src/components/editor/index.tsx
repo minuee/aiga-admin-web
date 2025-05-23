@@ -1,5 +1,7 @@
 'use client';
-
+import { Box,Flex,useColorModeValue } from '@chakra-ui/react'
+// The below import defines which components come from formik
+import styled from "@emotion/styled";
 import { useMemo,useEffect,useState,useRef } from "react";
 import dynamic from 'next/dynamic';
 import 'react-quill-new/dist/quill.snow.css';
@@ -30,30 +32,32 @@ import { ImageFormats } from '@xeger/quill-image-formats';
 ); */
 
 import Parchment from 'parchment';
-
+import dompurify from "dompurify";
 const Quill_NoSSR = dynamic(
     async () => {
         const { default: RQ } = await import("react-quill-new");
+        //const Parchment = await import("parchment");
         RQ.Quill.register('modules/imageResize', ImageResize);
         RQ.Quill.register("modules/imageActions", ImageActions);
         RQ.Quill.register("modules/imageFormats", ImageFormats);
         //const Parchment = RQ.Quill.import('parchment');
-        const Align = new Parchment.Attributor.Style('align', 'text-align', {
-            whitelist: ['right', 'center', 'justify'],
-        });
-
+        /* const Align = new Parchment.Attributor.Style('align', 'text-align', {
+            whitelist: ["left", "center", "right", "justify"],
+        }); */
         const Height = new Parchment.Attributor.Style('height', 'height', {
             
         });
         const Width = new Parchment.Attributor.Style('width', 'width', {
             
         });
-     
+
         const Float = new Parchment.Attributor.Style('float', 'float', {
-            scope: Parchment.Scope.INLINE_BLOT,
+            //scope: Parchment.Scope.INLINE_BLOT,
             whitelist: ['left','center' ,'right']
         });
-        RQ.Quill.register(Align,true);
+
+        
+       // RQ.Quill.register(Align,true);
         RQ.Quill.register(Float,true);
         RQ.Quill.register(Height,true);
         RQ.Quill.register(Width,true);
@@ -73,12 +77,14 @@ const Quill_NoSSR = dynamic(
       ssr: false,
     }
 )
-  
+
 import ReactModule from "./ReactModule";
+import functions from "utils/functions";
 
 interface ReactEditorProps {
     height: number;
-    colorMode:any
+    colorMode:any;
+    content : any
 }
 
 export default function ReactEditor(props: ReactEditorProps) {
@@ -89,21 +95,24 @@ export default function ReactEditor(props: ReactEditorProps) {
     const handleChange = (value:any) => {
         //setState({ value });
     };
-    
+    const sanitizer = dompurify.sanitize;
     useEffect(() => {
         if (typeof window !== 'undefined') {
           import('react-quill-new').then(({ Quill }: any) => {
-            Quill.register('modules/imageResize', ImageResize);
-            Quill.register('modules/imageActions', ImageActions);
-            Quill.register('modules/imageFormats', ImageFormats);
-            
-            setQuillReady(true);
-          });
+                Quill.register('modules/imageResize', ImageResize);
+                Quill.register('modules/imageActions', ImageActions);
+                Quill.register('modules/imageFormats', ImageFormats);        
+                setQuillReady(true);
+            });
         }
-      }, []);
+    }, []);
 
+    useEffect(() => {
+        if ( !functions.isEmpty(props.content)) {
+            setValue(props.content);
+        }
+    }, [props.content]);
 
- 
     const imageHandler = async () => {
         if (!QuillRef.current) return;
     
@@ -138,13 +147,18 @@ export default function ReactEditor(props: ReactEditorProps) {
         'underline',
         'strike',
         'blockquote',
+        'list',
+        'code',
         'code-block',
+        'script',
         'color',
         'background',
         'image',
         'link',
         'height',
-        'width'
+        'width',
+        'align',
+        'float',
     ];
 
     const modules = useMemo(() => {
@@ -155,17 +169,24 @@ export default function ReactEditor(props: ReactEditorProps) {
                 container: [
                     [{ header: [1, 2, 3, 4, 5, false] }],
                     ['bold', 'italic', 'underline', 'strike'],
-                    ['blockquote', 'code-block'],
-                    [{ color: [] } , { background: [] }],
-                    [{ align: [] }],['clean'],
-                    ['image','link']
+                    ['blockquote'],
+                    ['list'],
+                    [
+                        { color: [] },
+                        { background: [] }
+                    ],
+                    [{ script: 'sub' }, { script: 'super' }], // 첨자
+                    ['code', 'code-block'], // 코드 블록 및 인라인 코드를 위한 기능 추가
+                    ['image','link'],
+                    [{ align: '' }, { align: 'center' }, { align: 'right' }, { align: 'justify' }],
+                    ['clean']
+                    
                 ],
                 //handlers: { image: imageHandler},
-                color: ['#ff0000']
             },
-            imageResize: {
+            /* imageResize: {
                 modules: ['Resize', 'DisplaySize']
-            },
+            }, */
             imageActions: {},
             //imageFormats: {},
             
@@ -199,7 +220,66 @@ export default function ReactEditor(props: ReactEditorProps) {
         });
       }, [quillReady]); */
    
-
+/* 
+      const imageHandler = async () => {
+        const input: any = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
+        input.click();
+    //formData로 이미지 구현
+        input.addEventListener('change', async () => {
+          const formData = new FormData();
+          const file = input.files;
+          const fileUrl: any = [...file];
+          for (let i = 0; i < file.length; i++) {
+            const nowUrl = URL.createObjectURL(file[i]);
+            fileUrl.push(nowUrl);
+          }
+          for (let i = 0; i < file.length; i++) {
+            formData.append('file', fileUrl[i]);
+          }
+    
+          formData.append('type', props.type);
+          formData.append('targetId', props.targetId);
+    //이미지를 formData로 서버에 api post로 보내고 다시 api get하여 받은 
+          // url값을 에디터 태그로 활용
+          //이렇게 안하고 이미지를 그냥 에디터에 넣어버리면
+          // 64bit 태그로 html tag로 저장된다.
+          // 이 태크는 너무 길기에 좋지 않다.
+          await axios({
+            method: 'post',
+            url: `${process.env.REACT_APP_API_URL}/file/upload`,
+            headers: {
+              Authorization: jwt,
+              'Content-Type': 'multipart/form-data',
+            },
+            data: formData,
+          }).then((res) => {
+            axios({
+              method: 'get',
+              url: `${process.env.REACT_APP_API_URL}/file/list/${props.type}/
+    ${props.targetId}`,
+              headers: {
+                Authorization: jwt,
+                'Content-Type': 'multipart/form-data',
+              },
+            }).then((res) => {
+              const IMG_URL = [];
+              for (let i = 0; i < res.data.length; i++) {
+                const URL =
+                  process.env.REACT_APP_BASE_URL + 
+                      res.data[i].filePath + res.data[i].fileName;
+                IMG_URL.push(URL);
+              }
+              const editor = quillRef.current.getEditor();
+              const range = editor.getSelection();
+    
+              editor.insertEmbed(range.index, 'image', IMG_URL[res.data.length - 1]);
+            });
+          });
+        });
+      };
+       */
     return (
         <div>
              {/* { quillReady && ( 
@@ -209,22 +289,32 @@ export default function ReactEditor(props: ReactEditorProps) {
              )} */}
             {
                 quillReady && (
-                <Quill_NoSSR
-                    forwardedRef={QuillRef}
-                    theme="snow" 
-                    /* value={
-                        "<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1c9zAnn02wcDmYlMABoRgWoxn4wccXzUpUg&s' alt='' width='200px' height='200px' />"
-                    } */
-                    value={value}
-                    modules={modules} 
-                    onChange={handleChange}
-                    formats={formats} 
-                    style={{height: props.height ? `${props.height}px` :"300px", width: "100%",}}
-                    className='h-screen max-w-full'
-                />
+                    <>
+                        <Quill_NoSSR
+                            forwardedRef={QuillRef}
+                            theme="snow" 
+                            /* value={
+                                "<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1c9zAnn02wcDmYlMABoRgWoxn4wccXzUpUg&s' alt='' width='200px' height='200px' />"
+                            } */
+                            value={value}
+                            modules={modules} 
+                            onChange={setValue}
+                            formats={formats} 
+                            style={{height: props.height ? `${props.height}px` :"300px", width: "100%",}}
+                            className='h-screen max-w-full'
+                        />
+                        <Flex my={{base : 20, md : 12}} flexDirection={{base : "column", md : "row"}}>
+                            <Box flex={1} padding={5} border={"1px solid #ccc"} mr={{base : 0, md : 1}} wordBreak={'break-all'}>
+                                {value}
+                            </Box>
+                            <Box flex={1} padding={5} border={"1px solid #ccc"} ml={{base : 0, md : 1}}>
+                                <div className="ql-editor" dangerouslySetInnerHTML={{ __html : sanitizer(`${value}`) }} />
+                            </Box>
+                            
+                        </Flex>
+                    </>
                 )
             }
         </div>
     )
 }
-

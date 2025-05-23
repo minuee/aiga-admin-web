@@ -9,18 +9,21 @@ export default function Footer(props: { [x: string]: any }) {
   
   return (
     <Flex
+      position={{base : 'absolute' ,md : 'relative'}}
+      left={{base :0, md : 'auto'}}
+      bottom={{base :0, md : 'auto'}}
       zIndex="3"
       flexDirection={{ base: 'column',lg: 'row' }}
       alignItems={{ base: 'center',xl: 'start'}}
       justifyContent="space-between"
-      px={{ base: '30px', md: '0px' }}
+      px={{ base: '20px', md: '0px' }}
       pb="30px"
       {...props}
     >
       <Text
         color={textColor}
         textAlign={{ base: 'center',xl: 'start'}}
-        mb={{ base: '20px', lg: '0px' }}
+        mb={{ base: '10px', lg: '0px' }}
       >
         {' '}
         &copy; {new Date().getFullYear()}

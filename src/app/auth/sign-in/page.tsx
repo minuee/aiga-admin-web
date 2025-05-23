@@ -2,7 +2,7 @@
 
 import React from 'react';
 // Chakra imports
-import { Box,Button,Checkbox,Flex,FormControl,FormLabel,Heading,Icon,Input,InputGroup,InputRightElement,Text,useColorModeValue,useToast,Spinner} from '@chakra-ui/react';
+import { Box,Button,useColorMode,Flex,FormControl,FormLabel,Heading,Icon,Input,InputGroup,InputRightElement,Text,useColorModeValue,useToast,Spinner} from '@chakra-ui/react';
 import { redirect } from 'next/navigation';
 // Custom components
 import { authProvider } from "services/auth";
@@ -10,15 +10,16 @@ import DefaultAuthLayout from 'layouts/auth/Default';
 // Asset
 import { MdOutlineRemoveRedEye } from 'react-icons/md';
 import { RiEyeCloseLine } from 'react-icons/ri';
-
+import Image from 'next/image';
 import functions from "utils/functions";
 //로그인 전역상태
-import UserStateStore from 'store/userStore';
+import AdminUserStateStore from 'store/userStore';
 
 export default function SignIn() {
-  const setLoginUserInfo = UserStateStore((state) => state.setUserState);
+  const setAdminLoginUserInfo = AdminUserStateStore((state) => state.setAdminUserState);
   const [isLoading, setIsLoading] = React.useState(false);
   // Chakra color mode
+  const { colorMode, toggleColorMode } = useColorMode();
   const textColor = useColorModeValue('navy.700', 'white');
   const textColorSecondary = 'gray.400';
   const textColorDetails = useColorModeValue('navy.700', 'secondaryGray.600');
@@ -65,7 +66,7 @@ export default function SignIn() {
           };
         }else{
           setIsLoading(false);
-          setLoginUserInfo(
+          setAdminLoginUserInfo(
             true,
             login.staff_id,
             ret.data.role,
@@ -82,8 +83,7 @@ export default function SignIn() {
         return {
           error: "Invalid login attempt",
         };
-      }
-      
+      }      
     }
   };
 
@@ -93,7 +93,6 @@ export default function SignIn() {
     }
   };
 
-  
   return (
     <DefaultAuthLayout illustrationBackground={'/img/auth/bg.png'}>
       <Flex
@@ -103,10 +102,10 @@ export default function SignIn() {
         me="auto"
         h="100%"
         alignItems="start"
-        justifyContent="center"
+        justifyContent={{base : "flex-start", md : "center"}}
         mb={{ base: '30px', md: '60px' }}
-        px={{ base: '25px', md: '0px' }}
-        mt={{ base: '40px', md: '14vh' }}
+        px={{ base: '15px', md: '0px' }}
+        mt={{ base: '0px', md: '14vh' }}
         flexDirection="column"
       >
         {
@@ -116,16 +115,19 @@ export default function SignIn() {
             </Box>
           )
         }
-        <Box me="auto">
-          <Heading color={textColor} fontSize="36px" mb="10px">
+        <Box me="auto" width={'100%'}>
+          <Flex display={{base : 'flex', xl : 'none'}} justifyContent={'center'} alignItems={'center'} my={{base : '30px', md : 0}} minH={{base : "60px", md:"0px"}} >
+            <Image src={colorMode == 'light' ? require("../../../img/admin_logo3.png") : require("../../../img/admin_logo3_white.png")} alt='aigia' height={40}/>
+          </Flex>
+          <Heading color={textColor} fontSize={{base : "30px", md:"36px"}} mb="10px">
             Sign In
           </Heading>
           <Text
-            mb="36px"
+            mb={{base : "25px", md : "36px"}}
             ms="4px"
             color={textColorSecondary}
             fontWeight="400"
-            fontSize="md"
+            fontSize="sm"
           >
             AIGA 전용 Admin Page ( 비밀번호와 패스워드는 관리자에게 문의하세요 )
           </Text>
@@ -199,7 +201,7 @@ export default function SignIn() {
                 />
               </InputRightElement>
             </InputGroup>
-            <Flex justifyContent="space-between" align="center" mb="24px">
+            {/* <Flex justifyContent="space-between" align="center" mb="24px">
               <FormControl display="flex" alignItems="center">
                 <Checkbox
                   id="remember-login"
@@ -216,7 +218,7 @@ export default function SignIn() {
                   Keep me logged in
                 </FormLabel>
               </FormControl>
-            </Flex>
+            </Flex> */}
             <Button
               fontSize="sm"
               variant="brand"
