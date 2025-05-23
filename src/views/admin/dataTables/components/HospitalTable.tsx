@@ -48,7 +48,7 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 	const textColor = useColorModeValue('secondaryGray.900', 'white');
 	const orderTextColor = useColorModeValue('black', 'white');
 	const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
-	const bgColor = useColorModeValue('white', 'gray.700');
+	const bgColor = useColorModeValue('white', 'navy.700');
 	const tdColorOdd = useColorModeValue('white', 'gray.700');
 	const tdColorEven = useColorModeValue('#f4f7fe', 'navy.700');
 	const formBtnRef = React.useRef(null);
@@ -303,7 +303,7 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 											height={{base : "100px" , md : '200px'}}
 											justifyContent={'center'}
 											alignItems={'center'}
-											bg="#ffffff"
+											bg={bgColor}
 										>
 											<Text color={textColor} fontSize={{base : "15px", md:'20px'}} fontWeight='normal' lineHeight='100%'>
 												데이터가 없습니다.

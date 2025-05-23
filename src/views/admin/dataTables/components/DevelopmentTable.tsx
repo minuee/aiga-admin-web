@@ -30,6 +30,7 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 	const [ data, setTableData ] = React.useState([]);
 	const [ isOpenModal, setIsOpenModal ] = React.useState(false);
 	const [ selectedHospital, setSelectedHospital ] = React.useState('');
+	const bgColor = useColorModeValue('white', 'gray.700');
 	const textColor = useColorModeValue('secondaryGray.900', 'white');
 	const orderTextColor = useColorModeValue('black', 'white');
 	const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
@@ -266,7 +267,7 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 											height={{base : "100px" , md : '200px'}}
 											justifyContent={'center'}
 											alignItems={'center'}
-											bg="#ffffff"
+											bg={bgColor}
 										>
 											<Text color={textColor} fontSize={{base : "15px", md:'20px'}} fontWeight='normal' lineHeight='100%'>
 												데이터가 없습니다.

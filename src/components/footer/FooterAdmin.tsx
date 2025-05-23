@@ -22,7 +22,7 @@ export default function Footer() {
         {' '}
         &copy; {new Date().getFullYear()}
         <Text as="span" fontWeight="500" ms="4px">
-          AIGA ADMIN. All Rights Reserved. Made by
+          AIGA ADMIN. All Rights Reserved. Powered by
           <Link mx="3px" color={textColor} href="#" target="_blank" fontWeight="700">
             Noh.SN
           </Link>

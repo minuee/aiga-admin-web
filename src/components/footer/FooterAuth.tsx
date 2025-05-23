@@ -28,7 +28,7 @@ export default function Footer(props: { [x: string]: any }) {
         {' '}
         &copy; {new Date().getFullYear()}
         <Text as="span" fontWeight="500" ms="4px">
-          AIGA. All Rights Reserved. Made by
+          AIGA. All Rights Reserved. Powered by
           <Link mx="3px" color={textColor} href="https://www.simmmple.com" target="_blank" fontWeight="700">
             Noh.S.N
           </Link>
