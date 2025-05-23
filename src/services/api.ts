@@ -6,7 +6,7 @@ export type ServiceResponse<T> = {
   state: State;
 } & T;
 
-const baseURL = process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:9999';
+const baseURL = process.env.NEXT_PUBLIC_API_SERVER ?? 'http://localhost:9999';
 axios.defaults.withCredentials = true;
 
 axios.interceptors.request.use(
