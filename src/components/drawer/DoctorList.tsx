@@ -27,43 +27,44 @@ export default function DoctorList(props: { hospitalData: any,inputs : any }) {
 	});
 
   const getData = React.useCallback(
-      async() => {
-        try{
-          console.log("props.inputs 2",inputs)
-          const res:any = await DoctorService.getDoctorList({
-            hospitalId: props.hospitalData?.hid,
-            page: inputs.page,
-            take: inputs.pageSize,
-            order : inputs.orderBy,
-            orderName : inputs.orderName,
-            keyword : inputs.keyword
-          });
-          
-          if ( res?.data?.meta?.totalCount > 0 ) {
-            setData(res?.data?.data);
-            setInputs({...inputs, totalCount : res?.data.meta?.totalCount, pageIndex: parseInt(res?.data?.meta?.currentPage)+1})
-          }else{
-            setData([]);
-          }
-        }catch(e){
+    async() => {
+      try{
+        console.log("props.inputs 2",inputs)
+        const res:any = await DoctorService.getDoctorList({
+          hospitalId: props.hospitalData?.hid,
+          page: inputs.page,
+          take: inputs.pageSize,
+          order : inputs.orderBy,
+          orderName : inputs.orderName,
+          keyword : inputs.keyword
+        });
+        
+        if ( res?.data?.meta?.totalCount > 0 ) {
+          setData(res?.data?.data);
+          setInputs({...inputs, totalCount : res?.data.meta?.totalCount, pageIndex: parseInt(res?.data?.meta?.currentPage)+1})
+        }else{
           setData([]);
         }
-      },[props.hospitalData?.hid,inputs.page,inputs.orderName,inputs.orderBy,inputs.keyword]
-    );
-    
-    React.useEffect(() => {
-      console.log("props.inputs",props.inputs)
-      setInputs({
-        ...inputs,
-        orderBy : props.inputs?.orderBy,
-        orderName : !functions.isEmpty(props.inputs?.orderName) ? props.inputs?.orderName : "deptname",
-        keyword : props.inputs?.keyword
-      })
-    }, []);
+      }catch(e){
+        setData([]);
+      }
+    },[props.hospitalData?.hid,inputs.page,inputs.orderName,inputs.orderBy,inputs.keyword]
+  );
+  
+  React.useEffect(() => {
+    console.log("props.inputs",props.inputs)
+    setInputs({
+      ...inputs,
+      page : 1,
+      orderBy : props.inputs?.orderBy,
+      orderName : !functions.isEmpty(props.inputs?.orderName) ? props.inputs?.orderName : "deptname",
+      keyword : props.inputs?.keyword
+    })
+  }, [props.inputs]);
 
-    React.useEffect(() => {
-      getData()
-    }, [getData]);
+  React.useEffect(() => {
+    getData()
+  }, [getData]);
 
   const getDataSortChange = (str:string) => {
     setInputs({
