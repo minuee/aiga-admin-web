@@ -14,6 +14,7 @@ import Image from 'next/image';
 import functions from "utils/functions";
 //로그인 전역상태
 import AdminUserStateStore from 'store/userStore';
+import { usePathname } from 'next/navigation';
 
 export default function SignIn() {
   const setAdminLoginUserInfo = AdminUserStateStore((state) => state.setAdminUserState);
@@ -30,6 +31,7 @@ export default function SignIn() {
   const googleHover = useColorModeValue({ bg: 'gray.200' },{ bg: 'whiteAlpha.300' });
   const googleActive = useColorModeValue({ bg: 'secondaryGray.300' },{ bg: 'whiteAlpha.200' });
   const toast = useToast();
+  const pathname = usePathname();
 
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
@@ -73,7 +75,14 @@ export default function SignIn() {
             ret.data.nickName
           );
           console.log("process.env.NEXT_PUBLIC_ASSETS_PREFIX",process.env.NEXT_PUBLIC_ASSETS_PREFIX)
-          setTimeout(() => redirect(`${process.env.NEXT_PUBLIC_ASSETS_PREFIX}/v1/dashboard`), 500);
+          setTimeout(() => {
+            if( pathname.includes("auth/sign-in") ) {
+              redirect(`${process.env.NEXT_PUBLIC_ASSETS_PREFIX}/v1/dashboard`);
+            }else{
+              console.log("pathname",pathname)
+            }
+          }
+          , 500);
         }
       } catch (error) {
         // Unused as of now but this is how you would handle invalid

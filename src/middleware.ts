@@ -9,8 +9,8 @@ export async function middleware(request: NextRequest) {
     console.log('accessToken',process.env.NEXT_PUBLIC_AUTH_TOKEN,accessToken)
     console.log('pathname  top ',pathname)
     if (accessToken !== undefined) {
-        if ( pathname.includes("/auth/sign-in")) {
-            return NextResponse.redirect(new URL(`/v1/dashboard`,request.url)
+        if ( pathname  === "/auth/sign-in") {
+            return NextResponse.redirect(new URL(`${process.env.NEXT_PUBLIC_ASSETS_PREFIX}/v1/dashboard`,request.url)
             )
         }else{
             return NextResponse.next();
@@ -18,13 +18,13 @@ export async function middleware(request: NextRequest) {
         
     }else{
        
-        if ( pathname.includes("/auth/sign-in")) {
+        if ( pathname  === "/auth/sign-in") {
             return NextResponse.next();
             
         }else{
             console.log('pathname else',pathname)
             // 로그인이 필요 없는 페이지는 그냥 다음 요청으로 진행
-            return NextResponse.rewrite(new URL("/auth/sign-in", request.url));
+            return NextResponse.rewrite(new URL(`${process.env.NEXT_PUBLIC_ASSETS_PREFIX}/auth/sign-in`, request.url));
         }
     }
 }
