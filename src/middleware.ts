@@ -9,7 +9,7 @@ export async function middleware(request: NextRequest) {
     console.log('accessToken',process.env.NEXT_PUBLIC_AUTH_TOKEN,accessToken)
     if (accessToken !== undefined) {
         if ( pathname === "/auth/sign-in") {
-            return NextResponse.redirect(new URL(`/admin/default`,request.url)
+            return NextResponse.redirect(new URL(`/v1/dashboard`,request.url)
             )
         }else{
             return NextResponse.next();

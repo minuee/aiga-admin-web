@@ -1,6 +1,6 @@
 'use client';
 import { Box, SimpleGrid } from '@chakra-ui/react';
-import DevelopmentTable from 'views/admin/dataTables/components/DevelopmentTable';
+import HospitalTable from 'views/v1/dataTables/components/HospitalTable';
 import styled from '@emotion/styled';
 import * as React from 'react';
 import * as NoticeService from "services/notice/index";
@@ -56,7 +56,7 @@ export default function DataTables() {
         columns={{ sm: 1, md: 1 }}
         spacing={{ base: '20px', xl: '20px' }}
       >
-        <DevelopmentTable 
+        <HospitalTable 
           tableData={data} 
           order={order}
           orderName={orderName}

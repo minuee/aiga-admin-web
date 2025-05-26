@@ -1,7 +1,7 @@
 'use client';
 import { Box, SimpleGrid } from '@chakra-ui/react';
-import CheckTable from 'views/admin/dataTables/components/CheckTable';
-import tableDataCheck from 'views/admin/dataTables/variables/tableDataCheck';
+import InquiryTable from 'views/v1/dataTables/components/InquiryTable';
+import tableDataInquiry from 'views/v1/dataTables/variables/tableDataInquirys';
 import React from 'react';
 
 
@@ -13,7 +13,7 @@ export default function DataTables() {
         columns={{ sm: 1, md: 1 }}
         spacing={{ base: '20px', xl: '20px' }}
       >
-        <CheckTable tableData={tableDataCheck} />
+        <InquiryTable tableData={tableDataInquiry} />
       </SimpleGrid>
     </Box>
   );

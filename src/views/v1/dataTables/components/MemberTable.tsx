@@ -1,71 +1,46 @@
 
 import * as React from 'react';
 import { createColumnHelper,flexRender,getCoreRowModel,getSortedRowModel,SortingState,useReactTable } from '@tanstack/react-table';
-import { Flex, Box, Table, Checkbox, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue,Drawer,DrawerBody,DrawerFooter,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,Button } from '@chakra-ui/react';
+import { 
+	Flex, Box, Table, Checkbox, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue,Drawer,DrawerBody,DrawerFooter,
+	DrawerHeader,DrawerOverlay,Input,DrawerContent,DrawerCloseButton,Button,Select,Modal,ModalOverlay,ModalContent,ModalHeader,ModalCloseButton,ModalBody
+} from '@chakra-ui/react';
 // Custom components
 import Card from 'components/card/Card';
-import TableMenu from 'components/menu/TableMenu';
+
+import { RowObj } from 'views/v1/dataTables/variables/tableDataMembers';
 import { renderThumb,renderTrack,renderView } from 'components/scrollbar/Scrollbar';
 import dynamic from 'next/dynamic';
 const Scrollbars = dynamic(
   () => import('react-custom-scrollbars-2').then((mod) => mod.Scrollbars),
   { ssr: true },
 );
-import * as NoticeService from "services/notice/index";
-import NoticeForm from "views/admin/notice/View";
 
-type RowObj = {
-	name: [string, boolean];
-	writer: string;
-	quantity: number;
-	date: string;
-	info: boolean;
-};
- 
+import MemberDetail from 'components/modal/MemberDetail';
+
+import NoticeForm from "views/v1/notice/View";
+import functions from 'utils/functions';
+import mConstants from 'utils/constants';
+
 const columnHelper = createColumnHelper<RowObj>();
 
 // const columns = columnsDataCheck;
-export default function CheckTable(props: { tableData: any }) {
+export default function MemberTable(props: { tableData: any }) {
 	const { tableData } = props;
 	const [ sorting, setSorting ] = React.useState<SortingState>([]);
+	const [ isOpenRequestModal, setIsOpenRequestModal ] = React.useState(false);
 	const [ data_9, setData9 ] = React.useState<any>([]);
 	const textColor = useColorModeValue('secondaryGray.900', 'white');
 	const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
 	const bgColor = useColorModeValue(' .300', 'navy.900');
+	const sidebarBackgroundColor = useColorModeValue('white', 'navy.800');
+	const formBtnRef = React.useRef(null)
+
 	let defaultData= tableData;
-	const [ data, setData ] = React.useState(() => [ ...defaultData ]);
-	const [ selectedData, setSelectedData ] = React.useState(null);
-	
-	const [ isShow, setShow ] = React.useState(false);
-	const btnRef = React.useRef();
-	
-	const onHandleToggle = (bool:boolean) => {
-		setShow(bool)
-	}
-
-	const onHandleOpenData = ( data : any ) => {
-		setSelectedData(data);
-		setTimeout(() => setShow(true), 300);
-	}
-
-	const getData = React.useCallback(
-		async() => {
-			const res:any = await NoticeService.getHospitalList({
-				page:1,
-				take:10,
-				order:'ASC',
-				orderName:'hospital.hid'
-			});
-		},[tableData]
-	)
-	
-	React.useEffect(() => {
-		getData().then((res) => setData9(res));
-	}, [getData]);
-	
 	const columns = [
 		columnHelper.accessor('name', {
-			id: 'title',
+			size: 200,
+			id: 'name',
 			header: () => (
 				<Flex align='center'>
 					<Checkbox defaultChecked={false} colorScheme='brandScheme' mr='10px' />
@@ -75,80 +50,113 @@ export default function CheckTable(props: { tableData: any }) {
 						fontSize={{ sm: '10px', lg: '12px' }}
 						color='gray.400'
 					>
-						제목
+						이름 
 					</Text>
 				</Flex>
 			),
 			cell: (info: any) => (
 				<Flex align='center'>
 					<Checkbox defaultChecked={info.getValue()[1]} colorScheme='brandScheme' mr='10px' />
-					<Box  onClick={()=> onHandleOpenData(info.row.original)} cursor={"pointer"}>
-						<Text color={textColor} fontSize='sm' fontWeight='700'>
-							{info.getValue()[0]}
-						</Text>
-					</Box>
+					<Text color={textColor} fontSize='sm' fontWeight='700'>
+						{info.getValue()}
+					</Text>
 				</Flex>
 			)
 		}),
-		columnHelper.accessor('info', {
-			id: 'info',
+		columnHelper.accessor('joinType', {
+			id: 'joinType',
 			header: () => (
 				<Text
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
 					color='gray.400'>
-					공개
+					가입경로
+				</Text>
+			),
+			cell: (info) => (
+				<Text color={textColor} fontSize='sm' fontWeight='700'>
+					{info.getValue()}
+				</Text>
+			)
+		}),
+		columnHelper.accessor('grade', {
+			id: 'grade',
+			header: () => (
+				<Text
+					justifyContent='space-between'
+					align='center'
+					fontSize={{ sm: '10px', lg: '12px' }}
+					color='gray.400'>
+					등급
+				</Text>
+			),
+			cell: (info) => (
+				<Text color={textColor} fontSize='sm' fontWeight='700'>
+					{info.getValue()}
+				</Text>
+			)
+		}),
+		columnHelper.accessor('useTokens', {
+			size: 50,
+			id: 'useTokens',
+			header: () => (
+				<Text
+					justifyContent='space-between'
+					align='center'
+					fontSize={{ sm: '10px', lg: '12px' }}
+					color='gray.400'>
+					사용토큰수
+				</Text>
+			),
+			cell: (info) => (
+				<Flex align='center' justifyContent='flex-end'>
+					<Text color={textColor} fontSize='sm' fontWeight='700'>
+						{functions.numberWithCommas(info.getValue())}
+					</Text>
+				</Flex>
+			)
+		}),
+		columnHelper.accessor('isActive', {
+			id: 'isActive',
+			header: () => (
+				<Text
+					justifyContent='space-between'
+					align='center'
+					fontSize={{ sm: '10px', lg: '12px' }}
+					color='gray.400'>
+					활성
 				</Text>
 			),
 			cell: (info) => (
 				<Checkbox defaultChecked={info.getValue()} colorScheme='brandScheme' mr='10px' />
 			)
 		}),
-		columnHelper.accessor('writer', {
-			id: 'writer',
+		columnHelper.accessor('isEntire', {
+			id: 'isEntire',
 			header: () => (
 				<Text
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
 					color='gray.400'>
-					작성자
+					탈퇴
 				</Text>
 			),
 			cell: (info) => (
-				<Text color={textColor} fontSize='sm' fontWeight='700'>
-					{info.getValue()}
-				</Text>
+				<Checkbox defaultChecked={info.getValue()} colorScheme='brandScheme' mr='10px' />
 			)
 		}),
-
-		columnHelper.accessor('quantity', {
-			id: 'quantity',
+		columnHelper.accessor('regDate', {
+			size: 200,
+			id: 'regDate',
 			header: () => (
 				<Text
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
 					color='gray.400'>
-					조회수
-				</Text>
-			),
-			cell: (info) => (
-				<Text color={textColor} fontSize='sm' fontWeight='700'>
-					{info.getValue()}
-				</Text>
-			)
-		}),
-		columnHelper.accessor('date', {
-			id: 'date',
-			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
-					작성일
+					가입일
 				</Text>
 			),
 			cell: (info) => (
@@ -158,7 +166,9 @@ export default function CheckTable(props: { tableData: any }) {
 			)
 		})
 	];
-
+	const [ data, setData ] = React.useState(() => [ ...defaultData ]);
+	const [ isShow, setShow ] = React.useState(false);
+	const btnRef = React.useRef();
 	const table = useReactTable({
 		data,
 		columns,
@@ -171,15 +181,42 @@ export default function CheckTable(props: { tableData: any }) {
 		debugTable: true
 	});
 
+	const onHandleOpenDetail = (id:string) => {
+		if ( !functions.isEmpty(id) ) setIsOpenRequestModal(true);
+	}
+
 	return (
 		<Card flexDirection='column' w='100%' px='0px' overflowX={{ sm: 'scroll', lg: 'hidden' }}>
-			<Flex px='25px' mb="8px" justifyContent='space-between' align='center'>
-				<Text color={textColor} fontSize='22px' mb="4px" fontWeight='700' lineHeight='100%'>
-					리스트
-				</Text>
-				<TableMenu 
-					onHandleToggle={onHandleToggle}
-				/>
+			<Flex 
+				flexDirection={{base : 'column', md : 'row'}}
+				px={{base : '10px', xl : '25px'}}
+				mb="8px" 
+				justifyContent={{base : 'center', md : 'space-between' }}
+				align='center'
+			>
+				<Box display='flex' alignItems='center' width={{base : '100%', xl : 'auto'}}>
+					<Text color={textColor} fontSize='22px' mb="4px" fontWeight='700' lineHeight='100%'>
+						회원 리스트
+					</Text>
+					
+				</Box>
+				<Box display='flex' alignItems={'flex-end'} width={{base : '100%', xl : 'auto'}}>
+					<Select placeholder='정렬기준'>
+						<option value='option1'>최신 등록순</option>
+						<option value='option2'>이름순</option>
+						<option value='option3'>사용토큰 많은순</option>
+					</Select>
+					<Input placeholder='키워드를 입력하세요' id='keyword' />
+					<Button
+						size='md'
+						loadingText='Loading'
+						variant="solid"
+						colorScheme='blue'
+						sx={{borderRadius:'5px'}}
+					>
+						검색
+					</Button>
+				</Box>
 			</Flex>
 			<Box>
 				<Table variant='simple' color='gray.500' mb='24px' mt="12px">
@@ -223,7 +260,9 @@ export default function CheckTable(props: { tableData: any }) {
 												sx={{borderBottom:'1px', borderBottomColor:'#ebebeb'}}
 												fontSize={{ sm: '14px' }}
 												minW={{ sm: '150px', md: '200px', lg: 'auto' }}
-												borderColor='transparent'>
+												borderColor='transparent'
+												onClick={() => onHandleOpenDetail(row.original.name)}
+											>
 												{flexRender(cell.column.columnDef.cell, cell.getContext())}
 											</Td>
 										);
@@ -275,16 +314,41 @@ export default function CheckTable(props: { tableData: any }) {
 							universal={true}
 						>
 						<NoticeForm
-							data={selectedData}
+							data={null}
 						/>
 						</Scrollbars>
 					</DrawerBody>
 					<DrawerFooter sx={{borderTop:'1px solid #ebebeb'}}>
-						<Button variant='outline' mr={3} onClick={()=>setShow(false)} id="buttin_cancel">Cancel</Button>
+						<Button variant='outline' mr={3} onClick={()=>setShow(false)} id="button_cancel">
+						Cancel
+						</Button>
 						<Button colorScheme='blue' id="button_save">Save</Button>
 					</DrawerFooter>
 					</DrawerContent>
 				</Drawer>
+				)
+			}
+			{
+				isOpenRequestModal && (    
+					<Modal
+						onClose={() => setIsOpenRequestModal(false)}
+						finalFocusRef={formBtnRef}
+						isOpen={isOpenRequestModal}
+						scrollBehavior={'inside'}
+						>
+						<ModalOverlay />
+						<ModalContent maxW={`${mConstants.modalMaxWidth}px`} bg={sidebarBackgroundColor}>
+							<ModalHeader>{"회원정보"}</ModalHeader>
+							<ModalCloseButton />
+							<ModalBody >
+							<MemberDetail
+								isOpen={isOpenRequestModal}
+								setClose={() => setIsOpenRequestModal(false)}
+								memberId={'1'}
+							/>
+							</ModalBody>
+						</ModalContent>
+					</Modal>
 				)
 			}
 		</Card>

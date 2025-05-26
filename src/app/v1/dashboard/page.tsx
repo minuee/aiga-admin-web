@@ -6,8 +6,8 @@ import { Box,Flex,FormLabel,Image,Icon,Select,SimpleGrid,useColorModeValue } fro
 import MiniStatistics from 'components/card/MiniStatistics';
 import IconBox from 'components/icons/IconBox';
 import { MdAddTask,MdAttachMoney,MdBarChart,MdFileCopy } from 'react-icons/md';
-import TotalSpent from 'views/admin/default/components/TotalSpent';
-import WeeklyRevenue from 'views/admin/default/components/WeeklyRevenue';
+import TotalSpent from 'views/v1/dashboard/components/TotalSpent';
+import WeeklyRevenue from 'views/v1/dashboard/components/WeeklyRevenue';
 
 export default function Default() {
   // Chakra Color Mode

@@ -2,13 +2,13 @@
 import * as React from 'react';
 import { createColumnHelper,flexRender,getCoreRowModel,getSortedRowModel,SortingState,useReactTable } from '@tanstack/react-table';
 import { 
-	Flex, Box, Table, Checkbox, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue,Drawer,DrawerBody,DrawerFooter,
+	Flex, Box, Table, Checkbox, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue,Drawer,DrawerBody,DrawerFooter,Tooltip,
 	DrawerHeader,DrawerOverlay,Input,DrawerContent,DrawerCloseButton,Button,Select,Modal,ModalOverlay,ModalContent,ModalHeader,ModalCloseButton,ModalBody
 } from '@chakra-ui/react';
 // Custom components
 import Card from 'components/card/Card';
 
-import { RowObj } from 'views/admin/dataTables/variables/tableDataMembers';
+import { RowObj } from 'views/v1/dataTables/variables/tableDataInquirys';
 import { renderThumb,renderTrack,renderView } from 'components/scrollbar/Scrollbar';
 import dynamic from 'next/dynamic';
 const Scrollbars = dynamic(
@@ -16,16 +16,15 @@ const Scrollbars = dynamic(
   { ssr: true },
 );
 
-import MemberDetail from 'components/modal/MemberDetail';
-
-import NoticeForm from "views/admin/notice/View";
+import InquiryDetail from 'components/modal/InquiryDetail';
+import NoticeForm from "views/v1/notice/View";
 import functions from 'utils/functions';
 import mConstants from 'utils/constants';
 
 const columnHelper = createColumnHelper<RowObj>();
 
 // const columns = columnsDataCheck;
-export default function MemberTable(props: { tableData: any }) {
+export default function InquiryTable(props: { tableData: any }) {
 	const { tableData } = props;
 	const [ sorting, setSorting ] = React.useState<SortingState>([]);
 	const [ isOpenRequestModal, setIsOpenRequestModal ] = React.useState(false);
@@ -63,15 +62,16 @@ export default function MemberTable(props: { tableData: any }) {
 				</Flex>
 			)
 		}),
-		columnHelper.accessor('joinType', {
-			id: 'joinType',
+		columnHelper.accessor('contactInfo', {
+			id: 'contactInfo',
 			header: () => (
 				<Text
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
-					가입경로
+					color='gray.400'
+				>
+					연락정보
 				</Text>
 			),
 			cell: (info) => (
@@ -80,15 +80,16 @@ export default function MemberTable(props: { tableData: any }) {
 				</Text>
 			)
 		}),
-		columnHelper.accessor('grade', {
-			id: 'grade',
+		columnHelper.accessor('relation', {
+			id: 'relation',
 			header: () => (
 				<Text
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
-					등급
+					color='gray.400'
+				>
+					관계
 				</Text>
 			),
 			cell: (info) => (
@@ -97,54 +98,31 @@ export default function MemberTable(props: { tableData: any }) {
 				</Text>
 			)
 		}),
-		columnHelper.accessor('useTokens', {
-			size: 50,
-			id: 'useTokens',
+		columnHelper.accessor('isCleared', {
+			id: 'isCleared',
 			header: () => (
 				<Text
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
 					color='gray.400'>
-					사용토큰수
+					처리
 				</Text>
 			),
 			cell: (info) => (
-				<Flex align='center' justifyContent='flex-end'>
-					<Text color={textColor} fontSize='sm' fontWeight='700'>
-						{functions.numberWithCommas(info.getValue())}
-					</Text>
-				</Flex>
-			)
-		}),
-		columnHelper.accessor('isActive', {
-			id: 'isActive',
-			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
-					활성
-				</Text>
-			),
-			cell: (info) => (
-				<Checkbox defaultChecked={info.getValue()} colorScheme='brandScheme' mr='10px' />
-			)
-		}),
-		columnHelper.accessor('isEntire', {
-			id: 'isEntire',
-			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
-					탈퇴
-				</Text>
-			),
-			cell: (info) => (
-				<Checkbox defaultChecked={info.getValue()} colorScheme='brandScheme' mr='10px' />
+				<>
+				{
+					info.getValue() 
+					? 
+					(
+						<Tooltip label="관리자 | 2025.05.09" aria-label='A tooltip'>
+							<Checkbox defaultChecked={info.getValue()} colorScheme='brandScheme' />
+						</Tooltip>
+					)
+					:
+					<Checkbox defaultChecked={info.getValue()} colorScheme='brandScheme' />
+				}
+				</>
 			)
 		}),
 		columnHelper.accessor('regDate', {
@@ -155,8 +133,9 @@ export default function MemberTable(props: { tableData: any }) {
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
-					가입일
+					color='gray.400'
+				>
+					등록일자
 				</Text>
 			),
 			cell: (info) => (
@@ -196,15 +175,14 @@ export default function MemberTable(props: { tableData: any }) {
 			>
 				<Box display='flex' alignItems='center' width={{base : '100%', xl : 'auto'}}>
 					<Text color={textColor} fontSize='22px' mb="4px" fontWeight='700' lineHeight='100%'>
-						회원 리스트
+						수정요청 리스트
 					</Text>
-					
 				</Box>
 				<Box display='flex' alignItems={'flex-end'} width={{base : '100%', xl : 'auto'}}>
 					<Select placeholder='정렬기준'>
 						<option value='option1'>최신 등록순</option>
 						<option value='option2'>이름순</option>
-						<option value='option3'>사용토큰 많은순</option>
+						<option value='option3'>관계순</option>
 					</Select>
 					<Input placeholder='키워드를 입력하세요' id='keyword' />
 					<Button
@@ -213,12 +191,13 @@ export default function MemberTable(props: { tableData: any }) {
 						variant="solid"
 						colorScheme='blue'
 						sx={{borderRadius:'5px'}}
+						id="button_search"
 					>
 						검색
 					</Button>
 				</Box>
 			</Flex>
-			<Box>
+			<Box minHeight={{base : "200px" , xl : "400px"}}>
 				<Table variant='simple' color='gray.500' mb='24px' mt="12px">
 					<Thead>
 						{table.getHeaderGroups().map((headerGroup) => (
@@ -237,7 +216,8 @@ export default function MemberTable(props: { tableData: any }) {
 												justifyContent='space-between'
 												align='center'
 												fontSize={{ sm: '10px', lg: '12px' }}
-												color='gray.400'>
+												color='gray.400'
+											>
 												{flexRender(header.column.columnDef.header, header.getContext())}{{
 													asc: '',
 													desc: '',
@@ -322,7 +302,7 @@ export default function MemberTable(props: { tableData: any }) {
 						<Button variant='outline' mr={3} onClick={()=>setShow(false)} id="button_cancel">
 						Cancel
 						</Button>
-						<Button colorScheme='blue' id="button_save">Save</Button>
+						<Button colorScheme='blue' id='button_save'>Save</Button>
 					</DrawerFooter>
 					</DrawerContent>
 				</Drawer>
@@ -338,13 +318,13 @@ export default function MemberTable(props: { tableData: any }) {
 						>
 						<ModalOverlay />
 						<ModalContent maxW={`${mConstants.modalMaxWidth}px`} bg={sidebarBackgroundColor}>
-							<ModalHeader>{"회원정보"}</ModalHeader>
+							<ModalHeader>{"수정요청 상세정보"}</ModalHeader>
 							<ModalCloseButton />
 							<ModalBody >
-							<MemberDetail
+							<InquiryDetail
 								isOpen={isOpenRequestModal}
 								setClose={() => setIsOpenRequestModal(false)}
-								memberId={'1'}
+								inquiryId={'1'}
 							/>
 							</ModalBody>
 						</ModalContent>

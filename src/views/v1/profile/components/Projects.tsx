@@ -6,7 +6,7 @@ import Project2 from 'img/profile/Project2.png'
 import Project3 from 'img/profile/Project3.png'
 // Custom components
 import Card from 'components/card/Card'
-import Project from 'views/admin/profile/components/Project'
+import Project from 'views/v1/profile/components/Project'
 
 export default function Projects (props: { [x: string]: any }) {
   const { ...rest } = props

@@ -1,6 +1,6 @@
 'use client';
 import { Box, SimpleGrid } from '@chakra-ui/react';
-import DoctorsTable from 'views/admin/dataTables/components/DoctorsTable';
+import DoctorsTable from 'views/v1/dataTables/components/DoctorsTable';
 import styled from '@emotion/styled';
 import * as React from 'react';
 import * as DoctorService from "services/doctor/index";

@@ -4,12 +4,12 @@
 // Chakra imports
 import { Box, Grid } from '@chakra-ui/react';
 // Custom components
-import Banner from 'views/admin/profile/components/Banner';
-import General from 'views/admin/profile/components/General';
-import Notifications from 'views/admin/profile/components/Notifications';
-import Projects from 'views/admin/profile/components/Projects';
-import Storage from 'views/admin/profile/components/Storage';
-import Upload from 'views/admin/profile/components/Upload';
+import Banner from 'views/v1/profile/components/Banner';
+import General from 'views/v1/profile/components/General';
+import Notifications from 'views/v1/profile/components/Notifications';
+import Projects from 'views/v1/profile/components/Projects';
+import Storage from 'views/v1/profile/components/Storage';
+import Upload from 'views/v1/profile/components/Upload';
 
 // Assets
 import banner from 'img/auth/banner.png';
