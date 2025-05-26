@@ -9,15 +9,7 @@ import {
   MdApartment
 } from 'react-icons/md';
 
-// Admin Imports
-// import MainDashboard from './pages/v1/dashboard';
-// import NFTMarketplace from './pages/v1/nft-marketplace';
-// import Profile from './pages/v1/profile';
-// import DataTables from './pages/v1/data-tables';
-// import RTL from './pages/rtl/rtl-default';
 
-// Auth Imports
-// import SignInCentered from './pages/auth/sign-in';
 import { IRoute } from 'types/navigation';
 
 const routes: IRoute[] = [

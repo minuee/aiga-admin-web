@@ -72,7 +72,7 @@ export default function SignIn() {
             ret.data.role,
             ret.data.nickName
           );
-          setTimeout(() => redirect(`${process.env.NEXT_PUBLIC_ASSETS_PREFIX}/v1/dashboard`), 500);
+          setTimeout(() => redirect('/v1/dashboard'), 500);
         }
       } catch (error) {
         // Unused as of now but this is how you would handle invalid
