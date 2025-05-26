@@ -73,6 +73,7 @@ export default function SignIn() {
             ret.data.role,
             ret.data.nickName
           );
+          
           setTimeout(() => redirect(`${prefixHead}/v1/dashboard`), 500);
         }
       } catch (error) {

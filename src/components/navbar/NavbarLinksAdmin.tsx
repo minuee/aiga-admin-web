@@ -4,6 +4,7 @@ import { Box,Button,Center,Flex,Icon,Menu,MenuButton,MenuItem,MenuList,Text,useC
 // Custom Components
 import { SidebarResponsive } from 'components/sidebar/Sidebar';
 import { SidebarPCResponsive } from 'components/sidebar/PCSidebar';
+import * as Cookies from 'utils/cookies';
 // Assets
 import { IoMdMoon, IoMdSunny } from 'react-icons/io';
 import routes from 'routes';
@@ -43,8 +44,9 @@ export default function HeaderLinks(props: {
       false,
       ""
     );
-
-    setTimeout(() => redirect('/auth/sign-in'), 500);
+    const prefixHead = process.env.NODE_ENV == 'development' ? "" : "/admin"
+    setTimeout(() => redirect(`${prefixHead}/auth/sign-in`), 500);
+    Cookies.removeCookie('AdminLoginUser');
   }
   return (
     <Flex
