@@ -44,9 +44,9 @@ export default function HeaderLinks(props: {
       false,
       ""
     );
-    const prefixHead = process.env.NODE_ENV == 'development' ? "" : "/admin"
-    setTimeout(() => redirect(`${prefixHead}/auth/sign-in`), 500);
-    Cookies.removeCookie('AdminLoginUser');
+    console.log("process.env.NEXT_PUBLIC_ASSETS_PREFIX",process.env.NEXT_PUBLIC_ASSETS_PREFIX)
+    setTimeout(() => redirect(`${process.env.NEXT_PUBLIC_ASSETS_PREFIX}/auth/sign-in`), 500);
+    Cookies.removeCookie(process.env.NEXT_PUBLIC_AUTH_TOKEN);
   }
   return (
     <Flex

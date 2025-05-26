@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
 export default function Home({}) {
-  const prefixHead = process.env.NODE_ENV == 'development' ? "" : "/admin"
-  redirect(`${prefixHead}/v1/dashboard`);
+  console.log("process.env.NEXT_PUBLIC_ASSETS_PREFIX",process.env.NEXT_PUBLIC_ASSETS_PREFIX)
+  redirect(`${process.env.NEXT_PUBLIC_ASSETS_PREFIX}/v1/dashboard`);
 }

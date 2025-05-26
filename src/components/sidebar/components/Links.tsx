@@ -28,7 +28,7 @@ export function SidebarLinks(props: SidebarLinksProps) {
   let activeIcon = useColorModeValue('brand.500', 'white');
   let textColor = useColorModeValue('secondaryGray.500', 'white');
   let brandColor = useColorModeValue('brand.500', 'brand.400');
-
+  console.log("process.env.NEXT_PUBLIC_ASSETS_PREFIX",process.env.NEXT_PUBLIC_ASSETS_PREFIX)
   // verifies if routeName is the one active (in browser input)
   const activeRoute = useCallback(
     (routeName: string) => {
@@ -37,7 +37,6 @@ export function SidebarLinks(props: SidebarLinksProps) {
     [pathname],
   );
 
-  const prefixHead = process.env.NODE_ENV == 'development' ? "" : "/admin" 
 
   const onHandleClick = (url:string) => {
     if ( isLeftOpen ) {
@@ -50,7 +49,7 @@ export function SidebarLinks(props: SidebarLinksProps) {
     return routes.map((route, index: number) => {
       if ( route.layout === '/v1' || route.layout === '/auth' || route.layout === '/rtl' ) {
         return (
-          <Link key={index} href={prefixHead +  route.layout + route.path} onClick={()=>onHandleClick(route.path)}>
+          <Link key={index} href={process.env.NEXT_PUBLIC_ASSETS_PREFIX +  route.layout + route.path} onClick={()=>onHandleClick(route.path)}>
             {route.icon ? (
               <Box>
                 <HStack

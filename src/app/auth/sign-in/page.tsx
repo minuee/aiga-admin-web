@@ -58,7 +58,6 @@ export default function SignIn() {
       setIsLoading(true);
       try {
         const ret = await authProvider.signin(login.staff_id.trim(), login.staff_pw.trim());
-        const prefixHead = process.env.NODE_ENV == 'development' ? "" : "/admin"
         if (!ret.is_ok ) {
           setIsLoading(false);
           functions.simpleToast(toast,`잘못된 정보입니다.`);
@@ -73,8 +72,8 @@ export default function SignIn() {
             ret.data.role,
             ret.data.nickName
           );
-          
-          setTimeout(() => redirect(`${prefixHead}/v1/dashboard`), 500);
+          console.log("process.env.NEXT_PUBLIC_ASSETS_PREFIX",process.env.NEXT_PUBLIC_ASSETS_PREFIX)
+          setTimeout(() => redirect(`${process.env.NEXT_PUBLIC_ASSETS_PREFIX}/v1/dashboard`), 500);
         }
       } catch (error) {
         // Unused as of now but this is how you would handle invalid
