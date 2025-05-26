@@ -9,7 +9,7 @@ export async function middleware(request: NextRequest) {
     const adminPrefix = process.env.NEXT_PUBLIC_PREFIX;
     console.log('accessToken',process.env.NEXT_PUBLIC_AUTH_TOKEN,accessToken)
     if (accessToken !== undefined) {
-        if ( pathname === "/auth/sign-in") {
+        if ( pathname.includes("/auth/sign-in")) {
             return NextResponse.redirect(new URL(`${adminPrefix}/v1/dashboard`,request.url))
         }else{
             return NextResponse.next();
@@ -23,7 +23,7 @@ export async function middleware(request: NextRequest) {
         }else{
             console.log('pathname else',pathname)
             // 로그인이 필요 없는 페이지는 그냥 다음 요청으로 진행
-            return NextResponse.rewrite(new URL("/admin/auth/sign-in", request.url));
+            return NextResponse.rewrite(new URL(`${adminPrefix}/auth/sign-in`, request.url));
         }
     }
 }
