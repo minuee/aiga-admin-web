@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   },
   description: 'AIGA Admin',
   icons: {
-    icon: '/img/push/512.png',
+    icon: `${process.env.NEXT_PUBLIC_ASSETS_PREFIX}/img/push/512.png`,
   },
 }
 
