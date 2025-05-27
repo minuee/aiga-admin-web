@@ -3,7 +3,7 @@ import React, { PropsWithChildren } from 'react';
 
 // chakra imports
 import { Box,Flex,Button,Text,SkeletonCircle,SkeletonText,Divider,Icon,Textarea,Input, FormControl, FormLabel, RadioGroup, Radio, Stack, useColorModeValue} from '@chakra-ui/react';
-
+import useCheckAdmin from "store/useCheckAdmin";
 
 export interface InquiryDetailProps extends PropsWithChildren {
   isOpen : boolean;
@@ -13,6 +13,7 @@ export interface InquiryDetailProps extends PropsWithChildren {
 
 function InquiryDetail(props: InquiryDetailProps) {
   const { isOpen, setClose, inquiryId } = props;
+  const isAdmin = useCheckAdmin();
   const [isLoading, setIsLoading] = React.useState(true);  
   const [inputs, setInputs] = React.useState<any>({
     doctorId: '',
@@ -22,7 +23,8 @@ function InquiryDetail(props: InquiryDetailProps) {
     req_comment : '',
   });
   const skeletonColor = useColorModeValue('white', 'navy.700');
-  
+  const textColor = useColorModeValue('navy.700', 'white');
+
   React.useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
@@ -51,7 +53,7 @@ function InquiryDetail(props: InquiryDetailProps) {
               <Input 
                 type="text" 
                 placeholder='이름' 
-                readOnly
+                disabled
                 id='reqName'
               />
             </FormControl>
@@ -62,7 +64,7 @@ function InquiryDetail(props: InquiryDetailProps) {
               <Input 
                 type="text" 
                 placeholder='연락처' 
-                readOnly
+                disabled
                 id='reqTel'
               />
             </FormControl>
@@ -75,7 +77,7 @@ function InquiryDetail(props: InquiryDetailProps) {
               <Input 
                 type="text" 
                 placeholder='등록일자' 
-                readOnly
+                disabled
                 id='regDate'
               />
             </FormControl>
@@ -85,13 +87,13 @@ function InquiryDetail(props: InquiryDetailProps) {
               <FormLabel>관계</FormLabel>
               <RadioGroup defaultValue='1'>
                 <Stack spacing={5} direction='row' padding={'10px'}>
-                  <Radio colorScheme='red' value='1' readOnly>
+                  <Radio colorScheme='red' value='1' isDisabled>
                     본인
                   </Radio>
-                  <Radio colorScheme='green' value='2' readOnly>
+                  <Radio colorScheme='green' value='2' isDisabled>
                     관계자
                   </Radio>
-                  <Radio colorScheme='blue' value='3' readOnly>
+                  <Radio colorScheme='blue' value='3' isDisabled>
                     기타
                   </Radio>
                 </Stack>
@@ -111,7 +113,7 @@ function InquiryDetail(props: InquiryDetailProps) {
                 minH={'150px'}
                 width={'100%'}
                 size={'sm'} 
-                readOnly
+                isDisabled
                 id="req_comment"
               />
             </FormControl>
@@ -125,8 +127,9 @@ function InquiryDetail(props: InquiryDetailProps) {
               <Input 
                 type="text" 
                 placeholder='간략히 적으세요' 
-                readOnly
                 id='comment'
+                disabled={!isAdmin}
+                color={textColor}
               />
             </FormControl>
           </Box>              
@@ -135,13 +138,13 @@ function InquiryDetail(props: InquiryDetailProps) {
               <FormLabel>처리</FormLabel>
               <RadioGroup defaultValue='1'>
                 <Stack spacing={5} direction='row' padding={'10px'}>
-                  <Radio colorScheme='red' value='1' readOnly>
+                  <Radio colorScheme='red' value='1' isDisabled={!isAdmin}>
                     완료
                   </Radio>
-                  <Radio colorScheme='green' value='2' readOnly>
+                  <Radio colorScheme='green' value='2'  isDisabled={!isAdmin}>
                     보류
                   </Radio>
-                  <Radio colorScheme='blue' value='3' readOnly>
+                  <Radio colorScheme='blue' value='3'  isDisabled={!isAdmin}>
                     대기
                   </Radio>
                 </Stack>
@@ -149,7 +152,7 @@ function InquiryDetail(props: InquiryDetailProps) {
             </FormControl>
           </Box>
         </Flex>
-        <Box display={'flex'} flexDirection={'row'} justifyContent={'center'}  width={'98%'} mt={5}>
+        <Box display={isAdmin ? 'flex' : 'none'} flexDirection={'row'} justifyContent={'center'}  width={'98%'} mt={5}>
           <Button 
             colorScheme='blue' 
             variant='solid' 

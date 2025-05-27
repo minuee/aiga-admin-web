@@ -4,7 +4,7 @@ import { MdDelete,MdAssignment } from 'react-icons/md';
 import mConstants from 'utils/constants';
 import functions from 'utils/functions';
 import PaperDetail from 'components/modal/PaperDetail';
-
+import useCheckAdmin from "store/useCheckAdmin";
 type ListItemScreenProps = {
     isTitle: boolean;
     title: string;
@@ -16,6 +16,7 @@ type ListItemScreenProps = {
 
 const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limintView = 3, marginTop = 2 }:ListItemScreenProps) => {
     const [expandedCount, setExpandedCount] = React.useState<any>(content?.length > limintView ? limintView : undefined);
+    const isAdmin = useCheckAdmin();
     const handleToggle = () => setExpandedCount(expandedCount ? undefined : limintView);
     const [isLoading, setIsLoading] = React.useState<boolean>(true);
     const [isOpenModal, setIsOpenModal] = React.useState<any>(null);
@@ -91,6 +92,7 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                                setInputs(inputs.map((input:any,idx:number) => idx === index ? {...input, doi: e.target.value} : input));
                                             }}
                                             id={`doi_${index}`}
+                                            disabled={!isAdmin}
                                         />
                                         <Input                                           
                                             flex={3}
@@ -104,6 +106,7 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                                setInputs(inputs.map((input:any,idx:number) => idx === index ? {...input, title: e.target.value} : input));
                                             }}
                                             id={`title_${index}`}
+                                            disabled={!isAdmin}
                                         />
                                         <Input 
                                             flex={1}
@@ -117,10 +120,11 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                                setInputs(inputs.map((input:any,idx:number) => idx === index ? {...input, pmid: e.target.value} : input));
                                             }}
                                             id={`pmid_${index}`}
+                                            disabled={!isAdmin}
                                         />
                                         <Box 
                                             flex={0.5} 
-                                            display={'flex'} 
+                                            display={ isAdmin ? 'flex' : 'none'} 
                                             justifyContent={'center'} 
                                             alignItems={'center'}
                                             onClick={() => {
@@ -132,7 +136,7 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                         </Box>
                                         <Box 
                                             flex={0.5} 
-                                            display={'flex'} 
+                                            display={ isAdmin ? 'flex' : 'none'} 
                                             justifyContent={'center'} 
                                             alignItems={'center'}
                                             onClick={() => setIsOpenModal(item)}
@@ -162,6 +166,7 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                                setInputs(inputs.map((input:any,idx:number) => idx === index ? {...input, targetDate: e.target.value} : input));
                                             }}
                                             id={`targetDate_${index}`}
+                                            disabled={!isAdmin}
                                         />
                                         <Input                                           
                                             flex={3}
@@ -175,6 +180,7 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                                setInputs(inputs.map((input:any,idx:number) => idx === index ? {...input, text: e.target.value} : input));
                                             }}
                                             id={`text_${index}`}
+                                            disabled={!isAdmin}
                                         />
                                         <Input 
                                             flex={1}
@@ -188,10 +194,11 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                                setInputs(inputs.map((input:any,idx:number) => idx === index ? {...input, issuer: e.target.value} : input));
                                             }}
                                             id={`issuer_${index}`}
+                                            disabled={!isAdmin}
                                         />
                                         <Box 
                                             flex={0.5} 
-                                            display={'flex'} 
+                                            display={ isAdmin ? 'flex' : 'none'} 
                                             justifyContent={'center'} 
                                             alignItems={'center'}
                                             onClick={() => {

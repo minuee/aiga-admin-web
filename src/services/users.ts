@@ -18,7 +18,7 @@ export const users: TUserAccount[] = [
     name: "Hyungjin Park",
     nickName: "형진 박",
     email: "tony@kormedi.com",
-    role: "admin",
+    role: "staff",
     password: "1234",
   },
   {
@@ -34,7 +34,7 @@ export const users: TUserAccount[] = [
     name: "Kyunghwan Heo",
     nickName: "경환 허",
     email: "kyunghwan.heo@kormedi.com",
-    role: "admin",
+    role: "staff",
     password: "1234",
   },
   {
@@ -42,7 +42,7 @@ export const users: TUserAccount[] = [
     name: "Jinyoung Shin",
     nickName: "진영 신",
     email: "jyonkmd@kormedi.com",
-    role: "admin",
+    role: "staff",
     password: "1234",
   },
 ];

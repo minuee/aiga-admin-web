@@ -10,18 +10,18 @@ import { IoLink } from "react-icons/io5";
 import functions from 'utils/functions';
 import * as DoctorService from "services/doctor/index";
 import ListItem from 'components/card/ListItem';
-
+import useCheckAdmin from "store/useCheckAdmin";
 const defaultImage = require("../../..//public/img/avatars/no_image01.png");
 
 export interface DoctorDetailProps extends PropsWithChildren {
   isOpen : boolean;
-  setClose : () => void;
   DoctorData : any;
 }
 
 function DoctorDetail(props: DoctorDetailProps) {
 
-  const { isOpen, setClose, DoctorData } = props;
+  const { isOpen, DoctorData } = props;
+  const isAdmin = useCheckAdmin();
   const [isLoading, setIsLoading] = React.useState(true);  
   const [inputs, setInputs] = React.useState<any>({
     hid: null,
@@ -129,7 +129,8 @@ function DoctorDetail(props: DoctorDetailProps) {
                   color={textColor}
                   value={inputs?.doctor_id || ''}
                   placeholder='의사ID' 
-                  readOnly
+                  disabled={!isAdmin}
+                  onChange={()=> console.log('')}
                   id='doctor_id'
                 />
               </FormControl>
@@ -143,7 +144,8 @@ function DoctorDetail(props: DoctorDetailProps) {
                   color={textColor} 
                   value={inputs?.doctorname}
                   placeholder='의사명' 
-                  readOnly
+                  disabled={!isAdmin}
+                  onChange={()=> console.log('')}
                   id='doctorname'
                 />
               </FormControl>
@@ -158,7 +160,8 @@ function DoctorDetail(props: DoctorDetailProps) {
                   borderColor={borderColor}
                   color={textColor}
                   value={inputs?.hid}
-                  readOnly
+                  disabled={!isAdmin}
+                  onChange={()=> console.log('')}
                   id='hid'
                 />
               </FormControl>
@@ -173,7 +176,8 @@ function DoctorDetail(props: DoctorDetailProps) {
                   color={textColor}
                   placeholder='병원명' 
                   value={inputs?.baseName}
-                  readOnly
+                  disabled={!isAdmin}
+                  onChange={()=> console.log('')}
                   id='baseName'
                 />
               </FormControl>
@@ -199,7 +203,8 @@ function DoctorDetail(props: DoctorDetailProps) {
                 color={textColor}
                 placeholder='주소' 
                 value={inputs?.doctor_url}
-                readOnly
+                disabled={!isAdmin}
+                onChange={()=> console.log('')}
                 id='doctor_url'
               />
             </FormControl>
@@ -215,7 +220,8 @@ function DoctorDetail(props: DoctorDetailProps) {
                 color={textColor}
                 placeholder='진료분야' 
                 value={inputs?.deptname}
-                readOnly
+                disabled={!isAdmin}
+                onChange={()=> console.log('')}
                 id='deptname'
               />
             </FormControl>
@@ -229,6 +235,8 @@ function DoctorDetail(props: DoctorDetailProps) {
                 color={textColor}
                 placeholder='예약전화번호' 
                 id='reservation_tel'
+                disabled={!isAdmin}
+                onChange={()=> console.log('')}
               />
             </FormControl>
           </Box> 
@@ -249,6 +257,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                 color={textColor}
                 value={inputs?.specialties}
                 id='specialties'
+                disabled={!isAdmin}
               />
             </FormControl>
           </Box>   
@@ -259,10 +268,10 @@ function DoctorDetail(props: DoctorDetailProps) {
               <FormLabel>공개여부<span style={{color:"red",fontSize:"10px"}}> * 수정가능</span></FormLabel>
               <RadioGroup defaultValue='1'>
                 <Stack spacing={5} direction='row' padding={'10px'}>
-                  <Radio colorScheme='red' value='1' readOnly>
+                  <Radio colorScheme='red' value='1'  isDisabled={!isAdmin}>
                     공개
                   </Radio>
-                  <Radio colorScheme='blue' value='3' readOnly>
+                  <Radio colorScheme='blue' value='3' isDisabled={!isAdmin}>
                     미공개
                   </Radio>
                 </Stack>
@@ -270,7 +279,7 @@ function DoctorDetail(props: DoctorDetailProps) {
             </FormControl>
           </Box>
         </Flex>
-        <Box display={'flex'} flexDirection={'row'} justifyContent={'center'}  width={'98%'} mt={5}>
+        <Box display={isAdmin ? 'flex' : 'none'} flexDirection={'row'} justifyContent={'center'}  width={'98%'} mt={5}>
           <Button 
             colorScheme='blue' 
             variant='solid' 
@@ -394,7 +403,7 @@ function DoctorDetail(props: DoctorDetailProps) {
             </TabPanels>
           </Tabs>
         </Flex>
-        <Box display={'flex'} flexDirection={'row'} justifyContent={'center'}  width={'98%'} mt={5}>
+        <Box display={isAdmin ? 'flex' : 'none'} flexDirection={'row'} justifyContent={'center'}  width={'98%'} mt={5}>
           {
             currentTab !== 'papers' && ( 
               <Button 
@@ -417,3 +426,4 @@ function DoctorDetail(props: DoctorDetailProps) {
 }
 
 export default DoctorDetail;
+

@@ -4,6 +4,9 @@ import React, { PropsWithChildren } from 'react';
 // chakra imports
 import { Box,Flex,Button,Text,SkeletonCircle,SkeletonText,Divider,Textarea,Input, FormControl, FormLabel, RadioGroup, Radio, Stack, useColorModeValue} from '@chakra-ui/react';
 import Slider from 'components/etc/Slider';
+
+import useCheckAdmin from "store/useCheckAdmin";
+
 export interface ReviewDetailProps extends PropsWithChildren {
   isOpen : boolean;
   setClose : () => void;
@@ -12,6 +15,8 @@ export interface ReviewDetailProps extends PropsWithChildren {
 
 function ReviewDetail(props: ReviewDetailProps) {
   const { isOpen, setClose, reviewId } = props;
+
+  const isAdmin = useCheckAdmin();
   const [isLoading, setIsLoading] = React.useState(true);  
   const [inputs, setInputs] = React.useState<any>({
     reg_name: '',
@@ -32,7 +37,8 @@ function ReviewDetail(props: ReviewDetailProps) {
     }, 1000);
   }, [isOpen]);
   const skeletonColor = useColorModeValue('white', 'navy.700');
-  
+  const textColor = useColorModeValue('navy.700', 'white');
+
   const onHandleRegistReview = (data:any) => {
     console.log('onHandleRegistReview', data);
   }
@@ -55,8 +61,9 @@ function ReviewDetail(props: ReviewDetailProps) {
               <Input 
                 type="text" 
                 placeholder='이름' 
-                readOnly
+                disabled
                 id='reqName'
+                color={textColor}
               />
             </FormControl>
           </Box>              
@@ -66,8 +73,9 @@ function ReviewDetail(props: ReviewDetailProps) {
               <Input 
                 type="text" 
                 placeholder='이메일' 
-                readOnly
+                disabled
                 id='reqEmail'
+                color={textColor}
               />
             </FormControl>
           </Box>
@@ -77,8 +85,9 @@ function ReviewDetail(props: ReviewDetailProps) {
               <Input 
                 type="text" 
                 placeholder='등록일자' 
-                readOnly
+                disabled
                 id='regDate'
+                color={textColor}
               />
             </FormControl>
           </Box>   
@@ -90,8 +99,9 @@ function ReviewDetail(props: ReviewDetailProps) {
               <Input 
                 type="text" 
                 placeholder='병원명' 
-                readOnly
+                disabled
                 id='hospitalName'
+                color={textColor}
               />
             </FormControl>
           </Box>              
@@ -101,8 +111,9 @@ function ReviewDetail(props: ReviewDetailProps) {
               <Input 
                 type="text" 
                 placeholder='의사명' 
-                readOnly
+                disabled
                 id='doctorName'
+                color={textColor}
               />
             </FormControl>
           </Box> 
@@ -178,6 +189,7 @@ function ReviewDetail(props: ReviewDetailProps) {
                 size={'sm'} 
                 readOnly
                 id='req_comment'
+                color={textColor}
               />
             </FormControl>
           </Box>   
@@ -190,8 +202,10 @@ function ReviewDetail(props: ReviewDetailProps) {
               <Input 
                 type="text" 
                 placeholder='간략히 적으세요' 
-                readOnly
+                readOnly={!isAdmin}
+                disabled={!isAdmin}
                 id='comment'
+                color={textColor}
               />
             </FormControl>
           </Box>   
@@ -202,13 +216,13 @@ function ReviewDetail(props: ReviewDetailProps) {
               <FormLabel>처리</FormLabel>
               <RadioGroup defaultValue='1'>
                 <Stack spacing={5} direction='row' padding={'10px'}>
-                  <Radio colorScheme='red' value='1' readOnly>
+                  <Radio colorScheme='red' value='1' readOnly={!isAdmin} isDisabled={!isAdmin}>
                     공개
                   </Radio>
-                  <Radio colorScheme='green' value='2' readOnly>
+                  <Radio colorScheme='green' value='2' readOnly={!isAdmin} isDisabled={!isAdmin}>
                     보류
                   </Radio>
-                  <Radio colorScheme='blue' value='3' readOnly>
+                  <Radio colorScheme='blue' value='3' readOnly={!isAdmin} isDisabled={!isAdmin}>
                     미공개
                   </Radio>
                 </Stack>
@@ -216,7 +230,7 @@ function ReviewDetail(props: ReviewDetailProps) {
             </FormControl>
           </Box>
         </Flex>
-        <Box display={'flex'} flexDirection={'row'} justifyContent={'center'}  width={'98%'} mt={5}>
+        <Box display={isAdmin ? 'flex' : 'none'} flexDirection={'row'} justifyContent={'center'}  width={'98%'} mt={5}>
           <Button 
             colorScheme='blue' 
             variant='solid' 

@@ -80,7 +80,7 @@ export default function DoctorList(props: { hospitalData: any,inputs : any }) {
       <SimpleGrid
         mb="20px"
         columns={{ sm: 1, md: 1 }}
-        spacing={{ base: '20px', xl: '20px' }}
+        spacing={'20px'}
       >
         <Scrollbars 
           universal={true} 
@@ -103,7 +103,7 @@ export default function DoctorList(props: { hospitalData: any,inputs : any }) {
         <Box 
           display={inputs.totalCount > inputs.pageSize ? 'block' : 'none'}
           position='absolute'
-          bottom={0}
+          bottom={-10}
           left={0}
           width="100%"
           height={{base : '100px', xl:'50px'}}

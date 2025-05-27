@@ -71,10 +71,10 @@ export default function SignIn() {
           setAdminLoginUserInfo(
             true,
             login.staff_id,
-            ret.data.role,
+            ret.data.role == 'admin' ? true : false,
             ret.data.nickName
           );
-          console.log("process.env.NEXT_PUBLIC_ASSETS_PREFIX",process.env.NEXT_PUBLIC_ASSETS_PREFIX)
+          console.log("ret.data",ret.data)
           setTimeout(() => {
             if( pathname.includes("auth/sign-in") ) {
               redirect(`${process.env.NEXT_PUBLIC_ASSETS_PREFIX}/v1/dashboard`);

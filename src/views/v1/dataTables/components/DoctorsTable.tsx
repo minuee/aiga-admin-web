@@ -256,7 +256,7 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 		debugTable: true
 	});
 	return (
-		<Card flexDirection='column' w='100%' px='0px' overflowX={{ sm: 'scroll', lg: 'hidden' }}>
+		<Card flexDirection='column' w='100%' px='0px' overflowX={{ sm: 'scroll', lg: 'hidden' }} mb="100px">
 			{
 				isLoading ?
 				<Flex px='25px' mb="30px" mt="30px">
@@ -365,7 +365,7 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 						<ModalBody >
 						<DoctorDetail
 							isOpen={isOpenModal}
-							setClose={() => setIsOpenModal(false)}
+							//={() => setIsOpenModal(false)}
 							DoctorData={DoctorData}
 						/>
 						</ModalBody>

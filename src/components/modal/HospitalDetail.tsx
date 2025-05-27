@@ -3,8 +3,9 @@ import React, { PropsWithChildren } from 'react';
 
 // chakra imports
 import { Box,Flex,Button,Text,SkeletonCircle,SkeletonText,Divider,Icon,Textarea,Input, FormControl, FormLabel, RadioGroup, Radio, Stack, useColorModeValue} from '@chakra-ui/react';
-import Slider from 'components/etc/Slider';
-import { MdDiversity1 } from 'react-icons/md';
+
+import useCheckAdmin from "store/useCheckAdmin";
+
 export interface HospitalDetailProps extends PropsWithChildren {
   isOpen : boolean;
   setClose : () => void;
@@ -13,6 +14,8 @@ export interface HospitalDetailProps extends PropsWithChildren {
 
 function HospitalDetail(props: HospitalDetailProps) {
   const { isOpen, setClose, hospitalData } = props;
+
+  const isAdmin = useCheckAdmin();
   const [isLoading, setIsLoading] = React.useState(true);  
   const [inputs, setInputs] = React.useState<any>({
     reg_name: '',
@@ -66,7 +69,7 @@ function HospitalDetail(props: HospitalDetailProps) {
                 borderColor={borderColor}
                 color={textColor}
                 value={hospitalData?.hid}
-                readOnly
+                disabled={!isAdmin}
                 id='hid'
               />
             </FormControl>
@@ -82,7 +85,7 @@ function HospitalDetail(props: HospitalDetailProps) {
                 placeholder='0' 
                 textAlign={'right'}
                 value={hospitalData?.doctor_count}
-                readOnly
+                disabled={!isAdmin}
                 id='doctor_count'
               />
             </FormControl>
@@ -98,7 +101,7 @@ function HospitalDetail(props: HospitalDetailProps) {
                 color={textColor}
                 value={hospitalData?.baseName}
                 placeholder='병원명' 
-                readOnly
+                disabled={!isAdmin}
                 id='baseName'
               />
             </FormControl>
@@ -112,7 +115,7 @@ function HospitalDetail(props: HospitalDetailProps) {
                 color={textColor} 
                 value={hospitalData?.shortName}
                 placeholder='의사명' 
-                readOnly
+                disabled={!isAdmin}
                 id='shortName'
               />
             </FormControl>
@@ -127,7 +130,7 @@ function HospitalDetail(props: HospitalDetailProps) {
                 borderColor={borderColor}
                 color={textColor}
                 placeholder='주소' 
-                readOnly
+                disabled={!isAdmin}
                 id='address'
               />
             </FormControl>
@@ -142,7 +145,7 @@ function HospitalDetail(props: HospitalDetailProps) {
                 borderColor={borderColor}
                 color={textColor}
                 placeholder='위도를 입력해주세요' 
-                readOnly
+                disabled={!isAdmin}
                 id='latitude'
               />
             </FormControl>
@@ -155,7 +158,7 @@ function HospitalDetail(props: HospitalDetailProps) {
                 borderColor={borderColor}
                 color={textColor}
                 placeholder='경도를 입력해주세요' 
-                readOnly
+                disabled={!isAdmin}
                 id='longitude'
               />
             </FormControl>
@@ -170,7 +173,7 @@ function HospitalDetail(props: HospitalDetailProps) {
                 borderColor={borderColor}
                 color={textColor}
                 placeholder='예약사이트' 
-                readOnly
+                disabled={!isAdmin}
                 id="reservation_site"
               />
             </FormControl>
@@ -183,7 +186,7 @@ function HospitalDetail(props: HospitalDetailProps) {
                 borderColor={borderColor}
                 color={textColor}
                 placeholder='예약전화번호' 
-                readOnly
+                disabled={!isAdmin}
                 id="reservation_tel"
               />
             </FormControl>
@@ -201,7 +204,7 @@ function HospitalDetail(props: HospitalDetailProps) {
                 minH={'100px'}
                 width={'100%'}
                 size={'sm'} 
-                readOnly
+                disabled={!isAdmin}
                 borderColor={borderColor}
                 color={textColor}
                 id='req_comment'
@@ -215,10 +218,10 @@ function HospitalDetail(props: HospitalDetailProps) {
               <FormLabel>공개여부</FormLabel>
               <RadioGroup defaultValue='1'>
                 <Stack spacing={5} direction='row' padding={'10px'}>
-                  <Radio colorScheme='red' value='1' readOnly>
+                  <Radio colorScheme='red' value='1' isDisabled={!isAdmin}>
                     공개
                   </Radio>
-                  <Radio colorScheme='blue' value='3' readOnly>
+                  <Radio colorScheme='blue' value='3' isDisabled={!isAdmin}>
                     미공개
                   </Radio>
                 </Stack>
@@ -226,7 +229,7 @@ function HospitalDetail(props: HospitalDetailProps) {
             </FormControl>
           </Box>
         </Flex>
-        <Box display={'flex'} flexDirection={{base : 'column' , xl : 'row'}} justifyContent={'center'}  width={'98%'} mt={5}>
+        <Box display={isAdmin ? 'flex' : 'none'} flexDirection={{base : 'column' , xl : 'row'}} justifyContent={'center'}  width={'98%'} mt={5}>
           <Button 
             colorScheme='blue' 
             variant='solid' 
