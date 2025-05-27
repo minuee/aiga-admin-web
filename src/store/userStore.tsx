@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { devtools, persist } from 'zustand/middleware'
 import * as Cookies from 'utils/cookies';
+import { delCookie } from "store/ssrCookie";
 interface AdminUserData {
     is_state : boolean;
     staff_id: string;
@@ -25,9 +26,14 @@ const AdminUserStateStore = create<AdminUserData>()(
                 setAdminUserState: (is_state,staff_id,is_master,nickName) => {
                     set((state) => ({ is_state,staff_id,is_master,nickName }));
                     if ( is_state ) {
-                        Cookies.setCookie('AdminLoginUser',JSON.stringify({is_state,staff_id,is_master}));
+                        Cookies.removeCookie('AdminLoginUser');
+                        console.log("is_state",is_state)
+                        setTimeout(() => {
+                            Cookies.setCookie('AdminLoginUser',JSON.stringify({is_state,staff_id,is_master}) , {path : "/"});
+                        }, 300);
+                        
                     }else{
-                        console.log("AdminLoginUser out")
+                        delCookie(process.env.NEXT_PUBLIC_AUTH_TOKEN);
                         Cookies.removeCookie('AdminLoginUser');
                     }
                 },

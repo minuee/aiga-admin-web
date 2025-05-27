@@ -45,9 +45,8 @@ export default function HeaderLinks(props: {
       false,
       ""
     );
-    console.log("process.env.NEXT_PUBLIC_ASSETS_PREFIX",process.env.NEXT_PUBLIC_ASSETS_PREFIX);
-    Cookies.removeCookie(process.env.NEXT_PUBLIC_AUTH_TOKEN);
-    const res = await delCookie("token");
+    const res = await delCookie(process.env.NEXT_PUBLIC_AUTH_TOKEN);
+    //console.log("delCookie top",res,process.env.NEXT_PUBLIC_AUTH_TOKEN)
     setTimeout(() => redirect(`${process.env.NEXT_PUBLIC_ASSETS_PREFIX}/auth/sign-in`), 500);
     
   }

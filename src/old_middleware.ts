@@ -23,7 +23,7 @@ export async function middleware(request: NextRequest) {
             if (pathname.startsWith('/auth') || pathname.startsWith('/admin/auth')) {
                 console.log("33333");
                 res =  NextResponse.redirect(new URL(`${process.env.NEXT_PUBLIC_ASSETS_PREFIX}/v1/dashboard`, request.url));
-                await res.cookies.set(process.env.NEXT_PUBLIC_AUTH_TOKEN,cookies.get(process.env.NEXT_PUBLIC_AUTH_TOKEN)?.value , {path : "/"});
+                res.cookies.set(process.env.NEXT_PUBLIC_AUTH_TOKEN,cookies.get(process.env.NEXT_PUBLIC_AUTH_TOKEN)?.value);
                 applySetCookie(request, res);
                 return res;
             }
@@ -36,7 +36,7 @@ export async function middleware(request: NextRequest) {
                 return NextResponse.next();
             }else{
                 console.log("4444 else");
-                await res.cookies.delete(process.env.NEXT_PUBLIC_AUTH_TOKEN)
+                res.cookies.delete(process.env.NEXT_PUBLIC_AUTH_TOKEN)
                 res = NextResponse.redirect(new URL(`${process.env.NEXT_PUBLIC_ASSETS_PREFIX}/auth/sign-in`, request.url));
                 applySetCookie(request, res);
                 return res;
@@ -49,7 +49,7 @@ export async function middleware(request: NextRequest) {
                 console.log("6666");
             return NextResponse.next();
         }
-        await res.cookies.delete(process.env.NEXT_PUBLIC_AUTH_TOKEN)
+        res.cookies.delete(process.env.NEXT_PUBLIC_AUTH_TOKEN)
         res = NextResponse.redirect(new URL(`${process.env.NEXT_PUBLIC_ASSETS_PREFIX}/auth/sign-in`, request.url));
         applySetCookie(request, res);
         return res;
