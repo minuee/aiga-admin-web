@@ -13,6 +13,7 @@ import functions from 'utils/functions';
 //로그인 전역상태
 import AdminUserStateStore from 'store/userStore';
 import { redirect } from 'next/navigation';
+import { delCookie } from "store/ssrCookie";
 
 export default function HeaderLinks(props: {
   secondary: boolean;
@@ -37,16 +38,18 @@ export default function HeaderLinks(props: {
   const setAdminLoginUserInfo = AdminUserStateStore((state) => state.setAdminUserState);
   const { nickName, ...userInfo } = AdminUserStateStore(state => state);
 
-  const onHandleClick = () => {
+  const onHandleClick = async() => {
     setAdminLoginUserInfo(
       false,
       "",
       false,
       ""
     );
-    console.log("process.env.NEXT_PUBLIC_ASSETS_PREFIX",process.env.NEXT_PUBLIC_ASSETS_PREFIX)
-    setTimeout(() => redirect(`${process.env.NEXT_PUBLIC_ASSETS_PREFIX}/auth/sign-in`), 500);
+    console.log("process.env.NEXT_PUBLIC_ASSETS_PREFIX",process.env.NEXT_PUBLIC_ASSETS_PREFIX);
     Cookies.removeCookie(process.env.NEXT_PUBLIC_AUTH_TOKEN);
+    const res = await delCookie("token");
+    setTimeout(() => redirect(`${process.env.NEXT_PUBLIC_ASSETS_PREFIX}/auth/sign-in`), 500);
+    
   }
   return (
     <Flex
