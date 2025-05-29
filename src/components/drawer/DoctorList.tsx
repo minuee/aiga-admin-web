@@ -7,7 +7,7 @@ import * as DoctorService from "services/doctor/index";
 import Pagination from 'components/etc/Pagination';
 import dynamic from 'next/dynamic';
 import functions from 'utils/functions';
-
+import { BrowserView,isMobileOnly,isBrowser,isDesktop,isMobile} from "react-device-detect";
 const Scrollbars = dynamic(
   () => import('react-custom-scrollbars-2').then((mod) => mod.Scrollbars),
   { ssr: true },
@@ -103,7 +103,7 @@ export default function DoctorList(props: { hospitalData: any,inputs : any }) {
         <Box 
           display={inputs.totalCount > inputs.pageSize ? 'block' : 'none'}
           position='absolute'
-          bottom={-10}
+          bottom={isDesktop ? 2 : 5}
           left={0}
           width="100%"
           height={{base : '100px', xl:'50px'}}

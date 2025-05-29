@@ -108,3 +108,11 @@ new people that already use Horizon UI!
 ⭐️ [Copyright 2022 Simmmple ](https://www.simmmple.com/?ref=readme-horizon-nextjs)
 
 📄 [Horizon UI License](https://www.simmmple.com/licenses?ref=readme-horizon-nextjs)
+
+
+서버 15.165.71.58 설정상태 공유차 정리드립니다.
+https://aigadev.kormedi.com
+ / : aiga website
+ /admin : aiga admin website
+ /adminapi : aiga admin website test용 api server
+ /jenkins : aiga frontend deploy tool website
