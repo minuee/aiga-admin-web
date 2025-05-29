@@ -109,7 +109,6 @@ export default function DoctorList(props: { hospitalData: any,inputs : any }) {
           height={{base : '100px', xl:'50px'}}
           //overflowX={{base : 'auto', xl:'hidden'}}
         >
-          
           <PaginationWrapper
             total={inputs.totalCount}
             page={inputs.page}
