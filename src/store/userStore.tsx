@@ -27,7 +27,6 @@ const AdminUserStateStore = create<AdminUserData>()(
                     set((state) => ({ is_state,staff_id,is_master,nickName }));
                     if ( is_state ) {
                         Cookies.removeCookie('AdminLoginUser');
-                        console.log("is_state",is_state)
                         setTimeout(() => {
                             Cookies.setCookie('AdminLoginUser',JSON.stringify({is_state,staff_id,is_master}) , {path : "/"});
                         }, 300);

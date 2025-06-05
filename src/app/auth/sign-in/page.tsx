@@ -74,7 +74,6 @@ export default function SignIn() {
             ret.data.role == 'admin' ? true : false,
             ret.data.nickName
           );
-          console.log("ret.data",ret.data)
           setTimeout(() => {
             if( pathname.includes("auth/sign-in") ) {
               redirect(`${process.env.NEXT_PUBLIC_ASSETS_PREFIX}/v1/dashboard`);

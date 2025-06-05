@@ -46,7 +46,6 @@ export default function ViewForm(props: ViewFormProps) {
     }
 
     React.useEffect(() => {
-        console.log("dddddd",props.data)
         setInputs({
             ...inputs,
             ...props.data,

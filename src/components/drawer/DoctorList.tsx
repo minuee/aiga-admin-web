@@ -29,7 +29,6 @@ export default function DoctorList(props: { hospitalData: any,inputs : any }) {
   const getData = React.useCallback(
     async() => {
       try{
-        console.log("props.inputs 2",inputs)
         const res:any = await DoctorService.getDoctorList({
           hospitalId: props.hospitalData?.hid,
           page: inputs.page,
@@ -52,7 +51,6 @@ export default function DoctorList(props: { hospitalData: any,inputs : any }) {
   );
   
   React.useEffect(() => {
-    console.log("props.inputs",props.inputs)
     setInputs({
       ...inputs,
       page : 1,
