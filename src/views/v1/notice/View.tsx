@@ -113,7 +113,6 @@ export default function ViewForm(props: ViewFormProps) {
                                     id='openDate'
                                 />
                             </InputGroup>
-                            
                         </Box>
                     </Flex>
                     <Flex flexDirection={'column'}>
@@ -126,7 +125,6 @@ export default function ViewForm(props: ViewFormProps) {
                             content={inputs?.content}
                         />
                     </Flex>
-                    
                 </Form>
                 )}
             </Formik>

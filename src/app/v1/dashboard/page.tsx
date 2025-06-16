@@ -28,9 +28,7 @@ export default function Default() {
               w="56px"
               h="56px"
               bg={boxBg}
-              icon={
-                <Icon w="32px" h="32px" as={MdBarChart} color={brandColor} />
-              }
+              icon={<Icon w="32px" h="32px" as={MdBarChart} color={brandColor} />}
             />
           }
           name="회원수"
@@ -42,9 +40,7 @@ export default function Default() {
               w="56px"
               h="56px"
               bg={boxBg}
-              icon={
-                <Icon w="32px" h="32px" as={MdBarChart} color={brandColor} />
-              }
+              icon={ <Icon w="32px" h="32px" as={MdBarChart} color={brandColor} />}
             />
           }
           name="일일 접속자수"
@@ -57,9 +53,7 @@ export default function Default() {
               w="56px"
               h="56px"
               bg={boxBg}
-              icon={
-                <Icon w="32px" h="32px" as={MdBarChart} color={brandColor} />
-              }
+              icon={<Icon w="32px" h="32px" as={MdBarChart} color={brandColor} />}
             />
           } 
           name="일간 사용 토큰수"
@@ -71,9 +65,7 @@ export default function Default() {
               w="56px"
               h="56px"
               bg={boxBg}
-              icon={
-                <Icon w="32px" h="32px" as={MdBarChart} color={brandColor} />
-              }
+              icon={<Icon w="32px" h="32px" as={MdBarChart} color={brandColor} />}
             />
           }
           name="New 회원수"
@@ -85,9 +77,7 @@ export default function Default() {
               w="56px"
               h="56px"
               bg={boxBg}
-              icon={
-                <Icon w="32px" h="32px" as={MdFileCopy} color={brandColor} />
-              }
+              icon={ <Icon w="32px" h="32px" as={MdFileCopy} color={brandColor} />}
             />
           }
           name="기타 현황"
@@ -100,9 +90,7 @@ export default function Default() {
               w="56px"
               h="56px"
               bg={boxBg}
-              icon={
-                <Icon w="32px" h="32px" as={MdFileCopy} color={brandColor} />
-              }
+              icon={<Icon w="32px" h="32px" as={MdFileCopy} color={brandColor} />}
             />
           }
           name="기타 현황2"

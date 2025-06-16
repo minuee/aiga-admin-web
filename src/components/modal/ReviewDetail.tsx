@@ -248,5 +248,4 @@ function ReviewDetail(props: ReviewDetailProps) {
   }
 }
 
-
 export default ReviewDetail;

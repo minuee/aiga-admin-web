@@ -1,15 +1,5 @@
 import { Icon,Tooltip } from '@chakra-ui/react';
-import {
-  MdBarChart,
-  MdPerson,
-  MdHome,
-  MdEdit,
-  MdNotifications,
-  MdDvr,
-  MdApartment
-} from 'react-icons/md';
-
-
+import { MdBarChart,MdPerson,MdHome,MdEdit,MdNotifications,MdDvr,MdApartment } from 'react-icons/md';
 import { IRoute } from 'types/navigation';
 
 const routes: IRoute[] = [
@@ -17,9 +7,7 @@ const routes: IRoute[] = [
     name: '메인 홈',
     layout: '/v1',
     path: '/dashboard',
-    icon: <Tooltip label="메인 홈">
-      <Icon as={MdHome} width="20px" height="20px" color="inherit" />
-    </Tooltip>,
+    icon: <Tooltip label="메인 홈"><Icon as={MdHome} width="20px" height="20px" color="inherit" /></Tooltip>,
   },
   {
     name: '공지사항',
@@ -54,13 +42,13 @@ const routes: IRoute[] = [
     layout: '/v1',
     icon: <Tooltip label="병원관리"><Icon as={MdApartment} width="20px" height="20px" color="inherit" /></Tooltip>,
     path: '/hospital',
-  },
-  {
+  }
+ /*  {
     name: '각종통계',
     layout: '/v1',
     icon: <Tooltip label="각종통계"><Icon as={MdBarChart} width="20px" height="20px" color="inherit" /></Tooltip>,
     path: '/anaysis',
-  },
+  }, */
   /* {
     name: 'Profile',
     layout: '/v1',

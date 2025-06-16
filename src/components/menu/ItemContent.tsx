@@ -24,14 +24,16 @@ export function ItemContent(props:{info:string}) {
           mb='5px'
           fontWeight='bold'
           color={textColor}
-          fontSize={{ base: "md", md: "md" }}>
+          fontSize={{ base: "md", md: "md" }}
+        >
           New Update: {props.info}
         </Text>
         <Flex alignItems='center'>
           <Text
             fontSize={{ base: "sm", md: "sm" }}
             lineHeight='100%'
-            color={textColor}>
+            color={textColor}
+          >
             A new update for your downloaded item is available!
           </Text>
         </Flex>

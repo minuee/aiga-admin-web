@@ -42,12 +42,7 @@ export default function ReviewTable(props: { tableData: any }) {
 			header: () => (
 				<Flex align='center'>
 					<Checkbox defaultChecked={false} colorScheme='brandScheme' mr='10px' />
-					<Text
-						justifyContent='space-between'
-						align='center'
-						fontSize={{ sm: '10px', lg: '12px' }}
-						color='gray.400'
-					>
+					<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400' >
 						작성자 
 					</Text>
 				</Flex>
@@ -64,12 +59,7 @@ export default function ReviewTable(props: { tableData: any }) {
 		columnHelper.accessor('hospitalName', {
 			id: 'hospitalName',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'
-				>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400' >
 					병원명
 				</Text>
 			),
@@ -82,12 +72,7 @@ export default function ReviewTable(props: { tableData: any }) {
 		columnHelper.accessor('doctorName', {
 			id: 'doctorName',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'
-				>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400' >
 					의사명
 				</Text>
 			),
@@ -100,11 +85,7 @@ export default function ReviewTable(props: { tableData: any }) {
 		columnHelper.accessor('ratingKind', {
 			id: 'ratingKind',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'
 				>
 					친절•배려
 				</Text>
@@ -118,12 +99,7 @@ export default function ReviewTable(props: { tableData: any }) {
 		columnHelper.accessor('ratingTreatment', {
 			id: 'ratingTreatment',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'
-				>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400' >
 					치료 결과 만족도
 				</Text>
 			),
@@ -136,12 +112,7 @@ export default function ReviewTable(props: { tableData: any }) {
 		columnHelper.accessor('ratingDialog', {
 			id: 'ratingDialog',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'
-				>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400' >
 					쉽고 명쾌한 설명
 				</Text>
 			),
@@ -154,12 +125,7 @@ export default function ReviewTable(props: { tableData: any }) {
 		columnHelper.accessor('ratingRecommend', {
 			id: 'ratingRecommend',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'
-				>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400' >
 					추천 여부
 				</Text>
 			),
@@ -173,11 +139,7 @@ export default function ReviewTable(props: { tableData: any }) {
 			size: 200,
 			id: 'regDate',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					등록일자
 				</Text>
 			),

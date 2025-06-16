@@ -67,12 +67,7 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 					justifyContent={'space-between'}
 					onClick={()=> props.getDataSortChange('hospital.hid')}
 				>
-					<Text
-						justifyContent='space-between'
-						align='center'
-						fontSize={{ sm: '10px', lg: '12px' }}
-						color={orderTextColor}
-					>
+					<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color={orderTextColor}>
 						HID
 					</Text>
 					{
@@ -97,12 +92,7 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 		columnHelper.accessor('baseName', {
 			id: 'baseName',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'
-				>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					기본병원명
 				</Text>
 			),
@@ -117,12 +107,7 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 		columnHelper.accessor('shortName', {
 			id: 'shortName',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'
-				>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					약칭명
 				</Text>
 			),
@@ -135,12 +120,7 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 		columnHelper.accessor('createAt', {
 			id: 'createAt',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'
-				>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					등록일
 				</Text>
 			),
@@ -163,12 +143,7 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 					justifyContent={'space-between'}
 					onClick={()=> props.getDataSortChange('doctor_count')}
 				>
-					<Text
-						justifyContent='space-between'
-						align='center'
-						fontSize={{ sm: '10px', lg: '12px' }}
-						color={orderTextColor}
-					>
+					<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color={orderTextColor}>
 						의사수
 					</Text>
 					{

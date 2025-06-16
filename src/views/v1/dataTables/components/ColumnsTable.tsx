@@ -26,11 +26,7 @@ export default function ColumnTable(props: { tableData: any }) {
 		columnHelper.accessor('name', {
 			id: 'name',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					NAME
 				</Text>
 			),
@@ -45,11 +41,7 @@ export default function ColumnTable(props: { tableData: any }) {
 		columnHelper.accessor('progress', {
 			id: 'progress',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					PROGRESS
 				</Text>
 			),
@@ -62,11 +54,7 @@ export default function ColumnTable(props: { tableData: any }) {
 		columnHelper.accessor('quantity', {
 			id: 'quantity',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					QUANTITY
 				</Text>
 			),
@@ -79,11 +67,7 @@ export default function ColumnTable(props: { tableData: any }) {
 		columnHelper.accessor('date', {
 			id: 'date',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					DATE
 				</Text>
 			),

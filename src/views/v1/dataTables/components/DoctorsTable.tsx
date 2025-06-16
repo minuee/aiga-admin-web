@@ -79,12 +79,7 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 					justifyContent={'space-between'}
 					onClick={()=> props.getDataSortChange('db.deptname')}
 				>
-					<Text
-						justifyContent='space-between'
-						align='center'
-						fontSize={{ sm: '10px', lg: '12px' }}
-						color={orderTextColor}
-					>
+					<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color={orderTextColor}>
 						진료과목명
 					</Text>
 					{
@@ -110,12 +105,7 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 			id: 'doctorname',
 			size: 50,
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'
-				>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					의사명
 				</Text>
 			),
@@ -131,12 +121,7 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 			id: 'profileimgurl',
 			size: 50,
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'
-				>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					프로필사진
 				</Text>
 			),
@@ -163,12 +148,7 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 			id: 'doctor_id',
 			size: 50,
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'
-				>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					의사ID
 				</Text>
 			),
@@ -183,12 +163,7 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 			size: 150,
 			maxSize: 150,
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'
-				>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					진료분야
 				</Text>
 			),
@@ -204,12 +179,7 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 			id: 'createAt',
 			size: 50,
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'
-				>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					등록일
 				</Text>
 			),
@@ -225,12 +195,7 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 			id: 'updateDt',
 			size: 50,
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'
-				>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					수정일
 				</Text>
 			),

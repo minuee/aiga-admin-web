@@ -32,7 +32,8 @@ export default function TableMenu({onHandleToggle,...rest}: {onHandleToggle: (bo
 				lineHeight='100%'
 				onClick={onOpen1}
 				borderRadius='10px'
-				{...rest}>
+				{...rest}
+			>
 				<Icon as={MdOutlineMoreHoriz} color={iconColor} w='24px' h='24px' />
 			</MenuButton>
 			<MenuList
@@ -44,7 +45,8 @@ export default function TableMenu({onHandleToggle,...rest}: {onHandleToggle: (bo
 				bg={bgList}
 				boxShadow={bgShadow}
 				borderRadius='20px'
-				p='15px'>
+				p='15px'
+			>
 				<MenuItem
 					transition='0.2s linear'
 					color={textColor}
@@ -79,7 +81,8 @@ export default function TableMenu({onHandleToggle,...rest}: {onHandleToggle: (bo
 					_focus={{
 						bg: 'transparent'
 					}}
-					mb='10px'>
+					mb='10px'
+				>
 					<Flex align='center'>
 						<Icon as={MdOutlineDeleteForever} h='16px' w='16px' me='8px' />
 						<Text fontSize='sm' fontWeight='400'>

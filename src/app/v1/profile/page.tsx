@@ -20,14 +20,8 @@ export default function ProfileOverview() {
     <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
       {/* Main Fields */}
       <Grid
-        templateColumns={{
-          base: '1fr',
-          lg: '1.34fr 1fr 1.62fr',
-        }}
-        templateRows={{
-          base: 'repeat(3, 1fr)',
-          lg: '1fr',
-        }}
+        templateColumns={{ base: '1fr',lg: '1.34fr 1fr 1.62fr' }}
+        templateRows={{ base: 'repeat(3, 1fr)',lg: '1fr' }}
         gap={{ base: '20px', xl: '20px' }}
       >
         <Banner
@@ -46,10 +40,7 @@ export default function ProfileOverview() {
           total={50}
         />
         <Upload
-          gridArea={{
-            base: '3 / 1 / 4 / 2',
-            lg: '1 / 3 / 2 / 4',
-          }}
+          gridArea={{ base: '3 / 1 / 4 / 2', lg: '1 / 3 / 2 / 4'}}
           minH={{ base: 'auto', lg: '420px', '2xl': '365px' }}
           pe="20px"
           pb={{ base: '100px', lg: '20px' }}
@@ -57,16 +48,8 @@ export default function ProfileOverview() {
       </Grid>
       <Grid
         mb="20px"
-        templateColumns={{
-          base: '1fr',
-          lg: 'repeat(2, 1fr)',
-          '2xl': '1.34fr 1.62fr 1fr',
-        }}
-        templateRows={{
-          base: '1fr',
-          lg: 'repeat(2, 1fr)',
-          '2xl': '1fr',
-        }}
+        templateColumns={{ base: '1fr',lg: 'repeat(2, 1fr)','2xl': '1.34fr 1.62fr 1fr' }}
+        templateRows={{ base: '1fr',lg: 'repeat(2, 1fr)','2xl': '1fr' }}
         gap={{ base: '20px', xl: '20px' }}
       >
         <Projects
@@ -86,11 +69,7 @@ export default function ProfileOverview() {
         <Notifications
           used={25.6}
           total={50}
-          gridArea={{
-            base: '3 / 1 / 4 / 2',
-            lg: '2 / 1 / 3 / 3',
-            '2xl': '1 / 3 / 2 / 4',
-          }}
+          gridArea={{ base: '3 / 1 / 4 / 2',lg: '2 / 1 / 3 / 3','2xl': '1 / 3 / 2 / 4' }}
         />
       </Grid>
     </Box>

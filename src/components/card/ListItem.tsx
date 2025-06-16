@@ -48,7 +48,7 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
     }, [inputs?.length]);
 
     const onHandlePaperModify = (data:any) => {
-        
+        console.log("onHandlePaperModify",data)
     }
 
     if ( isLoading ) {
@@ -70,10 +70,7 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
             }
             {
                 inputs?.length > 0 ? (
-                    <Box 
-                        minH={'150px'}
-                        noOfLines={100}
-                    >
+                    <Box minH={'150px'} noOfLines={100}>
                         {
                         type === 'papers' ? (
                             <List spacing={{base : 0,'mobile' : 2}}>

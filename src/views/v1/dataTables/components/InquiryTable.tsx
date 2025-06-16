@@ -43,12 +43,7 @@ export default function InquiryTable(props: { tableData: any }) {
 			header: () => (
 				<Flex align='center'>
 					<Checkbox defaultChecked={false} colorScheme='brandScheme' mr='10px' />
-					<Text
-						justifyContent='space-between'
-						align='center'
-						fontSize={{ sm: '10px', lg: '12px' }}
-						color='gray.400'
-					>
+					<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400' >
 						이름 
 					</Text>
 				</Flex>
@@ -65,12 +60,7 @@ export default function InquiryTable(props: { tableData: any }) {
 		columnHelper.accessor('contactInfo', {
 			id: 'contactInfo',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'
-				>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400' >
 					연락정보
 				</Text>
 			),
@@ -83,12 +73,7 @@ export default function InquiryTable(props: { tableData: any }) {
 		columnHelper.accessor('relation', {
 			id: 'relation',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'
-				>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400' >
 					관계
 				</Text>
 			),
@@ -101,11 +86,7 @@ export default function InquiryTable(props: { tableData: any }) {
 		columnHelper.accessor('isCleared', {
 			id: 'isCleared',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					처리
 				</Text>
 			),
@@ -129,12 +110,7 @@ export default function InquiryTable(props: { tableData: any }) {
 			size: 200,
 			id: 'regDate',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'
-				>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					등록일자
 				</Text>
 			),

@@ -249,22 +249,21 @@ function DoctorDetail(props: DoctorDetailProps) {
           </Box>
         </Flex>
         <Box display={'flex'} flexDirection={'row'} justifyContent={'center'}  width={'98%'} mt={5}>
-            <Button 
-              colorScheme='blue' 
-              variant='solid' 
-              width={'200px'} 
-              borderRadius={'10px'}
-              onClick={() => onHandlePaperModify(inputs)}
-              id="button_modify"
-            >
-              수정
-            </Button>
+          <Button 
+            colorScheme='blue' 
+            variant='solid' 
+            width={'200px'} 
+            borderRadius={'10px'}
+            onClick={() => onHandlePaperModify(inputs)}
+            id="button_modify"
+          >
+            수정
+          </Button>
         </Box>
         <Box height={'50px'} />
       </>
     )
   }
 }
-
 
 export default DoctorDetail;

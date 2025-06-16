@@ -69,12 +69,7 @@ export default function CheckTable(props: { tableData: any }) {
 			header: () => (
 				<Flex align='center'>
 					<Checkbox defaultChecked={false} colorScheme='brandScheme' mr='10px' />
-					<Text
-						justifyContent='space-between'
-						align='center'
-						fontSize={{ sm: '10px', lg: '12px' }}
-						color='gray.400'
-					>
+					<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400' >
 						제목
 					</Text>
 				</Flex>
@@ -93,11 +88,7 @@ export default function CheckTable(props: { tableData: any }) {
 		columnHelper.accessor('info', {
 			id: 'info',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					공개
 				</Text>
 			),
@@ -108,11 +99,7 @@ export default function CheckTable(props: { tableData: any }) {
 		columnHelper.accessor('writer', {
 			id: 'writer',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					작성자
 				</Text>
 			),
@@ -126,11 +113,7 @@ export default function CheckTable(props: { tableData: any }) {
 		columnHelper.accessor('quantity', {
 			id: 'quantity',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					조회수
 				</Text>
 			),
@@ -143,11 +126,7 @@ export default function CheckTable(props: { tableData: any }) {
 		columnHelper.accessor('date', {
 			id: 'date',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					작성일
 				</Text>
 			),

@@ -170,5 +170,4 @@ function InquiryDetail(props: InquiryDetailProps) {
   }
 }
 
-
 export default InquiryDetail;

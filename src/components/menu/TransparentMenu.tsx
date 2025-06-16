@@ -30,7 +30,8 @@ export default function Banner(props: { icon: JSX.Element | string; [x: string]:
 				bg={bgList}
 				boxShadow={bgShadow}
 				borderRadius='20px'
-				p='15px'>
+				p='15px'
+			>
 				<MenuItem
 					transition='0.2s linear'
 					color={textColor}
@@ -43,7 +44,8 @@ export default function Banner(props: { icon: JSX.Element | string; [x: string]:
 					_focus={{
 						bg: 'transparent'
 					}}
-					mb='10px'>
+					mb='10px'
+				>
 					<Flex align='center'>
 						<Icon as={MdOutlinePerson} h='16px' w='16px' me='8px' />
 						<Text fontSize='sm' fontWeight='400'>
@@ -63,7 +65,8 @@ export default function Banner(props: { icon: JSX.Element | string; [x: string]:
 					_focus={{
 						bg: 'transparent'
 					}}
-					mb='10px'>
+					mb='10px'
+				>
 					<Flex align='center'>
 						<Icon as={MdOutlineCardTravel} h='16px' w='16px' me='8px' />
 						<Text fontSize='sm' fontWeight='400'>
@@ -83,7 +86,8 @@ export default function Banner(props: { icon: JSX.Element | string; [x: string]:
 					_focus={{
 						bg: 'transparent'
 					}}
-					mb='10px'>
+					mb='10px'
+				>
 					<Flex align='center'>
 						<Icon as={MdOutlineLightbulb} h='16px' w='16px' me='8px' />
 						<Text fontSize='sm' fontWeight='400'>
@@ -102,7 +106,8 @@ export default function Banner(props: { icon: JSX.Element | string; [x: string]:
 					}}
 					_focus={{
 						bg: 'transparent'
-					}}>
+					}}
+				>
 					<Flex align='center'>
 						<Icon as={MdOutlineSettings} h='16px' w='16px' me='8px' />
 						<Text fontSize='sm' fontWeight='400'>

@@ -149,8 +149,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                   id='doctorname'
                 />
               </FormControl>
-            </Box> 
-          
+            </Box>
             <Box flex={1} mt={2}>
               <FormControl variant="floatingLabel">
                 <FormLabel>병원코드(HID)</FormLabel>
@@ -165,8 +164,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                   id='hid'
                 />
               </FormControl>
-            </Box>              
-            
+            </Box>
             <Box flex={1} mt={2}>
               <FormControl variant="floatingLabel">
                 <FormLabel>병원명</FormLabel>
@@ -426,4 +424,3 @@ function DoctorDetail(props: DoctorDetailProps) {
 }
 
 export default DoctorDetail;
-

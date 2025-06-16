@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { devtools, persist } from 'zustand/middleware'
 import * as Cookies from 'utils/cookies';
 import { delCookie } from "store/ssrCookie";
+
 interface AdminUserData {
     is_state : boolean;
     staff_id: string;

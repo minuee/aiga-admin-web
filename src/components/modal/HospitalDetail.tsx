@@ -2,7 +2,7 @@
 import React, { PropsWithChildren } from 'react';
 
 // chakra imports
-import { Box,Flex,Button,Text,SkeletonCircle,SkeletonText,Divider,Icon,Textarea,Input, FormControl, FormLabel, RadioGroup, Radio, Stack, useColorModeValue} from '@chakra-ui/react';
+import { Box,Flex,Button,Text,SkeletonCircle,SkeletonText,Textarea,Input, FormControl, FormLabel, RadioGroup, Radio, Stack, useColorModeValue } from '@chakra-ui/react';
 
 import useCheckAdmin from "store/useCheckAdmin";
 
@@ -246,6 +246,5 @@ function HospitalDetail(props: HospitalDetailProps) {
     )
   }
 }
-
 
 export default HospitalDetail;

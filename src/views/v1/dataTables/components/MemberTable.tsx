@@ -44,12 +44,7 @@ export default function MemberTable(props: { tableData: any }) {
 			header: () => (
 				<Flex align='center'>
 					<Checkbox defaultChecked={false} colorScheme='brandScheme' mr='10px' />
-					<Text
-						justifyContent='space-between'
-						align='center'
-						fontSize={{ sm: '10px', lg: '12px' }}
-						color='gray.400'
-					>
+					<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400' >
 						이름 
 					</Text>
 				</Flex>
@@ -66,11 +61,7 @@ export default function MemberTable(props: { tableData: any }) {
 		columnHelper.accessor('joinType', {
 			id: 'joinType',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					가입경로
 				</Text>
 			),
@@ -83,11 +74,7 @@ export default function MemberTable(props: { tableData: any }) {
 		columnHelper.accessor('grade', {
 			id: 'grade',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					등급
 				</Text>
 			),
@@ -101,11 +88,7 @@ export default function MemberTable(props: { tableData: any }) {
 			size: 50,
 			id: 'useTokens',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					사용토큰수
 				</Text>
 			),
@@ -120,11 +103,7 @@ export default function MemberTable(props: { tableData: any }) {
 		columnHelper.accessor('isActive', {
 			id: 'isActive',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					활성
 				</Text>
 			),
@@ -135,11 +114,7 @@ export default function MemberTable(props: { tableData: any }) {
 		columnHelper.accessor('isEntire', {
 			id: 'isEntire',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					탈퇴
 				</Text>
 			),
@@ -151,11 +126,7 @@ export default function MemberTable(props: { tableData: any }) {
 			size: 200,
 			id: 'regDate',
 			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
+				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					가입일
 				</Text>
 			),
