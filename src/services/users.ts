@@ -11,7 +11,7 @@ export const users: TUserAccount[] = [
     nickName: "성남 노",
     email: "minuee@kormedi.com",
     role: "admin",
-    password: "1234",
+    password: "2025",
   },
   {
     avatar: "https://avatars.githubusercontent.com/u/0?v=3",
@@ -19,7 +19,7 @@ export const users: TUserAccount[] = [
     nickName: "형진 박",
     email: "tony@kormedi.com",
     role: "staff",
-    password: "1234",
+    password: "2025",
   },
   {
     avatar: "https://avatars.githubusercontent.com/u/0?v=2",
@@ -27,7 +27,7 @@ export const users: TUserAccount[] = [
     nickName: "CTO",
     email: "wjlee@kormedi.com",
     role: "admin",
-    password: "1234",
+    password: "2025",
   },
   {
     avatar: "https://avatars.githubusercontent.com/u/0?v=1",
@@ -35,7 +35,7 @@ export const users: TUserAccount[] = [
     nickName: "경환 허",
     email: "kyunghwan.heo@kormedi.com",
     role: "staff",
-    password: "1234",
+    password: "2025",
   },
   {
     avatar: "https://avatars.githubusercontent.com/u/0?v=0",
@@ -43,6 +43,6 @@ export const users: TUserAccount[] = [
     nickName: "진영 신",
     email: "jyonkmd@kormedi.com",
     role: "staff",
-    password: "1234",
+    password: "2025",
   },
 ];
