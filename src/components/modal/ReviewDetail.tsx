@@ -58,37 +58,19 @@ function ReviewDetail(props: ReviewDetailProps) {
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>작성자 이름</FormLabel>
-              <Input 
-                type="text" 
-                placeholder='이름' 
-                disabled
-                id='reqName'
-                color={textColor}
-              />
+              <Input type="text" placeholder='이름' disabled id='reqName' color={textColor} />
             </FormControl>
           </Box>              
           <Box flex={2} mt={{base : 5, xl : 0}}>
             <FormControl variant="floatingLabel">
               <FormLabel>작성자 이메일</FormLabel>
-              <Input 
-                type="text" 
-                placeholder='이메일' 
-                disabled
-                id='reqEmail'
-                color={textColor}
-              />
+              <Input type="text" placeholder='이메일' disabled id='reqEmail' color={textColor} />
             </FormControl>
           </Box>
           <Box flex={1} mt={{base : 5, xl : 0}}>
             <FormControl variant="floatingLabel">
               <FormLabel>등록일자</FormLabel>
-              <Input 
-                type="text" 
-                placeholder='등록일자' 
-                disabled
-                id='regDate'
-                color={textColor}
-              />
+              <Input type="text" placeholder='등록일자' disabled id='regDate' color={textColor} />
             </FormControl>
           </Box>   
         </Flex> 
@@ -96,25 +78,13 @@ function ReviewDetail(props: ReviewDetailProps) {
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>병원명</FormLabel>
-              <Input 
-                type="text" 
-                placeholder='병원명' 
-                disabled
-                id='hospitalName'
-                color={textColor}
-              />
+              <Input type="text" placeholder='병원명' disabled id='hospitalName' color={textColor} />
             </FormControl>
           </Box>              
           <Box flex={1} mt={{base : 5, xl : 0}}>
             <FormControl variant="floatingLabel">
               <FormLabel>의사명</FormLabel>
-              <Input 
-                type="text" 
-                placeholder='의사명' 
-                disabled
-                id='doctorName'
-                color={textColor}
-              />
+              <Input type="text" placeholder='의사명' disabled id='doctorName' color={textColor} />
             </FormControl>
           </Box> 
         </Flex> 
