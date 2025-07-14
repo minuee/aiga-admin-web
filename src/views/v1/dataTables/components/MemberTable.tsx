@@ -169,7 +169,6 @@ export default function MemberTable(props: { tableData: any }) {
 					<Text color={textColor} fontSize='22px' mb="4px" fontWeight='700' lineHeight='100%'>
 						회원 리스트
 					</Text>
-					
 				</Box>
 				<Box display='flex' alignItems={'flex-end'} width={{base : '100%', xl : 'auto'}}>
 					<Select placeholder='정렬기준'>

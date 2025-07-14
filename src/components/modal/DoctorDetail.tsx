@@ -266,12 +266,8 @@ function DoctorDetail(props: DoctorDetailProps) {
               <FormLabel>공개여부<span style={{color:"red",fontSize:"10px"}}> * 수정가능</span></FormLabel>
               <RadioGroup defaultValue='1'>
                 <Stack spacing={5} direction='row' padding={'10px'}>
-                  <Radio colorScheme='red' value='1'  isDisabled={!isAdmin}>
-                    공개
-                  </Radio>
-                  <Radio colorScheme='blue' value='3' isDisabled={!isAdmin}>
-                    미공개
-                  </Radio>
+                  <Radio colorScheme='red' value='1'  isDisabled={!isAdmin}>공개</Radio>
+                  <Radio colorScheme='blue' value='3' isDisabled={!isAdmin}>미공개</Radio>
                 </Stack>
               </RadioGroup>
             </FormControl>

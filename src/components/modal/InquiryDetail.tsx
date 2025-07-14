@@ -50,23 +50,13 @@ function InquiryDetail(props: InquiryDetailProps) {
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>요청자 이름</FormLabel>
-              <Input 
-                type="text" 
-                placeholder='이름' 
-                disabled
-                id='reqName'
-              />
+              <Input type="text" placeholder='이름' disabled id='reqName' />
             </FormControl>
           </Box>              
           <Box flex={1} mt={{base : 5, xl : 0}}>
             <FormControl variant="floatingLabel">
               <FormLabel>연락처</FormLabel>
-              <Input 
-                type="text" 
-                placeholder='연락처' 
-                disabled
-                id='reqTel'
-              />
+              <Input type="text" placeholder='연락처' disabled id='reqTel' />
             </FormControl>
           </Box>
         </Flex> 
@@ -74,12 +64,7 @@ function InquiryDetail(props: InquiryDetailProps) {
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>등록일자</FormLabel>
-              <Input 
-                type="text" 
-                placeholder='등록일자' 
-                disabled
-                id='regDate'
-              />
+              <Input type="text" placeholder='등록일자' disabled id='regDate' />
             </FormControl>
           </Box>              
           <Box flex={1} mt={{base : 5, xl : 0}}>
@@ -87,15 +72,9 @@ function InquiryDetail(props: InquiryDetailProps) {
               <FormLabel>관계</FormLabel>
               <RadioGroup defaultValue='1'>
                 <Stack spacing={5} direction='row' padding={'10px'}>
-                  <Radio colorScheme='red' value='1' isDisabled>
-                    본인
-                  </Radio>
-                  <Radio colorScheme='green' value='2' isDisabled>
-                    관계자
-                  </Radio>
-                  <Radio colorScheme='blue' value='3' isDisabled>
-                    기타
-                  </Radio>
+                  <Radio colorScheme='red' value='1' isDisabled>본인</Radio>
+                  <Radio colorScheme='green' value='2' isDisabled>관계자</Radio>
+                  <Radio colorScheme='blue' value='3' isDisabled>기타</Radio>
                 </Stack>
               </RadioGroup>
             </FormControl>
@@ -138,15 +117,9 @@ function InquiryDetail(props: InquiryDetailProps) {
               <FormLabel>처리</FormLabel>
               <RadioGroup defaultValue='1'>
                 <Stack spacing={5} direction='row' padding={'10px'}>
-                  <Radio colorScheme='red' value='1' isDisabled={!isAdmin}>
-                    완료
-                  </Radio>
-                  <Radio colorScheme='green' value='2'  isDisabled={!isAdmin}>
-                    보류
-                  </Radio>
-                  <Radio colorScheme='blue' value='3'  isDisabled={!isAdmin}>
-                    대기
-                  </Radio>
+                  <Radio colorScheme='red' value='1' isDisabled={!isAdmin}>완료</Radio>
+                  <Radio colorScheme='green' value='2'  isDisabled={!isAdmin}>보류</Radio>
+                  <Radio colorScheme='blue' value='3'  isDisabled={!isAdmin}>대기</Radio>
                 </Stack>
               </RadioGroup>
             </FormControl>

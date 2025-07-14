@@ -169,14 +169,7 @@ function ReviewDetail(props: ReviewDetailProps) {
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>코멘트</FormLabel>
-              <Input 
-                type="text" 
-                placeholder='간략히 적으세요' 
-                readOnly={!isAdmin}
-                disabled={!isAdmin}
-                id='comment'
-                color={textColor}
-              />
+              <Input type="text" placeholder='간략히 적으세요' readOnly={!isAdmin} disabled={!isAdmin} id='comment' color={textColor} />
             </FormControl>
           </Box>   
         </Flex>
@@ -186,15 +179,9 @@ function ReviewDetail(props: ReviewDetailProps) {
               <FormLabel>처리</FormLabel>
               <RadioGroup defaultValue='1'>
                 <Stack spacing={5} direction='row' padding={'10px'}>
-                  <Radio colorScheme='red' value='1' readOnly={!isAdmin} isDisabled={!isAdmin}>
-                    공개
-                  </Radio>
-                  <Radio colorScheme='green' value='2' readOnly={!isAdmin} isDisabled={!isAdmin}>
-                    보류
-                  </Radio>
-                  <Radio colorScheme='blue' value='3' readOnly={!isAdmin} isDisabled={!isAdmin}>
-                    미공개
-                  </Radio>
+                  <Radio colorScheme='red' value='1' readOnly={!isAdmin} isDisabled={!isAdmin}>공개</Radio>
+                  <Radio colorScheme='green' value='2' readOnly={!isAdmin} isDisabled={!isAdmin}>보류</Radio>
+                  <Radio colorScheme='blue' value='3' readOnly={!isAdmin} isDisabled={!isAdmin}>미공개</Radio>
                 </Stack>
               </RadioGroup>
             </FormControl>

@@ -81,18 +81,10 @@ function MemberDetail(props: MemberDetailProps) {
               <FormLabel>등급</FormLabel>
               <RadioGroup defaultValue='1'>
                 <Stack spacing={5} direction={{base : 'column', md : 'row'}} padding={{base : '0', md : '10px'}}>
-                  <Radio colorScheme='red' value='1' onClick={() => setInputs({...inputs, relation: '1'})}>
-                    Platinum
-                  </Radio>
-                  <Radio colorScheme='green' value='2' onClick={() => setInputs({...inputs, relation: '2'})}>
-                    Gold
-                  </Radio>
-                  <Radio colorScheme='blue' value='3' onClick={() => setInputs({...inputs, relation: '3'})}>
-                    Silver
-                  </Radio>
-                  <Radio colorScheme='blue' value='4' onClick={() => setInputs({...inputs, relation: '4'})}>
-                    Bronze
-                  </Radio>
+                  <Radio colorScheme='red' value='1' onClick={() => setInputs({...inputs, relation: '1'})}>Platinum</Radio>
+                  <Radio colorScheme='green' value='2' onClick={() => setInputs({...inputs, relation: '2'})}>Gold</Radio>
+                  <Radio colorScheme='blue' value='3' onClick={() => setInputs({...inputs, relation: '3'})}>Silver</Radio>
+                  <Radio colorScheme='blue' value='4' onClick={() => setInputs({...inputs, relation: '4'})}>Bronze</Radio>
                 </Stack>
               </RadioGroup>
             </FormControl>
@@ -104,15 +96,9 @@ function MemberDetail(props: MemberDetailProps) {
               <FormLabel>가입경로</FormLabel>
               <RadioGroup defaultValue='1'>
                 <Stack spacing={5} direction={{base : 'column', md : 'row'}} padding={{base : '0', md : '10px'}}>
-                  <Radio colorScheme='red' value='1' onClick={() => setInputs({...inputs, relation: '1'})}>
-                    AIGA
-                  </Radio>
-                  <Radio colorScheme='green' value='2' onClick={() => setInputs({...inputs, relation: '2'})}>
-                    Naver
-                  </Radio>
-                  <Radio colorScheme='blue' value='3' onClick={() => setInputs({...inputs, relation: '3'})}>
-                    Kakao
-                  </Radio>
+                  <Radio colorScheme='red' value='1' onClick={() => setInputs({...inputs, relation: '1'})}>AIGA</Radio>
+                  <Radio colorScheme='green' value='2' onClick={() => setInputs({...inputs, relation: '2'})}>Naver</Radio>
+                  <Radio colorScheme='blue' value='3' onClick={() => setInputs({...inputs, relation: '3'})}>Kakao</Radio>
                 </Stack>
               </RadioGroup>
             </FormControl>
