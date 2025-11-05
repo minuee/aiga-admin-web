@@ -16,3 +16,49 @@ export function getHospitalList(props: PaginationProps): ApiResponse<any> {
         return null;
     }
 }
+
+export function getNoticeList(): ApiResponse<any> {
+    try{
+        return api.get(`/notice`);
+    }catch(e:any){
+        console.log("getNoticeList e",e)
+        return null;
+    }
+}
+
+interface saveDataProps {
+    noticeId : string,
+    title :  string,
+    content : string,
+    is_active : boolean,
+    open_date :  string,
+    writer : string
+}
+
+export function postNoticeData(reqData:saveDataProps): ApiResponse<any> {
+    try{
+        if ( reqData?.noticeId ) {
+            const res:any =  api.post(`/admin/patch/${reqData?.noticeId}`,reqData)
+            .then((response) => {
+                 return response?.data;
+            }).catch((error):any => {
+                 console.log("eeeee",error)
+                return null;
+            });
+            return res;
+        }else{
+            const res:any =  api.post(`/admin/notice`,reqData)
+            .then((response) => {
+                 return response?.data;
+            }).catch((error):any => {
+                 console.log("eeeee",error)
+                return null;
+            });
+            return res;
+        }
+       
+    }catch(error){
+        console.log("eeeee",error)
+        return null;   
+    }
+}

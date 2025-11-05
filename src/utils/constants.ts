@@ -16,6 +16,7 @@ export const sungwonjungThumb = [
     name : '서브 안내 4',
   }
 ]
+export const apiSuccessCode = [200,201,202,203,300,301,302];
 
 const contrants  = {
   defaultColor : '#6c62d1',
@@ -32,6 +33,7 @@ const contrants  = {
   mobileHeaderHeight: 60,
   modalMaxWidth : 768,
   desktopMinWidth : 768,
+  apiSuccessCode
 }
 
 export default contrants;

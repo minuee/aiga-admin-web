@@ -6,17 +6,20 @@ import { MdChevronLeft,MdChevronRight, MdOutlineEventAvailable } from 'react-ico
 import Calendar from 'react-calendar';
 import { format } from 'date-fns';
 import Editor from "components/editor";
-import functions from 'utils/functions';
-const dummyContent = `<p style="width:100%;min-width:600px;text-align: center;"><h2>공지할 내용입니다.</h2><h1><span style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); ">What is </span><span style="background - color: rgb(255, 255, 255); color: rgb(230, 0, 0); ">Lorem</span><span style="background - color: rgb(255, 153, 0); color: rgb(0, 0, 0); "> Ipsum</span><span style="background - color: rgb(255, 255, 255); color: rgb(0, 0, 0); ">?</span></h1><p><strong style="background - color: rgb(255, 255, 255); color: rgb(0, 0, 0); "><u>Lorem Ipsum</u></strong><span style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); ">&nbsp;is</span><s style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); "> simply</s><em style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); "> dummy<a href="https://www.naver.com/" rel="noopener noreferrer" target="_blank"> </a></em><a href="https://www.naver.com/" rel="noopener noreferrer" target="_blank" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);">text </a><span style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);">of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem</span> Ipsum.</p><p><br></p><p style="text-align: center;"><img src="https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/cnoC/image/66LHXQZY2bFLKR7SEO_KJjOnX6M" width="133" style=""></p><p><br></p><p><br></p></p>`
+import NextImage from 'next/legacy/image';
+import ProcessingBar from "img/processing2x.gif";
 
 interface ViewFormProps {
+    onHandSaveNotice: (data: any) => void;
     data: any;
+    isReceiving : boolean;
 }
 export default function ViewForm(props: ViewFormProps) {
     const { colorMode, toggleColorMode } = useColorMode();
     const [defaultDate, setDefaultDate] = React.useState(format(new Date(), 'yyyy-MM-dd') );
     const [isShowCalendar, setShowCalendar] = React.useState(false);
     const [openDate, onDateChange] = React.useState(new Date());
+    const [saveContent, setSaveContent] = React.useState(new Date());
     const [inputs, setInputs] = React.useState<any>({
         noticeId : '',
         title : '',
@@ -52,13 +55,31 @@ export default function ViewForm(props: ViewFormProps) {
             isOpen : props.data?.info,
             openDate :  props.data?.date,
             title : props.data?.name[0],
-            content :  dummyContent
+            content :  props.data?.content
         })
     }, [props.data]);
+
+    React.useEffect(() => {
+        props.onHandSaveNotice({
+            ...inputs,
+            content : saveContent
+        })
+    }, [saveContent]);
+
+    
   
     return (
         
         <Box sx={{width:'99%',height:'100%',padding:'10px 10px 40px 10px' , overflow:'auto'}} overflowY="auto">
+            {
+                props.isReceiving && (
+                <Flex position='absolute' left={0} top={0} width='100%' height='100%'  justifyContent={'center'}  backgroundColor={'#000000'} opacity={0.7} zIndex="100">
+                    <Box padding='6' boxShadow='lg' width={"300px"} height={"calc( 100vh / 2 )"} display={'flex'} flexDirection={'column'}  justifyContent={'center'} alignItems={'center'}>
+                    <NextImage width="60" height="20" src={ProcessingBar} alt={'loading'} />
+                    </Box>
+                </Flex>
+                )
+            }
             <Formik
                 initialValues={{ name: '홍길동' }}
                 onSubmit={(values, actions) => {
@@ -80,6 +101,7 @@ export default function ViewForm(props: ViewFormProps) {
                                 placeholder='공지사항 제목을 입력해주세요'  
                                 value={inputs?.title || ''} 
                                 color={textColor} 
+                                required
                                 onChange={(e:any) => setInputs({...inputs,title:e.target.value})}
                                 //readOnly={!functions.isEmpty(inputs.noticeId)}
                                 id='title'
@@ -120,6 +142,7 @@ export default function ViewForm(props: ViewFormProps) {
                             내용
                         </FormLabel>
                         <Editor 
+                            onHandSaveContent={(data:any) => setSaveContent(data)}
                             height={700}
                             colorMode={colorMode}
                             content={inputs?.content}

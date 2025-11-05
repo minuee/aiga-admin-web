@@ -1,8 +1,9 @@
 
 import * as React from 'react';
 import { createColumnHelper,flexRender,getCoreRowModel,getSortedRowModel,SortingState,useReactTable } from '@tanstack/react-table';
-import { Flex, Box, Table, Checkbox, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue,Drawer,DrawerBody,DrawerFooter,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,Button } from '@chakra-ui/react';
+import { useToast,Flex,Box,Table,Checkbox,Tbody,Td,Text,Th,Thead,Tr,useColorModeValue,Drawer,DrawerBody,DrawerFooter,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,Button } from '@chakra-ui/react';
 // Custom components
+import mConstants from 'utils/constants';
 import Card from 'components/card/Card';
 import TableMenu from 'components/menu/TableMenu';
 import { renderThumb,renderTrack,renderView } from 'components/scrollbar/Scrollbar';
@@ -11,15 +12,17 @@ const Scrollbars = dynamic(
   () => import('react-custom-scrollbars-2').then((mod) => mod.Scrollbars),
   { ssr: true },
 );
+import { NoticeDetailModalStore } from 'store/modalStore';
+import AdminUserStateStore from 'store/userStore';
+import functions from 'utils/functions';
 import * as NoticeService from "services/notice/index";
 import NoticeForm from "views/v1/notice/View";
 
 type RowObj = {
-	name: [string, boolean];
+	title: string;
 	writer: string;
-	quantity: number;
-	date: string;
-	info: boolean;
+	createAt: string;
+	is_active: boolean;
 };
  
 const columnHelper = createColumnHelper<RowObj>();
@@ -27,18 +30,22 @@ const columnHelper = createColumnHelper<RowObj>();
 // const columns = columnsDataCheck;
 export default function CheckTable(props: { tableData: any }) {
 	const { tableData } = props;
+	console.log("tableData",tableData)
+	const toast = useToast();
+	const [ isReceiving, setIsReceiving ] = React.useState(false);
 	const [ sorting, setSorting ] = React.useState<SortingState>([]);
-	const [ data_9, setData9 ] = React.useState<any>([]);
+	const { nickName, ...userInfo } = AdminUserStateStore(state => state);
+	const [ data, setData ] = React.useState(tableData?.notice ?? []);
+	const [ selectedData, setSelectedData ] = React.useState(null);
+	const [ savedData, setSaveData ] = React.useState(null);
+	
+	const setShow = NoticeDetailModalStore((state) => state.setOpenNoticeDetailModal);
+	const isShow = NoticeDetailModalStore(state => state.isOpenNoticeDetailModal);
+	const btnRef = React.useRef();
+	
 	const textColor = useColorModeValue('secondaryGray.900', 'white');
 	const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
 	const bgColor = useColorModeValue(' .300', 'navy.900');
-	let defaultData= tableData;
-	const [ data, setData ] = React.useState(() => [ ...defaultData ]);
-	const [ selectedData, setSelectedData ] = React.useState(null);
-	
-	const [ isShow, setShow ] = React.useState(false);
-	const btnRef = React.useRef();
-	
 	const onHandleToggle = (bool:boolean) => {
 		setShow(bool)
 	}
@@ -47,24 +54,55 @@ export default function CheckTable(props: { tableData: any }) {
 		setSelectedData(data);
 		setTimeout(() => setShow(true), 300);
 	}
-
-	const getData = React.useCallback(
-		async() => {
-			const res:any = await NoticeService.getHospitalList({
-				page:1,
-				take:10,
-				order:'ASC',
-				orderName:'hospital.hid'
-			});
-		},[tableData]
-	)
 	
-	React.useEffect(() => {
-		getData().then((res) => setData9(res));
-	}, [getData]);
+	const onHandSaveNotice = async(data:any) => {
+		setSaveData(data);
+	}
+
+	const onHandSaveNoticeAction = async() => {
+		console.log("savedData",savedData);
+		if ( functions.isEmpty(savedData?.title) || functions.isEmpty(savedData?.content)  ) {
+			functions.simpleToast(toast,`필수항목이 누락되었습니다.`);
+			return;
+		}else{
+
+			try{
+				const nowdateTime = new Date();
+				const nowdate = functions.dateToDate(nowdateTime.getTime());
+				console.log("nowdateTime",nowdateTime);
+				console.log("nowdate",nowdate);
+				setIsReceiving(true);
+				const sendData = {
+					noticeId :  savedData?.noticeId,
+					title :  savedData?.title || "공지사항입니다.",
+					content : savedData?.content || "공지사항입니다.",
+					is_active : savedData?.isOpen  || savedData?.openDate <= nowdate ? true : false,
+					open_date :  savedData?.openDate || nowdate,
+					writer : nickName || "관리자"
+				} 
+				const res:any = await NoticeService.postNoticeData(sendData);
+				console.log('res',res)
+				if ( mConstants.apiSuccessCode.includes(res?.statusCode) ) {
+					functions.simpleToast(toast,`성공`);
+					setTimeout(() => {
+						setShow(false);
+						setIsReceiving(false)
+					}, 500);
+				}else{
+					functions.simpleToast(toast,`실패`);
+					setTimeout(() => {
+						setIsReceiving(false)
+					}, 500);
+				}	
+			}catch(e:any){
+				console.log('eeee',e)
+			}
+		}
+	}
+
 	
 	const columns = [
-		columnHelper.accessor('name', {
+		columnHelper.accessor('title', {
 			id: 'title',
 			header: () => (
 				<Flex align='center'>
@@ -76,17 +114,17 @@ export default function CheckTable(props: { tableData: any }) {
 			),
 			cell: (info: any) => (
 				<Flex align='center'>
-					<Checkbox defaultChecked={info.getValue()[1]} colorScheme='brandScheme' mr='10px' />
+					{/* <Checkbox defaultChecked={info.row.original?.is_active} colorScheme='brandScheme' mr='10px' /> */}
 					<Box  onClick={()=> onHandleOpenData(info.row.original)} cursor={"pointer"}>
 						<Text color={textColor} fontSize='sm' fontWeight='700'>
-							{info.getValue()[0]}
+							{info.getValue()}
 						</Text>
 					</Box>
 				</Flex>
 			)
 		}),
-		columnHelper.accessor('info', {
-			id: 'info',
+		columnHelper.accessor('is_active', {
+			id: 'is_active',
 			header: () => (
 				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					공개
@@ -109,22 +147,8 @@ export default function CheckTable(props: { tableData: any }) {
 				</Text>
 			)
 		}),
-
-		columnHelper.accessor('quantity', {
-			id: 'quantity',
-			header: () => (
-				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
-					조회수
-				</Text>
-			),
-			cell: (info) => (
-				<Text color={textColor} fontSize='sm' fontWeight='700'>
-					{info.getValue()}
-				</Text>
-			)
-		}),
-		columnHelper.accessor('date', {
-			id: 'date',
+		columnHelper.accessor('createAt', {
+			id: 'createAt',
 			header: () => (
 				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					작성일
@@ -191,6 +215,28 @@ export default function CheckTable(props: { tableData: any }) {
 							</Tr>
 						))}
 					</Thead>
+					{
+					tableData?.notice?.length == 0 
+					?
+					<Tbody >
+						<Tr >
+							<Th colSpan={4} >
+								<Box
+									display={'flex'}
+									width={'100%'}
+									height={{base : "100px" , md : '200px'}}
+									justifyContent={'center'}
+									alignItems={'center'}
+									bg={bgColor}
+								>
+									<Text color={textColor} fontSize={{base : "15px", md:'20px'}} fontWeight='normal' lineHeight='100%'>
+										데이터가 없습니다.
+									</Text>
+								</Box>
+							</Th>
+						</Tr>
+					</Tbody>
+					:
 					<Tbody>
 						{table.getRowModel().rows.slice(0, 11).map((row) => {
 							return (
@@ -211,6 +257,7 @@ export default function CheckTable(props: { tableData: any }) {
 							);
 						})}
 					</Tbody>
+					}
 				</Table>
 			</Box>
 			{
@@ -255,12 +302,16 @@ export default function CheckTable(props: { tableData: any }) {
 						>
 						<NoticeForm
 							data={selectedData}
+							onHandSaveNotice={(data:any) =>  onHandSaveNotice(data)}
+							isReceiving={isReceiving}
 						/>
 						</Scrollbars>
 					</DrawerBody>
 					<DrawerFooter sx={{borderTop:'1px solid #ebebeb'}}>
 						<Button variant='outline' mr={3} onClick={()=>setShow(false)} id="buttin_cancel">Cancel</Button>
-						<Button colorScheme='blue' id="button_save">Save</Button>
+						<Button colorScheme='blue' id="button_save" onClick={()=> onHandSaveNoticeAction()}>
+							Save
+						</Button>
 					</DrawerFooter>
 					</DrawerContent>
 				</Drawer>

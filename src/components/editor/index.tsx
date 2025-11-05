@@ -1,11 +1,13 @@
 'use client';
-import { Box,Flex,useColorModeValue } from '@chakra-ui/react'
+import { Box,Flex,useColorModeValue,Textarea,Button,Text } from '@chakra-ui/react'
 // The below import defines which components come from formik
 import styled from "@emotion/styled";
 import { useMemo,useEffect,useState,useRef } from "react";
 import dynamic from 'next/dynamic';
 import 'react-quill-new/dist/quill.snow.css';
-
+import 'quill-better-table/dist/quill-better-table.css'; // 스타일 꼭 불러와야 함
+import QuillBetterTable from 'quill-better-table';
+import 'quill-better-table/dist/quill-better-table.css';
 //@ts-ignore
 const ImageResize = dynamic(() => import('quill-image-resize-module-ts'), {
   ssr: false
@@ -33,171 +35,218 @@ import { ImageFormats } from '@xeger/quill-image-formats';
 
 import Parchment from 'parchment';
 import dompurify from "dompurify";
-const Quill_NoSSR = dynamic(
-    async () => {
-        const { default: RQ } = await import("react-quill-new");
-        //const Parchment = await import("parchment");
-        RQ.Quill.register('modules/imageResize', ImageResize);
-        RQ.Quill.register("modules/imageActions", ImageActions);
-        RQ.Quill.register("modules/imageFormats", ImageFormats);
-        //const Parchment = RQ.Quill.import('parchment');
-        /* const Align = new Parchment.Attributor.Style('align', 'text-align', {
-            whitelist: ["left", "center", "right", "justify"],
-        }); */
-        const Height = new Parchment.Attributor.Style('height', 'height', {
-            
-        });
-        const Width = new Parchment.Attributor.Style('width', 'width', {
-            
-        });
 
-        const Float = new Parchment.Attributor.Style('float', 'float', {
-            //scope: Parchment.Scope.INLINE_BLOT,
-            whitelist: ['left','center' ,'right']
-        });
+
+const Quill_NoSSR = dynamic(
+  async () => {
+    const { default: RQ } = await import("react-quill-new");
+    const QuillBetterTable = (await import('quill-better-table')).default;
+   
+    RQ.Quill.register('modules/better-table', QuillBetterTable)
+    //const Parchment = await import("parchment");
+    RQ.Quill.register('modules/imageResize', ImageResize);
+    RQ.Quill.register("modules/imageActions", ImageActions);
+    RQ.Quill.register("modules/imageFormats", ImageFormats);
+    //const Parchment = RQ.Quill.import('parchment');
+    /* const Align = new Parchment.Attributor.Style('align', 'text-align', {
+        whitelist: ["left", "center", "right", "justify"],
+    }); */
+    const Height = new Parchment.Attributor.Style('height', 'height', {
+        
+    });
+    const Width = new Parchment.Attributor.Style('width', 'width', {
+        
+    });
+
+    const Float = new Parchment.Attributor.Style('float', 'float', {
+        //scope: Parchment.Scope.INLINE_BLOT,
+        whitelist: ['left','center' ,'right']
+    });
 
         
-       // RQ.Quill.register(Align,true);
-        RQ.Quill.register(Float,true);
-        RQ.Quill.register(Height,true);
-        RQ.Quill.register(Width,true);
+    // RQ.Quill.register(Align,true);
+    RQ.Quill.register(Float,true);
+    RQ.Quill.register(Height,true);
+    RQ.Quill.register(Width,true);
 
-        const DynamicReactQuill = ({
-            forwardedRef,
-            ...props
-        }: {
-            forwardedRef: React.Ref<any>;
-            [key: string]: any;
-        }) => <RQ ref={forwardedRef} {...props} />;
-    
-        DynamicReactQuill.displayName = "Quill_NoSSR";
-        return DynamicReactQuill;
-    },
-    {
-      ssr: false,
-    }
+    const DynamicReactQuill = ({
+        forwardedRef,
+        ...props
+    }: {
+        forwardedRef: React.Ref<any>;
+        [key: string]: any;
+    }) => <RQ ref={forwardedRef} {...props} />;
+
+    DynamicReactQuill.displayName = "Quill_NoSSR";
+    return DynamicReactQuill;
+  },
+  {
+    ssr: false,
+  }
 )
 
 import ReactModule from "./ReactModule";
 import functions from "utils/functions";
 
 interface ReactEditorProps {
-    height: number;
-    colorMode:any;
-    content : any
+  onHandSaveContent: (data: any) => void;
+  height: number;
+  colorMode:any;
+  content : any
 }
 
 export default function ReactEditor(props: ReactEditorProps) {
-    const QuillRef = useRef<typeof Quill_NoSSR | any>(null);
-    const [value, setValue] = useState("<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1c9zAnn02wcDmYlMABoRgWoxn4wccXzUpUg&s' alt='' width='200px' height='200px' />");
-    const [quillReady, setQuillReady] = useState(false);
-    const [state, setState] = useState({ value: null });
-    const handleChange = (value:any) => {
-        //setState({ value });
-    };
-    const sanitizer = dompurify.sanitize;
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-          import('react-quill-new').then(({ Quill }: any) => {
-                Quill.register('modules/imageResize', ImageResize);
-                Quill.register('modules/imageActions', ImageActions);
-                Quill.register('modules/imageFormats', ImageFormats);        
-                setQuillReady(true);
-            });
+
+  const QuillRef = useRef<typeof Quill_NoSSR | any>(null);
+  const [value, setValue] = useState("<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1c9zAnn02wcDmYlMABoRgWoxn4wccXzUpUg&s' alt='' width='200px' height='200px' />");
+  const [quillReady, setQuillReady] = useState(false);
+  const [state, setState] = useState({ value: null });
+  const [htmlView, setHtmlView] = useState(false);
+  const [htmlContent, setHtmlContent] = useState("");
+
+  const toggleHtmlView = () => {
+    if (!htmlView) {
+      setHtmlContent(value);        // 현재 에디터 내용을 textarea로
+    } else {
+      setValue(htmlContent);        // textarea 내용으로 에디터 갱신
+    }
+    setHtmlView(!htmlView);         // 모드 전환
+  };
+
+
+  const sanitizer = dompurify.sanitize;
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      import('react-quill-new').then(({ Quill }: any) => {
+        Quill.register('modules/imageResize', ImageResize);
+        Quill.register('modules/imageActions', ImageActions);
+        Quill.register('modules/imageFormats', ImageFormats);        
+        setQuillReady(true);
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if ( !functions.isEmpty(props.content)) {
+      setValue(props.content);
+    }else{
+      setValue(null)
+    }
+  }, [props.content]);
+
+  useEffect(() => {
+    props.onHandSaveContent(value)
+  }, [value]);
+
+  const imageHandler = async () => {
+      if (!QuillRef.current) return;
+  
+      const quillInstance: any = QuillRef.current.getEditor();
+      const input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.setAttribute('accept', 'image/*');
+      input.click();
+  
+      // input 클릭 시 파일 선택창이 나타남
+      input.onchange = async () => {
+        //이미지를 담아 전송할 formData
+        const file = input.files?.[0];
+  
+        try {
+          //업로드 된 S3 이미지 url을 가져오기
+          const url2 = "";//await PostAPI.uploadImg(file); //api연결하기
+          const url = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1c9zAnn02wcDmYlMABoRgWoxn4wccXzUpUg&s'; //더미 url
+          const range = quillInstance.getSelection(true); //useRef를 통해 에디터에 접근한 후 현재 커서 위치를 얻음(true:만약 선택된 영역이 없으면 커서가 깜빡이고 있는 위치를 얻음)
+          quillInstance.insertEmbed(range.index, 'image', url); //  에디터의 현재 커서 위치에 이미지를 삽입
+          quillInstance.setSelection(range.index + 1); //이미지를 삽입한 후 커서를 이미지 뒤로 이동시키는 코드
+        } catch (error) {
+          console.log(error);
         }
-    }, []);
+      };
+  };
 
-    useEffect(() => {
-        if ( !functions.isEmpty(props.content)) {
-            setValue(props.content);
-        }
-    }, [props.content]);
+  const formats = [
+  'header',
+  'bold',
+  'italic',
+  'underline',
+  'strike',
+  'blockquote',
+  'list',
+  'code',
+  'code-block',
+  'script',
+  'color',
+  'background',
+  //'image',
+  'link',
+  'height',
+  'width',
+  'align',
+  'float',
+  ];
 
-    const imageHandler = async () => {
-        if (!QuillRef.current) return;
-    
-        const quillInstance: any = QuillRef.current.getEditor();
-        const input = document.createElement('input');
-        input.setAttribute('type', 'file');
-        input.setAttribute('accept', 'image/*');
-        input.click();
-    
-        // input 클릭 시 파일 선택창이 나타남
-        input.onchange = async () => {
-          //이미지를 담아 전송할 formData
-          const file = input.files?.[0];
-    
-          try {
-            //업로드 된 S3 이미지 url을 가져오기
-            const url2 = "";//await PostAPI.uploadImg(file); //api연결하기
-            const url = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1c9zAnn02wcDmYlMABoRgWoxn4wccXzUpUg&s'; //더미 url
-            const range = quillInstance.getSelection(true); //useRef를 통해 에디터에 접근한 후 현재 커서 위치를 얻음(true:만약 선택된 영역이 없으면 커서가 깜빡이고 있는 위치를 얻음)
-            quillInstance.insertEmbed(range.index, 'image', url); //  에디터의 현재 커서 위치에 이미지를 삽입
-            quillInstance.setSelection(range.index + 1); //이미지를 삽입한 후 커서를 이미지 뒤로 이동시키는 코드
-          } catch (error) {
-            console.log(error);
-          }
-        };
-    };
-
-    const formats = [
-        'header',
-        'bold',
-        'italic',
-        'underline',
-        'strike',
-        'blockquote',
-        'list',
-        'code',
-        'code-block',
-        'script',
-        'color',
-        'background',
-        'image',
-        'link',
-        'height',
-        'width',
-        'align',
-        'float',
-    ];
-
-    const modules = useMemo(() => {
-        //if (!quillReady && !QuillRef.current) return;
+  const modules = useMemo(() => {
+    //if (!quillReady && !QuillRef.current) return;
         
-        return {
-            toolbar: {
-                container: [
-                    [{ header: [1, 2, 3, 4, 5, false] }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    ['blockquote'],
-                    ['list'],
-                    [
-                        { color: [] },
-                        { background: [] }
-                    ],
-                    [{ script: 'sub' }, { script: 'super' }], // 첨자
-                    ['code', 'code-block'], // 코드 블록 및 인라인 코드를 위한 기능 추가
-                    ['image','link'],
-                    [{ align: '' }, { align: 'center' }, { align: 'right' }, { align: 'justify' }],
-                    ['clean']
-                    
-                ],
-                //handlers: { image: imageHandler},
-            },
-            /* imageResize: {
-                modules: ['Resize', 'DisplaySize']
-            }, */
-            imageActions: {},
-            //imageFormats: {},
+    return {
+      toolbar: {
+        container: [
+          [{ header: [1, 2, 3, 4, 5, false] }],
+          ['bold', 'italic', 'underline', 'strike'],
+          ['blockquote'],
+          ['list'],
+          [
+            { color:[]},
+            { background: [] }
+          ],
+          [{ script: 'sub' }, { script: 'super' }], // 첨자
+          ['code', 'code-block'], // 코드 블록 및 인라인 코드를 위한 기능 추가
+          ['link'],
+          [{ align: '' }, { align: 'center' }, { align: 'right' }, { align: 'justify' }],
+          ['clean'] ,
+          ['table']       
+        ],
+        //handlers: { image: imageHandler},
+      },
+      table: true,
+      'better-table': {
+        operationMenu: {
+          items: {
+            unmergeCells: { text: '셀 병합 해제' },
+          },
+        },
+      },
+      /* imageResize: {
+          modules: ['Resize', 'DisplaySize']
+      }, */
+      imageActions: {},
+      //imageFormats: {},
             
-            history: {
-                delay: 500,
-                maxStack: 100,
-                userOnly: true,
-            } 
-        };
-    }, []);
-/* 
+      history: {
+        delay: 500,
+        maxStack: 100,
+        userOnly: true,
+      },
+    }
+  }, []);
+
+  useEffect(() => {
+    const editor = QuillRef.current?.getEditor();
+    const toolbar = editor?.getModule("toolbar");
+  
+    if (toolbar) {
+      toolbar.addHandler("table", () => {
+        const tableModule = editor.getModule("better-table");
+        if (tableModule) {
+          tableModule.insertTable(3, 3); // 원하는 크기로 설정
+        } else {
+          console.log("better-table 모듈이 없습니다.");
+        }
+      });
+    }
+  }, []);
+  /* 
     useEffect(() => {
         if (!QuillRef.current) return;
       
@@ -218,9 +267,10 @@ export default function ReactEditor(props: ReactEditorProps) {
             quill.insertEmbed(range.index, 'image', url);
           };
         });
-      }, [quillReady]); */
+      }, [quillReady]); 
+    */
    
-/* 
+  /* 
       const imageHandler = async () => {
         const input: any = document.createElement('input');
         input.setAttribute('type', 'file');
@@ -280,41 +330,61 @@ export default function ReactEditor(props: ReactEditorProps) {
         });
       };
        */
-    return (
-        <div>
-             {/* { quillReady && ( 
-                <div id="toolBar">
-                    <ReactModule />
-                </div>
-             )} */}
-            {
-                quillReady && (
-                    <>
-                        <Quill_NoSSR
-                            forwardedRef={QuillRef}
-                            theme="snow" 
-                            /* value={
-                                "<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1c9zAnn02wcDmYlMABoRgWoxn4wccXzUpUg&s' alt='' width='200px' height='200px' />"
-                            } */
-                            value={value}
-                            modules={modules} 
-                            onChange={setValue}
-                            formats={formats} 
-                            style={{height: props.height ? `${props.height}px` :"300px", width: "100%",}}
-                            className='h-screen max-w-full'
-                        />
-                        <Flex my={{base : 20, md : 12}} flexDirection={{base : "column", md : "row"}}>
-                            <Box flex={1} padding={5} border={"1px solid #ccc"} mr={{base : 0, md : 1}} wordBreak={'break-all'}>
-                                {value}
-                            </Box>
-                            <Box flex={1} padding={5} border={"1px solid #ccc"} ml={{base : 0, md : 1}}>
-                                <div className="ql-editor" dangerouslySetInnerHTML={{ __html : sanitizer(`${value}`) }} />
-                            </Box>
-                            
-                        </Flex>
-                    </>
-                )
-            }
-        </div>
-    )
+  return (
+    <div>
+      <Button onClick={toggleHtmlView}>
+        <Text>{htmlView ? "에디터 보기" : "HTML 보기"}</Text>
+      </Button>
+      <Button onClick={() => {
+  const editor = QuillRef.current?.getEditor();
+  const tableModule = editor?.getModule("better-table");
+  if (tableModule) {
+    tableModule.insertTable(2, 2);
+  } else {
+    alert("better-table 모듈이 없습니다.");
+  }
+}}>
+  📋 표 직접 삽입
+</Button>
+    {/* { quillReady && ( 
+      <div id="toolBar">
+          <ReactModule />
+      </div>
+    )} */}
+      {
+        quillReady && (
+          <>
+          {
+          htmlView ? (
+            <Textarea
+              value={htmlContent || "<p>/<p>"}
+              onChange={(e) => setHtmlContent(e.target.value)}
+              style={{ width: "100%", height: "400px" }}
+            />
+          ) : (
+            <Quill_NoSSR
+              forwardedRef={QuillRef}
+              theme="snow" 
+              value={value}
+              modules={modules} 
+              onChange={setValue}
+              formats={formats} 
+              style={{height: props.height ? `${props.height}px` :"300px", width: "100%",}}
+              className='h-screen max-w-full'
+            />
+          )
+          }
+            {/* <Flex my={{base : 20, md : 12}} flexDirection={{base : "column", md : "row"}}>
+              <Box flex={1} padding={5} border={"1px solid #ccc"} mr={{base : 0, md : 1}} wordBreak={'break-all'}>
+                {value}
+              </Box>
+              <Box flex={1} padding={5} border={"1px solid #ccc"} ml={{base : 0, md : 1}}>
+                <div className="ql-editor" dangerouslySetInnerHTML={{ __html : sanitizer(`${value}`) }} />
+              </Box>
+            </Flex> */}
+          </>
+        )
+      }
+    </div>
+  )
 }

@@ -14,14 +14,6 @@ export const users: TUserAccount[] = [
     password: "1234",
   },
   {
-    avatar: "https://avatars.githubusercontent.com/u/0?v=3",
-    name: "Hyungjin Park",
-    nickName: "형진 박",
-    email: "tony@kormedi.com",
-    role: "staff",
-    password: "1234",
-  },
-  {
     avatar: "https://avatars.githubusercontent.com/u/0?v=2",
     name: "Wonjae Lee",
     nickName: "CTO",
