@@ -3,8 +3,16 @@
 import * as React from 'react';
 import { AlertDialog,AlertDialogBody,AlertDialogFooter,AlertDialogHeader,AlertDialogContent,AlertDialogOverlay,useDisclosure,Button } from '@chakra-ui/react'
 
-const CustomAlert = ( msg: string = null) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+
+interface AlertProps {
+  msg: string;
+  isOpen : boolean;
+  fnConform: () => any;
+  fnCancel: () => any;
+}
+
+const CustomAlert = ({ msg,isOpen, fnConform,fnCancel }: AlertProps)=> {
+  const {  onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
 
   return (
@@ -23,10 +31,10 @@ const CustomAlert = ( msg: string = null) => {
           {msg}
         </AlertDialogBody>
           <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={onClose} id="button_no">
+            <Button ref={cancelRef} onClick={fnCancel} id="button_no">
               아니요
             </Button>
-            <Button colorScheme='red' onClick={onClose} ml={3} id="button_yes">
+            <Button colorScheme='red' onClick={fnConform} ml={3} id="button_yes">
               네
             </Button>
           </AlertDialogFooter>

@@ -30,7 +30,7 @@ type RowObj = {
 const columnHelper = createColumnHelper<RowObj>();
 
 // const columns = columnsDataCheck;
-export default function ComplexTable(props: { tableData: any,page:number, order : string , orderName: string ,getDataSortChange : (str: string) => void}) {
+export default function ComplexTable(props: { tableData: any,page:number, order : string , orderName: string ,getDataSortChange : (str: string) => void,getDataUpdateChange : (bool: boolean, isNewPage:boolean) => void}) {
 	
 	const { tableData,page ,order,orderName} = props;
 	const [ isLoading, setLoading ] = React.useState(true);
@@ -40,8 +40,10 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 	const [ inputs, setInputs ] = React.useState({
 		orderName : "deptname",
 		orderBy : "ASC",
+		isAll : false,
 		keyword : ""
 	});
+	const [ isViewAll, setIsViewAll] = React.useState(false);
 	const [ isOpenDrawer, setIsOpenDrawer ] = React.useState(false);
 	const [ isOpenModal, setIsOpenModal ] = React.useState(false);
 	const [ selectedHospital, setSelectedHospital ] = React.useState<any>(null);
@@ -67,6 +69,7 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 		setInputs({
 			orderName : "deptname",
 			orderBy : "ASC",
+			isAll : false,
 			keyword : ""
 		})
 	}, [setData]);
@@ -220,6 +223,18 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 				<Text color={textColor} fontSize='22px' fontWeight='700' lineHeight='100%'>
 					병원리스트
 				</Text>
+				<Button 
+					fontSize="sm"
+					variant="darkBrand"
+					fontWeight="500"
+					id="button_toggle_all"
+					onClick={() => {
+						setIsViewAll(!isViewAll);
+						props.getDataUpdateChange(!isViewAll,true);
+					}}
+				>
+					<Text>{isViewAll ? "3차병원만 보기" : "전체보기" }</Text>
+				</Button>
 			</Flex>
 			{
 				isLoading ?
@@ -328,7 +343,11 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 							<ModalBody >
 							<HospitalDetail
 								isOpen={isOpenModal}
-								setClose={() => 	(false)}
+								setClose={() => setIsOpenModal(false)}
+								setCloseAndReload={() => {
+									setIsOpenModal(false);
+									props.getDataUpdateChange(isViewAll,false);
+								}}
 								hospitalData={selectedHospital}
 							/>
 							</ModalBody>

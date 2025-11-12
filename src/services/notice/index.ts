@@ -7,11 +7,12 @@ interface PaginationProps {
     take: number;
     order: string;
     orderName: string;
+    isAll : boolean
 }
 
 export function getHospitalList(props: PaginationProps): ApiResponse<any> {
     if ( !functions.isEmpty(props.page) && !functions.isEmpty(props.take) && !functions.isEmpty(props.order) && !functions.isEmpty(props.orderName) ) {
-        return api.get(`/hospitals?orderName=${props.orderName}&order=${props.order}&page=${props.page}&take=${props.take}`);
+        return api.get(`/hospitals?orderName=${props.orderName}&order=${props.order}&page=${props.page}&take=${props.take}&isAll=${props.isAll}`);
     }else{
         return null;
     }

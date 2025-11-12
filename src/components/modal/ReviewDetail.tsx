@@ -6,16 +6,16 @@ import { Box,Flex,Button,Text,SkeletonCircle,SkeletonText,Divider,Textarea,Input
 import Slider from 'components/etc/Slider';
 
 import useCheckAdmin from "store/useCheckAdmin";
-
+import functions from 'utils/functions';
 export interface ReviewDetailProps extends PropsWithChildren {
   isOpen : boolean;
   setClose : () => void;
-  reviewId : string;
+  reviewId : any;
 }
 
 function ReviewDetail(props: ReviewDetailProps) {
   const { isOpen, setClose, reviewId } = props;
-
+  console.log("ReviewDetail",reviewId)
   const isAdmin = useCheckAdmin();
   const [isLoading, setIsLoading] = React.useState(true);  
   const [inputs, setInputs] = React.useState<any>({
@@ -32,6 +32,18 @@ function ReviewDetail(props: ReviewDetailProps) {
   });
 
   React.useEffect(() => {
+    setInputs({
+      reg_name: reviewId?.nickname || "-",
+      reg_email: reviewId?.email || "-",
+      reg_date: reviewId?.createAt ? functions.dateToDateTime(reviewId?.createAt) : "-",
+      hospital_name: reviewId?.doctor_basic?.hospital?.shortName || "-",
+      doctor_name: reviewId?.doctor_basic?.doctorname || "-",
+      ratingKind: reviewId?.kindness_score || 0,
+      ratingTreatment: reviewId?.explaination_score || 0,
+      ratingDialog: reviewId?.satisfaction_score || 0,
+      ratingRecommend: reviewId?.recommand_score || 0,
+      comment: reviewId?.content || "",
+    })
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -58,19 +70,19 @@ function ReviewDetail(props: ReviewDetailProps) {
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>작성자 이름</FormLabel>
-              <Input type="text" placeholder='이름' disabled id='reqName' color={textColor} />
+              <Input type="text" placeholder='이름' disabled id='reqName' color={textColor} value={inputs.reg_name} readOnly/>
             </FormControl>
           </Box>              
           <Box flex={2} mt={{base : 5, xl : 0}}>
             <FormControl variant="floatingLabel">
               <FormLabel>작성자 이메일</FormLabel>
-              <Input type="text" placeholder='이메일' disabled id='reqEmail' color={textColor} />
+              <Input type="text" placeholder='이메일' disabled id='reqEmail' color={textColor} value={inputs.reg_email} readOnly />
             </FormControl>
           </Box>
           <Box flex={1} mt={{base : 5, xl : 0}}>
             <FormControl variant="floatingLabel">
               <FormLabel>등록일자</FormLabel>
-              <Input type="text" placeholder='등록일자' disabled id='regDate' color={textColor} />
+              <Input type="text" placeholder='등록일자' disabled id='regDate' color={textColor} value={inputs.reg_date} readOnly />
             </FormControl>
           </Box>   
         </Flex> 
@@ -78,13 +90,13 @@ function ReviewDetail(props: ReviewDetailProps) {
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>병원명</FormLabel>
-              <Input type="text" placeholder='병원명' disabled id='hospitalName' color={textColor} />
+              <Input type="text" placeholder='병원명' disabled id='hospitalName' color={textColor} value={inputs.hospital_name} readOnly/>
             </FormControl>
           </Box>              
           <Box flex={1} mt={{base : 5, xl : 0}}>
             <FormControl variant="floatingLabel">
               <FormLabel>의사명</FormLabel>
-              <Input type="text" placeholder='의사명' disabled id='doctorName' color={textColor} />
+              <Input type="text" placeholder='의사명' disabled id='doctorName' color={textColor} value={inputs.doctor_name} readOnly />
             </FormControl>
           </Box> 
         </Flex> 
@@ -151,7 +163,7 @@ function ReviewDetail(props: ReviewDetailProps) {
               <FormLabel>내용</FormLabel>
               <Textarea 
                 variant={'outline'} 
-                value={inputs.req_comment} 
+                value={inputs?.comment} 
                 //onChange={(e) => setInputs({...inputs, req_comment: e.target.value})} 
                 resize={'none'}  
                 minH={'150px'}
@@ -165,7 +177,7 @@ function ReviewDetail(props: ReviewDetailProps) {
           </Box>   
         </Flex>
         <Divider orientation='horizontal' py={2}/>
-        <Flex display={'flex'} flexDirection={{base : 'column' , xl : 'row'}} minHeight={'50px'} padding={{base : '0', xl : '0 10px'}} mt={{base : 5, xl : 0}}>
+        <Flex display={'flex'} flexDirection={{base : 'column' , xl : 'row'}} minHeight={'50px'} padding={{base : '0', xl : '0 10px'}} mt={{base : 5, xl : 5}}>
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>코멘트</FormLabel>
@@ -173,7 +185,7 @@ function ReviewDetail(props: ReviewDetailProps) {
             </FormControl>
           </Box>   
         </Flex>
-        <Flex display={'flex'} flexDirection={{base : 'column' , xl : 'row'}} minHeight={'50px'} padding={{base : '0', xl : '0 10px'}} mt={{base : 5, xl : 0}}>       
+        <Flex display={'flex'} flexDirection={{base : 'column' , xl : 'row'}} minHeight={'50px'} padding={{base : '0', xl : '0 10px'}} mt={{base : 5, xl : 5}}>       
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>처리</FormLabel>

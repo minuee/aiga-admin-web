@@ -57,7 +57,7 @@ function DoctorDetail(props: DoctorDetailProps) {
       if ( !functions.isEmpty(props.DoctorData?.rid) ) {
         try{
           const res:any = await DoctorService.getDoctorPaperList({
-            doctorId: props.DoctorData?.rid
+            doctorId: props.DoctorData?.rid_long
           });
           setDoctorPapers(res?.data);
         }catch(e){

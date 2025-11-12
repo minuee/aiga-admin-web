@@ -2,37 +2,39 @@
 import React, { PropsWithChildren } from 'react';
 
 // chakra imports
-import { Box,Flex,Button,Text,SkeletonCircle,SkeletonText,Textarea,Input, FormControl, FormLabel, RadioGroup, Radio, Stack, useColorModeValue } from '@chakra-ui/react';
-
+import { Box,Flex,Button,useToast,SkeletonCircle,SkeletonText,Textarea,Input, FormControl, FormLabel, RadioGroup, Radio, Stack, useColorModeValue } from '@chakra-ui/react';
+import * as HospitalService from "services/hospital/index";
 import useCheckAdmin from "store/useCheckAdmin";
+import functions from 'utils/functions';
+import CustomAlert from 'components/etc/CustomAlert';
 
 export interface HospitalDetailProps extends PropsWithChildren {
   isOpen : boolean;
   setClose : () => void;
+  setCloseAndReload : () => void;
   hospitalData : any;
 }
 
 function HospitalDetail(props: HospitalDetailProps) {
-  const { isOpen, setClose, hospitalData } = props;
-
+  const { isOpen, setClose, setCloseAndReload, hospitalData } = props;
+  const toast = useToast();
   const isAdmin = useCheckAdmin();
   const [isLoading, setIsLoading] = React.useState(true);  
+  const [isShowConfirm, setIsShowConfirm] = React.useState(false);  
   const [inputs, setInputs] = React.useState<any>({
-    reg_name: '',
-    reg_email: '',
-    reg_date: '',
-    hospital_name: '',
-    doctor_name: '',
-    ratingKind: 3,
-    ratingTreatment: 3,
-    ratingDialog: 3,
-    ratingRecommend: 3,
-    comment: '',
-    latitude: '',
-    longitude: '',
-    reservation_site: '',
-    reservation_phone: ''
-  });
+    hid : null,
+    address : null,
+    baseName : null,
+    shortName : null,
+    lat : null,
+    lon : null,
+    yoyang_giho : null,
+    doctor_count : 0,
+    reservation_site: null,
+    telephone: null,
+    req_comment: null,
+    isOpen : 'true'
+  })
 
   const textColor = useColorModeValue('secondaryGray.900', 'white');
   const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
@@ -40,12 +42,41 @@ function HospitalDetail(props: HospitalDetailProps) {
   
   React.useEffect(() => {
     setTimeout(() => {
+      setInputs({
+        ...inputs,
+        hid : hospitalData?.hid,
+        address : hospitalData?.address,
+        baseName : hospitalData?.baseName,
+        shortName : hospitalData?.shortName,
+        lat : hospitalData?.lat,
+        lon : hospitalData?.lon,
+        yoyang_giho : hospitalData?.yoyang_giho,
+        doctor_count : hospitalData?.doctor_count,
+        telephone : hospitalData?.telephone,
+        reservation_site : hospitalData?.reservation_site,
+        req_comment : hospitalData?.req_comment,
+        isOpen : 'true'
+      })
       setIsLoading(false);
     }, 1000);
   }, [isOpen]);
 
-  const onHandleRegistReview = (data:any) => {
+  const onHandleRegistReview = async(data:any) => {
     console.log('onHandleRegistReview', data);
+    try{
+      const res:any = await HospitalService.setHospitalDetail(inputs);
+      console.log('res', res);
+      if ( res.success ) {
+        functions.simpleToast(toast,`성공`);
+        setTimeout(() => {
+          setCloseAndReload()
+        }, 1000);
+      }else{
+        functions.simpleToast(toast,`실패, 관리자에게 문의하세요`);
+      }
+    }catch(e){
+      console.log('eeeee', e);
+    }
   }
 
   if ( isLoading ) {
@@ -65,12 +96,13 @@ function HospitalDetail(props: HospitalDetailProps) {
               <FormLabel>병원코드(HID)</FormLabel>
               <Input 
                 type="text" 
-                placeholder='이름' 
+                placeholder='병원코드(HID)' 
                 borderColor={borderColor}
                 color={textColor}
-                value={hospitalData?.hid}
+                value={inputs?.hid}
                 disabled={!isAdmin}
                 id='hid'
+                readOnly={true}
               />
             </FormControl>
           </Box>              
@@ -84,9 +116,10 @@ function HospitalDetail(props: HospitalDetailProps) {
                 color={textColor}
                 placeholder='0' 
                 textAlign={'right'}
-                value={hospitalData?.doctor_count}
+                value={inputs?.doctor_count}
                 disabled={!isAdmin}
                 id='doctor_count'
+                readOnly={true}
               />
             </FormControl>
           </Box>   
@@ -99,10 +132,11 @@ function HospitalDetail(props: HospitalDetailProps) {
                 type="text" 
                 borderColor={borderColor}
                 color={textColor}
-                value={hospitalData?.baseName}
+                value={inputs?.baseName}
                 placeholder='병원명' 
                 disabled={!isAdmin}
                 id='baseName'
+                readOnly={true}
               />
             </FormControl>
           </Box>              
@@ -113,10 +147,11 @@ function HospitalDetail(props: HospitalDetailProps) {
                 type="text"
                 borderColor={borderColor}
                 color={textColor} 
-                value={hospitalData?.shortName}
-                placeholder='의사명' 
+                value={inputs?.shortName}
+                placeholder='숏병원명' 
                 disabled={!isAdmin}
                 id='shortName'
+                readOnly={true}
               />
             </FormControl>
           </Box> 
@@ -132,6 +167,8 @@ function HospitalDetail(props: HospitalDetailProps) {
                 placeholder='주소' 
                 disabled={!isAdmin}
                 id='address'
+                value={inputs?.address}
+                onChange={(e)=>setInputs({...inputs, address: e.target.value})}
               />
             </FormControl>
           </Box>              
@@ -147,6 +184,8 @@ function HospitalDetail(props: HospitalDetailProps) {
                 placeholder='위도를 입력해주세요' 
                 disabled={!isAdmin}
                 id='latitude'
+                value={inputs?.lat}
+                onChange={(e:any)=>setInputs({...inputs, latitude: e.target.value})}
               />
             </FormControl>
           </Box>              
@@ -160,6 +199,8 @@ function HospitalDetail(props: HospitalDetailProps) {
                 placeholder='경도를 입력해주세요' 
                 disabled={!isAdmin}
                 id='longitude'
+                value={inputs?.lon}
+                onChange={(e)=>setInputs({...inputs, longitude: e.target.value})}
               />
             </FormControl>
           </Box> 
@@ -175,6 +216,7 @@ function HospitalDetail(props: HospitalDetailProps) {
                 placeholder='예약사이트' 
                 disabled={!isAdmin}
                 id="reservation_site"
+                onChange={(e)=>setInputs({...inputs, reservation_site: e.target.value})}
               />
             </FormControl>
           </Box>              
@@ -187,7 +229,9 @@ function HospitalDetail(props: HospitalDetailProps) {
                 color={textColor}
                 placeholder='예약전화번호' 
                 disabled={!isAdmin}
-                id="reservation_tel"
+                id="telephone"
+                value={inputs?.telephone}
+                onChange={(e)=>setInputs({...inputs, telephone: e.target.value})}
               />
             </FormControl>
           </Box> 
@@ -208,18 +252,36 @@ function HospitalDetail(props: HospitalDetailProps) {
                 borderColor={borderColor}
                 color={textColor}
                 id='req_comment'
+                onChange={(e)=>setInputs({...inputs, req_comment: e.target.value})}
               />
             </FormControl>
           </Box>   
         </Flex>
+        <Flex display={'flex'} flexDirection={{base : 'column' , xl : 'row'}} minHeight={'50px'} padding={'0 10px'} mt={5}>
+          <Box flex={1}>
+            <FormControl variant="floatingLabel">
+              <FormLabel>요양기호</FormLabel>
+              <Input 
+                type="text" 
+                borderColor={borderColor}
+                color={textColor}
+                placeholder='요양기호' 
+                disabled={!isAdmin}
+                id='yoyang_giho'
+                value={inputs?.yoyang_giho}
+                readOnly={true}
+              />
+            </FormControl>
+          </Box>              
+        </Flex> 
         <Flex display={'flex'} flexDirection={{base : 'column' , xl : 'row'}} minHeight={'50px'} padding={'0 10px'} mt={5}>           
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>공개여부</FormLabel>
-              <RadioGroup defaultValue='1'>
+              <RadioGroup defaultValue={'true'}>
                 <Stack spacing={5} direction='row' padding={'10px'}>
-                  <Radio colorScheme='red' value='1' isDisabled={!isAdmin}>공개</Radio>
-                  <Radio colorScheme='blue' value='3' isDisabled={!isAdmin}>미공개</Radio>
+                  <Radio colorScheme='red' value={'true'} isDisabled={!isAdmin} onClick={()=>setInputs({...inputs, isOpen: 'true'})}>공개</Radio>
+                  <Radio colorScheme='blue' value={'false'} isDisabled={!isAdmin} onClick={()=>setInputs({...inputs, isOpen: 'false'})}>비공개</Radio>
                 </Stack>
               </RadioGroup>
             </FormControl>
@@ -231,16 +293,32 @@ function HospitalDetail(props: HospitalDetailProps) {
             variant='solid' 
             width={'200px'} 
             borderRadius={'10px'}
-            onClick={() => onHandleRegistReview(inputs)}
+            onClick={() => setIsShowConfirm(true)}
             id="button_modify"
           >
             수정
           </Button>
         </Box>
         <Box height={'50px'} />
+        {
+          isShowConfirm && 
+          (
+            <CustomAlert
+              msg="수정하시겠습니까?"
+              isOpen={isShowConfirm}
+              fnConform={() => {
+                onHandleRegistReview(inputs);
+                setIsShowConfirm(false)
+              }}
+              fnCancel={() => setIsShowConfirm(false)}
+            />
+          )
+        }
+        
       </>
     )
   }
+  
 }
 
 export default HospitalDetail;
