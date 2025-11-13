@@ -330,7 +330,7 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 						<ModalBody >
 						<DoctorDetail
 							isOpen={isOpenModal}
-							//={() => setIsOpenModal(false)}
+							setCloseModal={() => setIsOpenModal(false)}
 							DoctorData={DoctorData}
 						/>
 						</ModalBody>

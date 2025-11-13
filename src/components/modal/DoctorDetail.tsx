@@ -2,7 +2,7 @@
 import React, { PropsWithChildren } from 'react';
 
 // chakra imports
-import { Box,Flex,Button,SkeletonCircle,SkeletonText,Divider,Icon,Textarea,Input, FormControl, FormLabel, RadioGroup, Radio, Stack, useColorModeValue,Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
+import { useToast,Box,Flex,Button,SkeletonCircle,SkeletonText,Divider,Icon,Textarea,Input, FormControl, FormLabel, RadioGroup, Radio, Stack, useColorModeValue,Tabs, TabList, TabPanels, Tab, TabPanel, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody } from '@chakra-ui/react';
 import Image from 'next/image';
 // Assets
 import Link from 'next/link';
@@ -11,16 +11,21 @@ import functions from 'utils/functions';
 import * as DoctorService from "services/doctor/index";
 import ListItem from 'components/card/ListItem';
 import useCheckAdmin from "store/useCheckAdmin";
+import { setIn } from 'formik';
+import PaperDetail from 'components/modal/PaperDetail';
+import mConstants from 'utils/constants';
 const defaultImage = require("../../..//public/img/avatars/no_image01.png");
 
 export interface DoctorDetailProps extends PropsWithChildren {
   isOpen : boolean;
   DoctorData : any;
+  setCloseModal : () => void;
 }
 
 function DoctorDetail(props: DoctorDetailProps) {
 
-  const { isOpen, DoctorData } = props;
+  const { isOpen, DoctorData,setCloseModal } = props;
+  const toast = useToast();
   const isAdmin = useCheckAdmin();
   const [isLoading, setIsLoading] = React.useState(true);  
   const [inputs, setInputs] = React.useState<any>({
@@ -43,10 +48,14 @@ function DoctorDetail(props: DoctorDetailProps) {
     articles: [],
     books: [],
     conferences: [],
+    is_active : '1'
   });
 
   const [doctorPapers, setDoctorPapers] = React.useState<any>([]);
   const [currentTab, setCurrentTab] = React.useState<string>('education');
+  const [selectedPaper, setSelectedPaper] = React.useState<any>(null);
+  const formBtnRef = React.useRef();
+
   const textColor = useColorModeValue('secondaryGray.900', 'white');
   const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
   const skeletonColor = useColorModeValue('white', 'navy.700');
@@ -79,25 +88,135 @@ function DoctorDetail(props: DoctorDetailProps) {
     setTimeout(() => {
       setInputs({
         ...DoctorData,
-        education: careerData['학력'],
-        career: careerData['경력'],
-        awards: careerData['수상'],
-        publications: careerData['논문'],
-        articles: careerData['언론'],
-        books: careerData['저서'],
-        conferences: careerData['학회']
+        education: careerData['학력'] || [],
+        career: careerData['경력'] || [],
+        awards: careerData['수상'] || [],
+        publications: careerData['논문'] || [],
+        articles: careerData['언론'] || [],
+        books: careerData['저서'] || [],
+        conferences: careerData['학회'] || []
       });
       setIsLoading(false);
     }, 1000);
   }, [DoctorData]);
 
-  const onHandleUpdateBasicInfo = (data:any) => {
+  const onHandleUpdateBasicInfo = async(data:any) => {
     console.log('onHandleUpdateBasicInfo', data);
+    try{
+      const bodyData = {
+        rid : data?.rid,
+        doctorname : data?.doctorname,
+        profileimgurl : data?.profileimgurl,
+        specialties : data?.specialties,
+        new_doctor_url : data?.new_doctor_url,
+        is_active : data?.is_active
+      }
+
+      const res:any = await DoctorService.putDoctorBasic(bodyData);
+      console.log('res', res);
+      if ( res.success ) {
+        functions.simpleToast(toast,`기본정보 수정성공`);
+        setTimeout(() => {
+          props.setCloseModal()
+        }, 1000);
+      }else{
+        functions.simpleToast(toast,`기본정보 수정실패, 관리자에게 문의하세요`);
+      }
+    }catch(e){
+      console.log('eeeee', e);
+    }
   }
 
-  const onHandleUpdateCareerInfo = (data:any) => {
+  const onHandleUpdateCareerInfo = async(data:any) => {
     console.log('onHandleUpdateCareerInfo', data);
+
+    try{
+      const bodyData = {
+        rid : data?.rid,
+        jsondata : JSON.stringify(data?.education.concat(data?.career).concat(data?.awards).concat(data?.publications).concat(data?.articles).concat(data?.books).concat(data?.conferences)),
+        education : JSON.stringify(data?.education),
+        career : JSON.stringify(data?.career),
+        etc : JSON.stringify(data?.awards.concat(data?.publications).concat(data?.articles).concat(data?.books).concat(data?.conferences)),
+      }
+
+      const res:any = await DoctorService.putDoctorCareer(bodyData);
+      console.log('res', res);
+      if ( res.success ) {
+        functions.simpleToast(toast,`경력정보 수정성공`);
+        setTimeout(() => {
+          props.setCloseModal()
+        }, 1000);
+      }else{
+        functions.simpleToast(toast,`경력정보 수정실패, 관리자에게 문의하세요`);
+      }
+    }catch(e){
+      console.log('eeeee', e);
+    }
   }
+
+  const handleContentChange = (type: string, content: any) => {
+    setInputs({
+      ...inputs,
+      [type]: content
+    });
+  }
+
+  const handleAddItem = (type: string) => {
+    const newItem = {
+      targetDate: '',
+      text: '',
+      type: type,
+      url: '',
+      issuer: ''
+    };
+    setInputs({
+      ...inputs,
+      [type]: [...(inputs[type] || []), newItem]
+    });
+  }
+
+  const handlePaperDelete = async (itemToDelete: any) => {
+    console.log("Deleting paper:", itemToDelete);
+    window.alert("작업중입니다");
+    return;
+    try {
+      // TODO: API 연동
+      const res:any = await DoctorService.deleteDoctorPaper({ paperId: itemToDelete.paper_id });
+      if (res?.success) {
+        setDoctorPapers(doctorPapers.filter((paper: any) => paper.rid !== itemToDelete.rid));
+        functions.simpleToast(toast, "논문이 삭제되었습니다.", "success");
+      } else {
+         functions.simpleToast(toast, "논문 삭제에 실패했습니다.", "error");
+      }
+    } catch (error) {
+      console.error("Error deleting paper:", error);
+      functions.simpleToast(toast, "논문 삭제 중 오류가 발생했습니다.", "error");
+    }
+  };
+
+  const handlePaperUpdate = async (updatedPaper: any) => {
+    console.log("Updating paper:", updatedPaper);
+    window.alert("작업중입니다");
+    return;
+    try {
+      // TODO: API 연동
+      // const res = await DoctorService.updateDoctorPaper(updatedPaper);
+      // if (res.success) {
+        functions.simpleToast(toast, "논문 정보가 수정되었습니다.", "success");
+        await getData(); // 데이터 새로고침
+        setSelectedPaper(null); // 모달 닫기
+      // } else {
+      //   functions.simpleToast(toast, "논문 정보 수정에 실패했습니다.", "error");
+      // }
+    } catch (error) {
+      console.error("Error updating paper:", error);
+      functions.simpleToast(toast, "논문 정보 수정 중 오류가 발생했습니다.", "error");
+    }
+  };
+
+  React.useEffect(() => {
+    console.log("inputs",inputs)
+  }, [inputs]);
 
   if ( isLoading ) {
     return (
@@ -145,7 +264,7 @@ function DoctorDetail(props: DoctorDetailProps) {
                   value={inputs?.doctorname}
                   placeholder='의사명' 
                   disabled={!isAdmin}
-                  onChange={()=> console.log('')}
+                  onChange={(e)=> setInputs({...inputs, doctorname: e.target.value})} 
                   id='doctorname'
                 />
               </FormControl>
@@ -186,10 +305,29 @@ function DoctorDetail(props: DoctorDetailProps) {
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>
+                소개페이지(RID용)
+              </FormLabel>
+              <Input 
+                type="text" 
+                borderColor={borderColor}
+                color={textColor}
+                placeholder='소개페이지' 
+                value={inputs?.doctor_url}
+                disabled={!isAdmin}
+                onChange={()=> console.log('')}
+                id='doctor_url'
+              />
+            </FormControl>
+          </Box>              
+        </Flex> 
+        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={{base : "0", 'mobile' : '0 10px'}} mt={5}>
+          <Box flex={1}>
+            <FormControl variant="floatingLabel">
+              <FormLabel>
                 소개페이지
                 {
-                  !functions.isEmpty(inputs?.doctor_url) && (
-                    <Link href={inputs?.doctor_url} target='_blank' style={{marginLeft:"10px"}}>
+                  !functions.isEmpty(inputs?.new_doctor_url) && (
+                    <Link href={inputs?.new_doctor_url} target='_blank' style={{marginLeft:"10px"}}>
                       <Icon as={IoLink} size={20} />
                     </Link>
                   )
@@ -199,11 +337,30 @@ function DoctorDetail(props: DoctorDetailProps) {
                 type="text" 
                 borderColor={borderColor}
                 color={textColor}
-                placeholder='주소' 
-                value={inputs?.doctor_url}
+                placeholder='소개페이지' 
+                value={inputs?.new_doctor_url}
                 disabled={!isAdmin}
-                onChange={()=> console.log('')}
-                id='doctor_url'
+                onChange={(e)=> setInputs({...inputs, new_doctor_url: e.target.value})} 
+                id='new_doctor_url'
+              />
+            </FormControl>
+          </Box>              
+        </Flex> 
+        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={{base : "0", 'mobile' : '0 10px'}} mt={5}>
+          <Box flex={1}>
+            <FormControl variant="floatingLabel">
+              <FormLabel>
+                프로필URL
+              </FormLabel>
+              <Input 
+                type="text" 
+                borderColor={borderColor}
+                color={textColor}
+                placeholder='소개페이지' 
+                value={inputs?.profileimgurl || ''}
+                disabled={!isAdmin}
+                onChange={(e)=> setInputs({...inputs, profileimgurl: e.target.value})} 
+                id='profileimgurl'
               />
             </FormControl>
           </Box>              
@@ -234,7 +391,8 @@ function DoctorDetail(props: DoctorDetailProps) {
                 placeholder='예약전화번호' 
                 id='reservation_tel'
                 disabled={!isAdmin}
-                onChange={()=> console.log('')}
+                onChange={(e)=> setInputs({...inputs, reservation_tel: e.target.value})} 
+                value={inputs?.reservation_phone  || ''}
               />
             </FormControl>
           </Box> 
@@ -266,8 +424,9 @@ function DoctorDetail(props: DoctorDetailProps) {
               <FormLabel>공개여부<span style={{color:"red",fontSize:"10px"}}> * 수정가능</span></FormLabel>
               <RadioGroup defaultValue='1'>
                 <Stack spacing={5} direction='row' padding={'10px'}>
-                  <Radio colorScheme='red' value='1'  isDisabled={!isAdmin}>공개</Radio>
-                  <Radio colorScheme='blue' value='3' isDisabled={!isAdmin}>미공개</Radio>
+                  <Radio colorScheme='blue' value='0' isDisabled={!isAdmin} checked={inputs?.is_active == '0'} onClick={()=> setInputs({...inputs, is_active: '0'})}>미사용</Radio>
+                  <Radio colorScheme='blue' value='1' isDisabled={!isAdmin} checked={inputs?.is_active == '1'} onClick={()=> setInputs({...inputs, is_active: '1'})}>사용(유지)</Radio>
+                  <Radio colorScheme='blue' value='2' isDisabled={!isAdmin} checked={inputs?.is_active == '2'} onClick={()=> setInputs({...inputs, is_active: '2'})}>사용(신규)</Radio>
                 </Stack>
               </RadioGroup>
             </FormControl>
@@ -329,6 +488,8 @@ function DoctorDetail(props: DoctorDetailProps) {
                   type='education' 
                   content={inputs?.education}
                   limintView={5}
+                  onContentChange={(content) => handleContentChange('education', content)}
+                  onAddItem={() => handleAddItem('education')}
                 />
               </TabPanel>
               <TabPanel>
@@ -338,6 +499,8 @@ function DoctorDetail(props: DoctorDetailProps) {
                   type='career' 
                   content={inputs?.career}
                   limintView={5}
+                  onContentChange={(content) => handleContentChange('career', content)}
+                  onAddItem={() => handleAddItem('career')}
                 />  
               </TabPanel>
               <TabPanel>
@@ -347,6 +510,8 @@ function DoctorDetail(props: DoctorDetailProps) {
                   type='awards' 
                   content={inputs?.awards}
                   limintView={5}
+                  onContentChange={(content) => handleContentChange('awards', content)}
+                  onAddItem={() => handleAddItem('awards')}
                 />
               </TabPanel>
               <TabPanel>
@@ -356,6 +521,8 @@ function DoctorDetail(props: DoctorDetailProps) {
                   type='publications' 
                   content={inputs?.publications}
                   limintView={5}
+                  onContentChange={(content) => handleContentChange('publications', content)}
+                  onAddItem={() => handleAddItem('publications')}
                 />  
               </TabPanel>
               <TabPanel>
@@ -365,6 +532,8 @@ function DoctorDetail(props: DoctorDetailProps) {
                   type='articles' 
                   content={inputs?.articles}
                   limintView={5}
+                  onContentChange={(content) => handleContentChange('articles', content)}
+                  onAddItem={() => handleAddItem('articles')}
                 />
               </TabPanel>
               <TabPanel>
@@ -374,6 +543,8 @@ function DoctorDetail(props: DoctorDetailProps) {
                   type='books' 
                   content={inputs?.books}
                   limintView={10}
+                  onContentChange={(content) => handleContentChange('books', content)}
+                  onAddItem={() => handleAddItem('books')}
                 />
               </TabPanel>
               <TabPanel>
@@ -383,6 +554,8 @@ function DoctorDetail(props: DoctorDetailProps) {
                   type='conferences' 
                   content={inputs?.conferences}
                   limintView={5}
+                  onContentChange={(content) => handleContentChange('conferences', content)}
+                  onAddItem={() => handleAddItem('conferences')}
                 />
               </TabPanel>
               <TabPanel>
@@ -392,6 +565,10 @@ function DoctorDetail(props: DoctorDetailProps) {
                   type='papers' 
                   content={doctorPapers}
                   limintView={10}
+                  onContentChange={() => {}}
+                  onAddItem={() => {}}
+                  onDeleteItem={handlePaperDelete}
+                  onShowPaperDetail={setSelectedPaper}
                 />
               </TabPanel>
             </TabPanels>
@@ -414,6 +591,31 @@ function DoctorDetail(props: DoctorDetailProps) {
           }
         </Box>
         <Box height={'50px'} />
+
+        {
+            !functions.isEmpty(selectedPaper) && (    
+                <Modal
+                    onClose={() => setSelectedPaper(null)}
+                    finalFocusRef={formBtnRef}
+                    isOpen={!functions.isEmpty(selectedPaper)}
+                    scrollBehavior={'inside'}
+                >
+                <ModalOverlay />
+                <ModalContent maxW={`${mConstants.modalMaxWidth}px`}>
+                    <ModalHeader>{`논문 상세정보`}</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody >
+                    <PaperDetail
+                        isOpen={!functions.isEmpty(selectedPaper)}
+                        setClose={() => setSelectedPaper(null)}
+                        PaperData={selectedPaper}
+                        onHandlePaperModify={handlePaperUpdate}
+                    />
+                    </ModalBody>
+                </ModalContent>
+                </Modal>
+            )
+        }
       </>
     )
   }

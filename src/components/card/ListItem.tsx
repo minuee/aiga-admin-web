@@ -1,10 +1,10 @@
 import React from 'react';
-import { Flex,Text,Divider,Box,List,ListItem,FormControl,Input, useColorModeValue, SkeletonText, Icon ,Modal,ModalOverlay,ModalContent,ModalHeader,ModalCloseButton,ModalBody } from '@chakra-ui/react';
-import { MdDelete,MdAssignment } from 'react-icons/md';
-import mConstants from 'utils/constants';
+import { Flex,Text,Divider,Box,List,ListItem,FormControl,Input, useColorModeValue, SkeletonText, Icon , Button } from '@chakra-ui/react';
+import { MdDelete,MdAssignment, MdAdd } from 'react-icons/md';
 import functions from 'utils/functions';
-import PaperDetail from 'components/modal/PaperDetail';
 import useCheckAdmin from "store/useCheckAdmin";
+import CustomAlert from 'components/etc/CustomAlert';
+
 type ListItemScreenProps = {
     isTitle: boolean;
     title: string;
@@ -12,44 +12,27 @@ type ListItemScreenProps = {
     content: any;
     limintView: number;
     marginTop?: number;
+    onContentChange: (content: any) => void;
+    onAddItem: () => void;
+    onDeleteItem?: (item: any) => void;
+    onShowPaperDetail?: (paper: any) => void;
 };
 
-const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limintView = 3, marginTop = 2 }:ListItemScreenProps) => {
+const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limintView = 3, marginTop = 2, onContentChange, onAddItem, onDeleteItem, onShowPaperDetail }:ListItemScreenProps) => {
     const [expandedCount, setExpandedCount] = React.useState<any>(content?.length > limintView ? limintView : undefined);
     const isAdmin = useCheckAdmin();
     const handleToggle = () => setExpandedCount(expandedCount ? undefined : limintView);
     const [isLoading, setIsLoading] = React.useState<boolean>(true);
-    const [isOpenModal, setIsOpenModal] = React.useState<any>(null);
+    const [itemToDelete, setItemToDelete] = React.useState<any>(null);
     const textColor = useColorModeValue('secondaryGray.900', 'white');
     const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
     const skeletonColor = useColorModeValue('white', 'navy.700');
-    const formBtnRef = React.useRef();
-
-    const [inputs, setInputs] = React.useState<any>([{
-        targetData: '',
-        text: '',
-        type: type,
-        url: '',
-        issuer : ''
-    }]);
 
     React.useEffect(() => {
-        setInputs(content);
         setTimeout(() => {
             setIsLoading(false);
-        }, 1000);   
+        }, 500);   
     }, [content]);
-
-    React.useEffect(() => {
-        setIsLoading(true);
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 1000);   
-    }, [inputs?.length]);
-
-    const onHandlePaperModify = (data:any) => {
-        console.log("onHandlePaperModify",data)
-    }
 
     if ( isLoading ) {
         return (
@@ -69,12 +52,12 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                 )
             }
             {
-                inputs?.length > 0 ? (
+                content?.length > 0 ? (
                     <Box minH={'150px'} noOfLines={100}>
                         {
                         type === 'papers' ? (
                             <List spacing={{base : 0,'mobile' : 2}}>
-                            {inputs?.map((item:any, index:number) => (
+                            {content?.map((item:any, index:number) => (
                                 <ListItem key={index}>
                                     <FormControl variant="floatingLabel" display={'flex'} flexDirection={'row'}>
                                         <Input 
@@ -85,9 +68,7 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                             placeholder='doi' 
                                             value={functions.isEmpty(item?.doi) ? '' : item?.doi}
                                             size='sm'
-                                            onChange={(e) => {
-                                               setInputs(inputs.map((input:any,idx:number) => idx === index ? {...input, doi: e.target.value} : input));
-                                            }}
+                                            readOnly
                                             id={`doi_${index}`}
                                             disabled={!isAdmin}
                                         />
@@ -99,9 +80,7 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                             placeholder="제목" 
                                             value={functions.isEmpty(item?.title) ? '' : item?.title}
                                             size='sm'
-                                            onChange={(e) => {
-                                               setInputs(inputs.map((input:any,idx:number) => idx === index ? {...input, title: e.target.value} : input));
-                                            }}
+                                            readOnly
                                             id={`title_${index}`}
                                             disabled={!isAdmin}
                                         />
@@ -113,9 +92,7 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                             placeholder='pmId' 
                                             value={functions.isEmpty(item?.pmid) ? '' : item?.pmid}
                                             size='sm'
-                                            onChange={(e) => {
-                                               setInputs(inputs.map((input:any,idx:number) => idx === index ? {...input, pmid: e.target.value} : input));
-                                            }}
+                                            readOnly
                                             id={`pmid_${index}`}
                                             disabled={!isAdmin}
                                         />
@@ -124,9 +101,7 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                             display={ isAdmin ? 'flex' : 'none'} 
                                             justifyContent={'center'} 
                                             alignItems={'center'}
-                                            onClick={() => {
-                                                setInputs(inputs.filter((input:any,idx:number) => idx !== index));
-                                            }}
+                                            onClick={() => setItemToDelete(item)}
                                             cursor={'pointer'}
                                         >
                                             <Icon as={MdDelete} />
@@ -136,7 +111,7 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                             display={ isAdmin ? 'flex' : 'none'} 
                                             justifyContent={'center'} 
                                             alignItems={'center'}
-                                            onClick={() => setIsOpenModal(item)}
+                                            onClick={() => onShowPaperDetail && onShowPaperDetail(item)}
                                             cursor={'pointer'}
                                         >
                                             <Icon as={MdAssignment} />
@@ -148,7 +123,7 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                         )
                         :
                             <List spacing={2}>
-                            {inputs?.map((item:any, index:number) => (
+                            {content?.map((item:any, index:number) => (
                                 <ListItem key={index}>
                                     <FormControl variant="floatingLabel" display={'flex'} flexDirection={'row'}>
                                         <Input 
@@ -160,7 +135,9 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                             value={functions.isEmpty(item?.targetDate) ? "" : item?.targetDate}
                                             size='sm'
                                             onChange={(e) => {
-                                               setInputs(inputs.map((input:any,idx:number) => idx === index ? {...input, targetDate: e.target.value} : input));
+                                                const newContent = [...content];
+                                                newContent[index].targetDate = e.target.value;
+                                                onContentChange(newContent);
                                             }}
                                             id={`targetDate_${index}`}
                                             disabled={!isAdmin}
@@ -174,7 +151,9 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                             value={functions.isEmpty(item?.text) ? "" : item?.text}
                                             size='sm'
                                             onChange={(e) => {
-                                               setInputs(inputs.map((input:any,idx:number) => idx === index ? {...input, text: e.target.value} : input));
+                                                const newContent = [...content];
+                                                newContent[index].text = e.target.value;
+                                                onContentChange(newContent);
                                             }}
                                             id={`text_${index}`}
                                             disabled={!isAdmin}
@@ -188,7 +167,9 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                             value={functions.isEmpty(item?.issuer) ? "" : item?.issuer}
                                             size='sm'
                                             onChange={(e) => {
-                                               setInputs(inputs.map((input:any,idx:number) => idx === index ? {...input, issuer: e.target.value} : input));
+                                                const newContent = [...content];
+                                                newContent[index].issuer = e.target.value;
+                                                onContentChange(newContent);
                                             }}
                                             id={`issuer_${index}`}
                                             disabled={!isAdmin}
@@ -199,7 +180,8 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                                             justifyContent={'center'} 
                                             alignItems={'center'}
                                             onClick={() => {
-                                                setInputs(inputs.filter((input:any,idx:number) => idx !== index));
+                                                const newContent = content.filter((_:any, idx:number) => idx !== index);
+                                                onContentChange(newContent);
                                             }}
                                             cursor={'pointer'}
                                         >
@@ -217,31 +199,27 @@ const ListItemScreen = ({ isTitle = true, title = "", type = "", content, limint
                         <Text>등록된 내용이 없습니다.</Text>
                     </Flex>
                 )
-            }     
+            }
+            <Flex display={isAdmin && type !== 'papers' ? 'flex' : 'none'} justifyContent={'flex-end'} mt={2}>
+                <Button leftIcon={<MdAdd />} colorScheme='blue' size={'sm'} onClick={onAddItem}>
+                    추가
+                </Button>
+            </Flex>
             {
-				!functions.isEmpty(isOpenModal) && (    
-					<Modal
-                        onClose={() => setIsOpenModal(null)}
-                        finalFocusRef={formBtnRef}
-                        isOpen={!functions.isEmpty(isOpenModal)}
-                        scrollBehavior={'inside'}
-					>
-					<ModalOverlay />
-					<ModalContent maxW={`${mConstants.modalMaxWidth}px`}>
-						<ModalHeader>{`논문 상세정보`}</ModalHeader>
-						<ModalCloseButton />
-						<ModalBody >
-						<PaperDetail
-							isOpen={!functions.isEmpty(isOpenModal)}
-							setClose={() => setIsOpenModal(null)}
-							PaperData={isOpenModal}
-                            onHandlePaperModify={(data:any) => onHandlePaperModify(data)}
-						/>
-						</ModalBody>
-					</ModalContent>
-					</Modal>
-				)
-			}
+                itemToDelete && (
+                    <CustomAlert
+                        msg="논문을 삭제하시겠습니까?"
+                        isOpen={!!itemToDelete}
+                        fnConform={() => {
+                            if (onDeleteItem) {
+                                onDeleteItem(itemToDelete);
+                            }
+                            setItemToDelete(null);
+                        }}
+                        fnCancel={() => setItemToDelete(null)}
+                    />
+                )
+            }
         </Flex>
     )
 };
