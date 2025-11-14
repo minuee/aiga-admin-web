@@ -36,13 +36,6 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 	const [ isLoading, setLoading ] = React.useState(true);
 	const [ sorting, setSorting ] = React.useState<SortingState>([]);
 	const [ data, setTableData ] = React.useState([]);
-	const [ keyword, setKeyword ] = React.useState('');
-	const [ inputs, setInputs ] = React.useState({
-		orderName : "deptname",
-		orderBy : "ASC",
-		isAll : false,
-		keyword : ""
-	});
 	const [ isViewAll, setIsViewAll] = React.useState(false);
 	const [ isOpenDrawer, setIsOpenDrawer ] = React.useState(false);
 	const [ isOpenModal, setIsOpenModal ] = React.useState(false);
@@ -66,12 +59,6 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 
 	React.useEffect(() => {
 		setData();
-		setInputs({
-			orderName : "deptname",
-			orderBy : "ASC",
-			isAll : false,
-			keyword : ""
-		})
 	}, [setData]);
 
 	const onHandleOpenModal = (hospitalData: any) => {
@@ -85,13 +72,6 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 		setSelectedHospital(hospitalData);
 		setIsOpenDrawer(true);
 		//router.push(`/admin/hospital/doctors?hospitalId=${hospitalData?.hid}`);
-	}
-
-	const onHandleSubmit = () => {
-		setInputs({
-			...inputs,
-			keyword 
-		})
 	}
 	
 	const columns = [
@@ -384,35 +364,6 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 							alignItems='center'
 						>
 							<Text>{selectedHospital?.baseName} 의사리스트</Text>
-							<Box display='flex' flexDirection={{base : 'column', 'mobile':'row'}} mr={{base : '0', 'mobile':'10'}} justifyContent={'center'} alignItems={'center'}>
-								<Select value={inputs.orderName} placeholder='정렬기준' onChange={(e:any) =>setInputs({...inputs,orderName : e.target.value})} size={'sm'}>
-									<option value='deptname'>진료과목명순</option>
-									<option value='doctorname'>의사명</option>
-									<option value='updatedate'>수정일자순</option>
-								</Select>
-								<Select value={inputs.orderBy} placeholder='오름기준' onChange={(e:any) =>setInputs({...inputs,orderBy : e.target.value})} size={'sm'}>
-									<option value='ASC'>순차적</option>
-									<option value='DESC'>역순적</option>
-								</Select>
-								<Input 
-									placeholder='키워드를 입력하세요' 
-									value={keyword} 
-									onChange={(e:any) => setKeyword(e.target.value)} 
-									color={textColor}
-									size='sm'
-									id='keyword'
-								/>
-								<Button
-									size='sm'
-									loadingText='Loading'
-									variant="solid"
-									colorScheme='blue'
-									sx={{borderRadius:'5px',width:'140px'}}
-									onClick={()=> onHandleSubmit()}
-								>
-									검색
-								</Button>
-							</Box>
 						</Flex>
 					</DrawerHeader>
 					<DrawerBody w="calc(100% - 20px)"  padding="10px">
@@ -425,7 +376,6 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 						>
 							<DoctorList 
 								hospitalData={selectedHospital}
-								inputs={inputs}
 							/>
 						</Scrollbars>
 					</DrawerBody>

@@ -24,67 +24,85 @@ import mConstants from 'utils/constants';
 const columnHelper = createColumnHelper<RowObj>();
 
 // const columns = columnsDataCheck;
-export default function InquiryTable(props: { tableData: any }) {
-	const { tableData } = props;
+export default function InquiryTable(props: {
+	tableData: any,
+	page:number, 
+	order : string ,
+	orderName: string,
+	status: '' | '0' | '1' | '9',
+	keyword: string,
+	getDataSortChange : (str: string) => void,
+	handleFilterChange: (newStatus: '' | '0' | '1' | '9') => void,
+	handleSearch: (keyword: string) => void,
+	refetchData: () => void 
+}) {
+	const { tableData, status, keyword, handleFilterChange, handleSearch } = props;
 	const [ sorting, setSorting ] = React.useState<SortingState>([]);
+	const [ data, setTableData ] = React.useState([]);
+	const [ selectedData, setSelectedData ] = React.useState(null);
+	const [ localKeyword, setLocalKeyword ] = React.useState('');
 	const [ isOpenRequestModal, setIsOpenRequestModal ] = React.useState(false);
-	const [ data_9, setData9 ] = React.useState<any>([]);
 	const textColor = useColorModeValue('secondaryGray.900', 'white');
 	const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
 	const bgColor = useColorModeValue(' .300', 'navy.900');
 	const sidebarBackgroundColor = useColorModeValue('white', 'navy.800');
 	const formBtnRef = React.useRef(null)
+	
+	// Sync local keyword state if prop changes from parent
+	React.useEffect(() => {
+		setLocalKeyword(keyword);
+	}, [keyword]);
 
-	let defaultData= tableData;
 	const columns = [
-		columnHelper.accessor('name', {
+		columnHelper.accessor('nickname', {
 			size: 200,
-			id: 'name',
+			id: 'nickname',
 			header: () => (
-				<Flex align='center'>
-					<Checkbox defaultChecked={false} colorScheme='brandScheme' mr='10px' />
-					<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400' >
-						이름 
+				<Flex align='center' alignItems={'center'} justifyContent={'center'}>
+					<Text fontSize={{ sm: '10px', lg: '12px' }} color='gray.400' >
+						작성자 
 					</Text>
 				</Flex>
 			),
 			cell: (info: any) => (
-				<Flex align='center'>
-					<Checkbox defaultChecked={info.getValue()[1]} colorScheme='brandScheme' mr='10px' />
+				<Flex align='center' alignItems={'center'} justifyContent={'center'}>
 					<Text color={textColor} fontSize='sm' fontWeight='700'>
-						{info.getValue()}
+						{info.getValue() || '-' }
 					</Text>
 				</Flex>
 			)
 		}),
-		columnHelper.accessor('contactInfo', {
-			id: 'contactInfo',
+		columnHelper.accessor(row => row.doctor_basic?.hospital?.shortName, {
+			id: 'hospitalName',
 			header: () => (
 				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400' >
-					연락정보
+					병원명
 				</Text>
 			),
-			cell: (info) => (
-				<Text color={textColor} fontSize='sm' fontWeight='700'>
-					{info.getValue()}
-				</Text>
-			)
+			cell: (info) => {
+				const hospitalName = info.row.original.doctor_basic?.hospital?.shortName;
+				return <Text color={textColor} fontSize='sm' fontWeight='700'>{hospitalName || '-'}</Text>;
+			},
 		}),
-		columnHelper.accessor('relation', {
-			id: 'relation',
+		columnHelper.accessor(row => row?.doctor_basic?.doctorname, {
+			id: 'doctorName',
 			header: () => (
-				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400' >
-					관계
-				</Text>
+			  <Text
+				justifyContent='space-between'
+				align='center'
+				fontSize={{ sm: '10px', lg: '12px' }}
+				color='gray.400'
+			  >
+				의사명
+			  </Text>
 			),
-			cell: (info) => (
-				<Text color={textColor} fontSize='sm' fontWeight='700'>
-					{info.getValue()}
-				</Text>
-			)
+			cell: (info) => {
+				const doctorName = info.row.original.doctor_basic?.doctorname;
+				return <Text color={textColor} fontSize='sm' fontWeight='700'>{doctorName || '-'}</Text>;
+			},
 		}),
-		columnHelper.accessor('isCleared', {
-			id: 'isCleared',
+		columnHelper.accessor('is_clear', {
+			id: 'is_clear',
 			header: () => (
 				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					처리
@@ -93,22 +111,22 @@ export default function InquiryTable(props: { tableData: any }) {
 			cell: (info) => (
 				<>
 				{
-					info.getValue() 
+					info.getValue() == '1'
 					? 
-					(
-						<Tooltip label="관리자 | 2025.05.09" aria-label='A tooltip'>
-							<Checkbox defaultChecked={info.getValue()} colorScheme='brandScheme' />
-						</Tooltip>
-					)
+					<Text color={textColor} fontSize='sm' fontWeight='700'>완료</Text>
 					:
-					<Checkbox defaultChecked={info.getValue()} colorScheme='brandScheme' />
+					info.getValue() == '9'
+					?
+					<Text color={textColor} fontSize='sm' fontWeight='700'>보류</Text>
+					:
+					<Text color={textColor} fontSize='sm' fontWeight='700'>대기</Text>
 				}
 				</>
 			)
 		}),
-		columnHelper.accessor('regDate', {
+		columnHelper.accessor('createAt', {
 			size: 200,
-			id: 'regDate',
+			id: 'createAt',
 			header: () => (
 				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					등록일자
@@ -116,14 +134,16 @@ export default function InquiryTable(props: { tableData: any }) {
 			),
 			cell: (info) => (
 				<Text color={textColor} fontSize='sm' fontWeight='700'>
-					{info.getValue()}
+					{info.getValue() ? functions.dateToDateTime(info.getValue() as any) : '-'}
 				</Text>
 			)
 		})
 	];
-	const [ data, setData ] = React.useState(() => [ ...defaultData ]);
-	const [ isShow, setShow ] = React.useState(false);
-	const btnRef = React.useRef();
+
+	React.useEffect(() => {
+		setTableData(tableData);
+	}, [tableData]);
+
 	const table = useReactTable({
 		data,
 		columns,
@@ -136,8 +156,15 @@ export default function InquiryTable(props: { tableData: any }) {
 		debugTable: true
 	});
 
-	const onHandleOpenDetail = (id:string) => {
-		if ( !functions.isEmpty(id) ) setIsOpenRequestModal(true);
+	const onHandleOpenDetail = (data:any) => {
+		if ( !functions.isEmpty(data?.opinion_id) ) {
+			setSelectedData(data)
+			setIsOpenRequestModal(true);
+		}
+	}
+
+	const onSearch = () => {
+		handleSearch(localKeyword);
 	}
 
 	return (
@@ -155,12 +182,29 @@ export default function InquiryTable(props: { tableData: any }) {
 					</Text>
 				</Box>
 				<Box display='flex' alignItems={'flex-end'} width={{base : '100%', xl : 'auto'}}>
-					<Select placeholder='정렬기준'>
+					<Select placeholder='정렬기준' mr={2}>
 						<option value='option1'>최신 등록순</option>
 						<option value='option2'>이름순</option>
 						<option value='option3'>관계순</option>
 					</Select>
-					<Input placeholder='키워드를 입력하세요' id='keyword' />
+					<Select 
+						mr={2} 
+						value={status} 
+						onChange={(e) => handleFilterChange(e.target.value as any)}
+					>
+						<option value=''>전체</option>
+						<option value='0'>대기</option>
+						<option value='1'>완료</option>
+						<option value='9'>보류</option>
+					</Select>
+					<Input 
+						placeholder='키워드를 입력하세요' 
+						id='keyword' 
+						mr={2} 
+						value={localKeyword}
+						onChange={(e) => setLocalKeyword(e.target.value)}
+						onKeyDown={(e) => e.key === 'Enter' && onSearch()}
+					/>
 					<Button
 						size='md'
 						loadingText='Loading'
@@ -168,6 +212,7 @@ export default function InquiryTable(props: { tableData: any }) {
 						colorScheme='blue'
 						sx={{borderRadius:'5px'}}
 						id="button_search"
+						onClick={onSearch}
 					>
 						검색
 					</Button>
@@ -205,8 +250,31 @@ export default function InquiryTable(props: { tableData: any }) {
 							</Tr>
 						))}
 					</Thead>
+					
+					{
+					data.length == 0
+					?
+					<Tbody >
+						<Tr >
+							<Th colSpan={8} >
+								<Box
+									display={'flex'}
+									width={'100%'}
+									height={{base : "100px" , md : '200px'}}
+									justifyContent={'center'}
+									alignItems={'center'}
+									bg={bgColor}
+								>
+									<Text color={textColor} fontSize={{base : "15px", md:'20px'}} fontWeight='normal' lineHeight='100%'>
+										데이터가 없습니다.
+									</Text>
+								</Box>
+							</Th>
+						</Tr>
+					</Tbody>
+					:
 					<Tbody>
-						{table.getRowModel().rows.slice(0, 11).map((row) => {
+						{table.getRowModel().rows.map((row,index) => {
 							return (
 								<Tr key={row.id}>
 									{row.getVisibleCells().map((cell) => {
@@ -217,7 +285,7 @@ export default function InquiryTable(props: { tableData: any }) {
 												fontSize={{ sm: '14px' }}
 												minW={{ sm: '150px', md: '200px', lg: 'auto' }}
 												borderColor='transparent'
-												onClick={() => onHandleOpenDetail(row.original.name)}
+												onClick={() => onHandleOpenDetail(row.original)}
 											>
 												{flexRender(cell.column.columnDef.cell, cell.getContext())}
 											</Td>
@@ -227,63 +295,9 @@ export default function InquiryTable(props: { tableData: any }) {
 							);
 						})}
 					</Tbody>
+				}
 				</Table>
 			</Box>
-			{
-				isShow && (
-				<Drawer
-					isOpen={isShow}
-					onClose={()=>setShow(false)}
-					placement={'bottom'}
-					finalFocusRef={btnRef}
-					closeOnOverlayClick={false}
-					size={'full'}
-				>
-					<DrawerOverlay />
-					<DrawerContent 
-						h="calc( 100vh - 30px)" 
-						overflow='scroll'
-						backgroundColor={bgColor}
-						//w="285px" 
-						//maxW="300px"  
-						/* ms={{
-							sm: '300px',
-						}}
-						my={{
-							sm: '0',
-						}}
-						borderRadius="16px" */
-					>
-					<DrawerCloseButton
-						zIndex="3"
-						onClick={()=>setShow(false)}
-						_focus={{ boxShadow: 'none' }}
-						_hover={{ boxShadow: 'none' }}
-					/>
-					<DrawerHeader sx={{borderBottom:'1px solid #ebebeb'}}>공지사항 등록</DrawerHeader>
-					<DrawerBody w="calc(100% - 20px)"  padding="10px">
-						<Scrollbars
-							autoHide
-							renderTrackVertical={renderTrack}
-							renderThumbVertical={renderThumb}
-							renderView={renderView}
-							universal={true}
-						>
-						<NoticeForm
-							data={null}
-						/>
-						</Scrollbars>
-					</DrawerBody>
-					<DrawerFooter sx={{borderTop:'1px solid #ebebeb'}}>
-						<Button variant='outline' mr={3} onClick={()=>setShow(false)} id="button_cancel">
-						Cancel
-						</Button>
-						<Button colorScheme='blue' id='button_save'>Save</Button>
-					</DrawerFooter>
-					</DrawerContent>
-				</Drawer>
-				)
-			}
 			{
 				isOpenRequestModal && (    
 					<Modal
@@ -300,7 +314,8 @@ export default function InquiryTable(props: { tableData: any }) {
 							<InquiryDetail
 								isOpen={isOpenRequestModal}
 								setClose={() => setIsOpenRequestModal(false)}
-								inquiryId={'1'}
+								data={selectedData}
+								refetchData={props.refetchData}
 							/>
 							</ModalBody>
 						</ModalContent>

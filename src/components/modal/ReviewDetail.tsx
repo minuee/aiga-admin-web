@@ -189,7 +189,7 @@ function ReviewDetail(props: ReviewDetailProps) {
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>처리</FormLabel>
-              <RadioGroup defaultValue='1'>
+              <RadioGroup value={inputs?.is_open}>
                 <Stack spacing={5} direction='row' padding={'10px'}>
                   <Radio colorScheme='red' value='1' readOnly={!isAdmin} isDisabled={!isAdmin}>공개</Radio>
                   <Radio colorScheme='green' value='2' readOnly={!isAdmin} isDisabled={!isAdmin}>보류</Radio>

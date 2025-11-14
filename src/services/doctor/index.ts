@@ -9,11 +9,20 @@ interface PaginationProps {
     order: string;
     orderName: string;
     keyword? : string;
+    is_active? : string;
 }
 
 export function getDoctorList(props: PaginationProps): ApiResponse<any> {
     if ( !functions.isEmpty(props.page) && !functions.isEmpty(props.take) && !functions.isEmpty(props.order) && !functions.isEmpty(props.orderName) ) {
-        return api.get(`/doctors/hid/${props.hospitalId}?orderName=${props.orderName}&order=${props.order}&page=${props.page}&take=${props.take}&keyword=${props.keyword}`);
+        let queryString = `/doctors/hid/${props.hospitalId}?orderName=${props.orderName}&order=${props.order}&page=${props.page}&take=${props.take}`;
+
+        if (!functions.isEmpty(props.keyword)) {
+            queryString += `&keyword=${props.keyword}`;
+        }
+        if (!functions.isEmpty(props.is_active)) {
+            queryString += `&is_active=${props.is_active}`;
+        }
+        return api.get(queryString);
     }else{
         return null;
     } 

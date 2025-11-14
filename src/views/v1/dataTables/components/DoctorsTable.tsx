@@ -125,24 +125,41 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 					프로필사진
 				</Text>
 			),
-			cell: (info) => (
-				functions.isEmpty(info.getValue()) ?
-				<Flex alignItems={'center'} justifyContent={'center'}>
-					<Icon as={IoPerson} />
-				</Flex>
-				:
-				<Flex alignItems={'center'} justifyContent={'flex-start'} >
-					<Link href={info.getValue()} target='_blank'>
-						<Image 
-							src={info.getValue().trimEnd()} 
-							alt='profile' 
-							width={50} 
-							height={50} 
-							//onError={(e) => {e.currentTarget.src = defaultImage;}}
-						/>
-					</Link>
-				</Flex>
-			)
+			cell: (info) => {
+				const [hasImageError, setHasImageError] = React.useState(false);
+				const imageUrl = info.getValue()?.trimEnd();
+
+				React.useEffect(() => {
+					setHasImageError(false); // Reset error state when image URL changes
+				}, [imageUrl]);
+
+				if (functions.isEmpty(imageUrl) || hasImageError) {
+					return (
+						<Flex alignItems={'center'} justifyContent={'flex-start'} width='100%'>
+							<Image
+								src={defaultImage}
+								alt='default profile'
+								width={50}
+								height={50}
+							/>
+						</Flex>
+					);
+				} else {
+					return (
+						<Flex alignItems={'center'} justifyContent={'flex-start'} >
+							<Link href={imageUrl} target='_blank'>
+								<Image
+									src={imageUrl}
+									alt='profile'
+									width={50}
+									height={50}
+									onError={() => setHasImageError(true)}
+								/>
+							</Link>
+						</Flex>
+					);
+				}
+			}
 		}),
 		columnHelper.accessor('doctor_id', {
 			id: 'doctor_id',

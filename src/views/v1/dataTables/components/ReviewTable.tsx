@@ -197,7 +197,7 @@ export default function ReviewTable(props: { tableData: any,page:number, order :
 
 	const onHandleOpenDetail = async(data:any) => {
 		if ( !functions.isEmpty(data?.review_id) ) {
-			await setSelectedData(data);
+			setSelectedData(data);
 			setIsOpenRequestModal(true);
 		}
 	}
