@@ -218,6 +218,12 @@ function DoctorDetail(props: DoctorDetailProps) {
     console.log("inputs",inputs)
   }, [inputs]);
 
+  const [hasImageError, setHasImageError] = React.useState(false);
+  
+  React.useEffect(() => {
+    setHasImageError(false); // Reset error state when image URL changes
+  }, [inputs?.profileimgurl]);
+
   if ( isLoading ) {
     return (
       <Box padding='6' boxShadow='lg' bg={skeletonColor}>
@@ -232,10 +238,10 @@ function DoctorDetail(props: DoctorDetailProps) {
         <Flex flexDirection={{base : 'column' , 'mobile' : 'row'}} minHeight={'50px'} padding={{base : "0", 'mobile' : '0 10px'}} >
           <Flex flex={1} alignItems={'center'} justifyContent={'center'}>
             {
-              functions.isEmpty(inputs?.profileimgurl) ?
+              ( functions.isEmpty(inputs?.profileimgurl) || hasImageError ) ?
               <Image width="150" height="150" src={defaultImage} alt={'doctor1'} />
               :
-              <Image src={inputs?.profileimgurl.trimEnd()} alt='profile' width={150} height={150} />
+              <Image src={inputs?.profileimgurl.trimEnd()} alt='profile' width={150} height={150} onError={() => setHasImageError(true)} />
             }
           </Flex>
           <Flex flex={2} flexDirection={'column'} minHeight={'50px'} padding={{base : "0", 'mobile' : '0 10px'}} >
