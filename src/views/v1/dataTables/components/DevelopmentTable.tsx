@@ -22,7 +22,7 @@ type RowObj = {
 const columnHelper = createColumnHelper<RowObj>();
 
 // const columns = columnsDataCheck;
-export default function ComplexTable(props: { tableData: any,page:number, order : string , orderName: string ,getDataSortChange : (str: string) => void}) {
+export default function ComplexTable(props: { tableData: any,page:number, order : string , orderName: string ,getDataSortChange : (str: string) => void, getData: () => void}) {
 	
 	const { tableData,page ,order,orderName} = props;
 	const [ isLoading, setLoading ] = React.useState(true);
@@ -48,12 +48,17 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 		setData();
 	}, [setData]);
 
+	const handleCloseAndReload = React.useCallback(() => {
+		setIsOpenModal(false);
+		props.getData();
+	}, [props.getData]);
+	
 	const onHandleOpenModal = (hospitalData: any) => {
 		if( !functions.isEmpty(hospitalData?.hid) ) {
 			setSelectedHospital(hospitalData);
 			setIsOpenModal(true);
 		}
-	}
+	} // getData는 이 컴포넌트 내부에 정의된 함수입니다.
 
 	const columns = [
 		columnHelper.accessor('hid', {
@@ -291,7 +296,8 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 							<ModalBody >
 							<HospitalDetail
 								isOpen={isOpenModal}
-								setClose={() => 	(false)}
+								setClose={() => 	setIsOpenModal(false)}
+								setCloseAndReload={handleCloseAndReload}
 								hospitalData={selectedHospital}
 							/>
 							</ModalBody>

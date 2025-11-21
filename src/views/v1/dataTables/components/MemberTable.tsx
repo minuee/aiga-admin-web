@@ -285,6 +285,8 @@ export default function MemberTable(props: { tableData: any }) {
 						>
 						<NoticeForm
 							data={null}
+							onHandSaveNotice={() => {}} 
+							isReceiving={false}
 						/>
 						</Scrollbars>
 					</DrawerBody>

@@ -23,7 +23,8 @@ export default function DataTables() {
           page,
           take: pageSize,
           order,
-          orderName
+          orderName,
+          isAll: false
         });
         
         if ( res?.data?.meta?.totalCount > 0 ) {
@@ -62,6 +63,7 @@ export default function DataTables() {
           orderName={orderName}
           page={page}
           getDataSortChange={getDataSortChange}
+          getData={getData}
         />
         <Box 
           display={totalCount > 0 ? 'block' : 'none'}

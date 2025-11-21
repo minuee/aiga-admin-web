@@ -67,6 +67,46 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 		}
 	}
 
+	interface ProfileImageRendererProps {
+		imageUrl: string;
+		defaultImage: any;
+	}
+
+	const ProfileImageRenderer = ({ imageUrl, defaultImage }: ProfileImageRendererProps) => {
+		const [hasImageError, setHasImageError] = React.useState(false);
+
+		React.useEffect(() => {
+			setHasImageError(false); // Reset error state when image URL changes
+		}, [imageUrl]);
+
+		if (functions.isEmpty(imageUrl) || hasImageError) {
+			return (
+				<Flex alignItems={'center'} justifyContent={'flex-start'} width='100%'>
+					<Image
+						src={defaultImage}
+						alt='default profile'
+						width={50}
+						height={50}
+					/>
+				</Flex>
+			);
+		} else {
+			return (
+				<Flex alignItems={'center'} justifyContent={'flex-start'} >
+					<Link href={imageUrl} target='_blank'>
+						<Image
+							src={imageUrl}
+							alt='profile'
+							width={50}
+							height={50}
+							onError={() => setHasImageError(true)}
+						/>
+					</Link>
+				</Flex>
+			);
+		}
+	};
+
 	const columns = [
 		columnHelper.accessor('deptname', {
 			id: 'deptname',
@@ -126,41 +166,9 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 					프로필사진
 				</Text>
 			),
-			cell: (info) => {
-				const [hasImageError, setHasImageError] = React.useState(false);
-				const imageUrl = info.getValue()?.trimEnd();
-
-				React.useEffect(() => {
-					setHasImageError(false); // Reset error state when image URL changes
-				}, [imageUrl]);
-
-				if (functions.isEmpty(imageUrl) || hasImageError) {
-					return (
-						<Flex alignItems={'center'} justifyContent={'flex-start'} width='100%'>
-							<Image
-								src={defaultImage}
-								alt='default profile'
-								width={50}
-								height={50}
-							/>
-						</Flex>
-					);
-				} else {
-					return (
-						<Flex alignItems={'center'} justifyContent={'flex-start'} >
-							<Link href={imageUrl} target='_blank'>
-								<Image
-									src={imageUrl}
-									alt='profile'
-									width={50}
-									height={50}
-									onError={() => setHasImageError(true)}
-								/>
-							</Link>
-						</Flex>
-					);
-				}
-			}
+			cell: (info) => (
+                <ProfileImageRenderer imageUrl={info.getValue()?.trimEnd()} defaultImage={defaultImage} />
+            )
 		}),
 		columnHelper.accessor('doctor_id', {
 			id: 'doctor_id',
