@@ -438,6 +438,26 @@ function DoctorDetail(props: DoctorDetailProps) {
             </FormControl>
           </Box>
         </Flex>
+        <Flex display={'flex'} flexDirection={'row'} minHeight={'50px'} padding={{base : "0", 'mobile' : '0 10px'}} mt={5}>
+          <Box flex={1}>
+            <FormControl variant="floatingLabel">
+              <FormLabel>
+                이전병원
+              </FormLabel>
+              <Input 
+                type="text" 
+                borderColor={borderColor}
+                color={textColor}
+                placeholder='소개페이지' 
+                value={inputs?.prev_hospitalName || ''}
+                disabled={!isAdmin}
+                readOnly={true}
+                //onChange={(e)=> setInputs({...inputs, prev_hospitalName: e.target.value})} 
+                id='prev_hospitalName'
+              />
+            </FormControl>
+          </Box>              
+        </Flex> 
         <Box display={isAdmin ? 'flex' : 'none'} flexDirection={'row'} justifyContent={'center'}  width={'98%'} mt={5}>
           <Button 
             colorScheme='blue' 

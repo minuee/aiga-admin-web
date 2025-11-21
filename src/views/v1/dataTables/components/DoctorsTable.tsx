@@ -20,7 +20,8 @@ type RowObj = {
 	doctor_id: string;
 	doctorname: string;
 	createAt: Date;
-	updateDt : Date;
+	updateAt : Date;
+	prev_hospitalName : string;
 	doctor_count: number;
 	doctor_url: string;
 	profileimgurl: string;
@@ -208,18 +209,18 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 				</Flex>
 			)
 		}),
-		columnHelper.accessor('updateDt', {
-			id: 'updateDt',
+		columnHelper.accessor('prev_hospitalName', {
+			id: 'prev_hospitalName',
 			size: 50,
 			header: () => (
 				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
-					수정일
+					이전병원
 				</Text>
 			),
 			cell: (info:any) => (
 				<Flex align='center'>
 					<Text me='10px' color={textColor} fontSize='sm' fontWeight='700'>
-						{info.getValue() ? format(info.getValue(), 'yyyy-MM-dd') : ""}
+					{info.getValue()}
 					</Text>
 				</Flex>
 			)
