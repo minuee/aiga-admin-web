@@ -13,9 +13,14 @@ export default function DataTables() {
 
   const getData = React.useCallback(
 		async() => {
-			const res:any = await NoticeService.getNoticeList();
-      console.log('res',res)
-      return res;
+			try {
+				const res:any = await NoticeService.getNoticeList();
+				console.log('res',res)
+				return res;
+			} catch (error) {
+				console.error("Failed to get notice list:", error);
+				return null;
+			}
 		},[]
 	)
 	

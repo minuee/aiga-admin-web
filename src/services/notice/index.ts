@@ -18,9 +18,9 @@ export function getHospitalList(props: PaginationProps): ApiResponse<any> {
     }
 }
 
-export function getNoticeList(): ApiResponse<any> {
+export async function getNoticeList(): Promise<any> {
     try{
-        return api.get(`/notice`);
+        return await api.get(`/notice`);
     }catch(e:any){
         console.log("getNoticeList e",e)
         return null;

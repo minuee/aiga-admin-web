@@ -178,7 +178,7 @@ export default function ReactEditor(props: ReactEditorProps) {
   'script',
   'color',
   'background',
-  //'image',
+  'image',
   'link',
   'height',
   'width',
@@ -205,9 +205,9 @@ export default function ReactEditor(props: ReactEditorProps) {
           ['link'],
           [{ align: '' }, { align: 'center' }, { align: 'right' }, { align: 'justify' }],
           ['clean'] ,
-          ['table']       
+          ['table', 'image']       
         ],
-        //handlers: { image: imageHandler},
+        handlers: { image: imageHandler},
       },
       table: true,
       'better-table': {

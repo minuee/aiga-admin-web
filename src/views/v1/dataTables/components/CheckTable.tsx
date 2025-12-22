@@ -216,7 +216,7 @@ export default function CheckTable(props: { tableData: any }) {
 						))}
 					</Thead>
 					{
-					tableData?.notice?.length == 0 
+					!tableData?.notice || tableData.notice.length === 0
 					?
 					<Tbody >
 						<Tr >
