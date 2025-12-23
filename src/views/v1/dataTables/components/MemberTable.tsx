@@ -1,64 +1,134 @@
-
+import dayjs from 'dayjs';
 import * as React from 'react';
-import { createColumnHelper,flexRender,getCoreRowModel,getSortedRowModel,SortingState,useReactTable } from '@tanstack/react-table';
-import { 
-	Flex, Box, Table, Checkbox, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue,Drawer,DrawerBody,DrawerFooter,
-	DrawerHeader,DrawerOverlay,Input,DrawerContent,DrawerCloseButton,Button,Select,Modal,ModalOverlay,ModalContent,ModalHeader,ModalCloseButton,ModalBody
+import {
+	createColumnHelper,
+	flexRender,
+	getCoreRowModel,
+	getSortedRowModel,
+	SortingState,
+	useReactTable
+} from '@tanstack/react-table';
+import {
+	Flex,
+	Box,
+	Table,
+	Checkbox,
+	Tbody,
+	Td,
+	Text,
+	Th,
+	Thead,
+	Tr,
+	useColorModeValue,
+	Select,
+	Input,
+	Button,
+	Modal,
+	ModalOverlay,
+	ModalContent,
+	ModalHeader,
+	ModalCloseButton,
+	ModalBody
 } from '@chakra-ui/react';
 // Custom components
 import Card from 'components/card/Card';
-
-import { RowObj } from 'views/v1/dataTables/variables/tableDataMembers';
-import { renderThumb,renderTrack,renderView } from 'components/scrollbar/Scrollbar';
-import dynamic from 'next/dynamic';
-const Scrollbars = dynamic(
-  () => import('react-custom-scrollbars-2').then((mod) => mod.Scrollbars),
-  { ssr: true },
-);
-
 import MemberDetail from 'components/modal/MemberDetail';
-
-import NoticeForm from "views/v1/notice/View";
 import functions from 'utils/functions';
 import mConstants from 'utils/constants';
 
+interface RowObj {
+  user_id: string;
+  sns_type: string;
+  sns_id: string;
+  email: string;
+  nickname: string;
+  profile_img: string;
+  restricted_time: number | null;
+  agreement: number;
+  regist_date: string;
+  unregist_date: string | null;
+  createdAt: string;
+  updatedAt: string;
+  lastLoginAt: string | null; // lastLoginAt이 null일 수 있으므로 string | null
+  total_token_usage: number | string; // total_token_usage가 문자열 "0"으로 오므로 string | number
+}
+
 const columnHelper = createColumnHelper<RowObj>();
 
-// const columns = columnsDataCheck;
-export default function MemberTable(props: { tableData: any }) {
+export default function MemberTable(props: {
+	tableData: any[];
+	order: string;
+	orderName: string;
+	page: number;
+	getDataSortChange: (str: string) => void;
+	getDataUpdateChange: (bool: boolean, isNewPage: boolean) => void;
+}) {
 	const { tableData } = props;
 	const [ sorting, setSorting ] = React.useState<SortingState>([]);
 	const [ isOpenRequestModal, setIsOpenRequestModal ] = React.useState(false);
-	const [ data_9, setData9 ] = React.useState<any>([]);
+	const [ selectedUserId, setSelectedUserId ] = React.useState('');
+	const [ selectedUserNickname, setSelectedUserNickname ] = React.useState('');
 	const textColor = useColorModeValue('secondaryGray.900', 'white');
 	const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
-	const bgColor = useColorModeValue(' .300', 'navy.900');
 	const sidebarBackgroundColor = useColorModeValue('white', 'navy.800');
-	const formBtnRef = React.useRef(null)
+	const formBtnRef = React.useRef(null);
 
-	let defaultData= tableData;
+	const [ checkedRows, setCheckedRows ] = React.useState<Set<string>>(new Set());
+
+	const handleHeaderCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const isChecked = e.target.checked;
+		if (isChecked) {
+			const newCheckedRows = new Set(tableData.map((row: any) => row.user_id));
+			setCheckedRows(newCheckedRows);
+		} else {
+			setCheckedRows(new Set());
+		}
+	};
+
+	const handleRowCheckboxChange = (rowId: string, isChecked: boolean) => {
+		setCheckedRows(prev => {
+			const newCheckedRows = new Set(prev);
+			if (isChecked) {
+				newCheckedRows.add(rowId);
+			} else {
+				newCheckedRows.delete(rowId);
+			}
+			return newCheckedRows;
+		});
+	};
+
 	const columns = [
-		columnHelper.accessor('name', {
+		columnHelper.accessor('nickname', {
 			size: 200,
-			id: 'name',
+			id: 'nickname',
 			header: () => (
 				<Flex align='center'>
-					<Checkbox defaultChecked={false} colorScheme='brandScheme' mr='10px' />
+					<Checkbox
+						isChecked={checkedRows.size === tableData.length && tableData.length > 0}
+						onChange={handleHeaderCheckboxChange}
+						colorScheme='brandScheme'
+						mr='10px'
+					/>
 					<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400' >
-						이름 
+						이름
 					</Text>
 				</Flex>
 			),
 			cell: (info: any) => (
 				<Flex align='center'>
-					<Checkbox defaultChecked={info.getValue()[1]} colorScheme='brandScheme' mr='10px' />
+					<Checkbox
+						isChecked={checkedRows.has(info.row.original.user_id)}
+						onChange={(e) => handleRowCheckboxChange(info.row.original.user_id, e.target.checked)}
+						colorScheme='brandScheme'
+						mr='10px'
+					/>
 					<Text color={textColor} fontSize='sm' fontWeight='700'>
 						{info.getValue()}
 					</Text>
 				</Flex>
 			)
 		}),
-		columnHelper.accessor('joinType', {
+		columnHelper.accessor('sns_type', {
 			id: 'joinType',
 			header: () => (
 				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
@@ -71,7 +141,7 @@ export default function MemberTable(props: { tableData: any }) {
 				</Text>
 			)
 		}),
-		columnHelper.accessor('grade', {
+		/* columnHelper.accessor('grade', {
 			id: 'grade',
 			header: () => (
 				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
@@ -83,8 +153,8 @@ export default function MemberTable(props: { tableData: any }) {
 					{info.getValue()}
 				</Text>
 			)
-		}),
-		columnHelper.accessor('useTokens', {
+		}), */
+		columnHelper.accessor('total_token_usage', {
 			size: 50,
 			id: 'useTokens',
 			header: () => (
@@ -100,18 +170,23 @@ export default function MemberTable(props: { tableData: any }) {
 				</Flex>
 			)
 		}),
-		columnHelper.accessor('isActive', {
+		columnHelper.accessor('lastLoginAt', {
 			id: 'isActive',
 			header: () => (
 				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
 					활성
 				</Text>
 			),
-			cell: (info) => (
-				<Checkbox defaultChecked={info.getValue()} colorScheme='brandScheme' mr='10px' />
-			)
+			cell: (info) => {
+				const lastLogin = info.getValue() ? dayjs(info.getValue()) : null;
+				const oneMonthAgo = dayjs().subtract(1, 'month');
+				const isActive = lastLogin ? lastLogin.isAfter(oneMonthAgo) : false;
+				return (
+					<Checkbox defaultChecked={isActive} colorScheme='brandScheme' mr='10px' isReadOnly />
+				);
+			}
 		}),
-		columnHelper.accessor('isEntire', {
+		columnHelper.accessor('unregist_date', {
 			id: 'isEntire',
 			header: () => (
 				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
@@ -119,29 +194,27 @@ export default function MemberTable(props: { tableData: any }) {
 				</Text>
 			),
 			cell: (info) => (
-				<Checkbox defaultChecked={info.getValue()} colorScheme='brandScheme' mr='10px' />
+				<Checkbox defaultChecked={info.getValue() !== null} colorScheme='brandScheme' mr='10px' isReadOnly />
 			)
 		}),
-		columnHelper.accessor('regDate', {
+		columnHelper.accessor('lastLoginAt', {
 			size: 200,
 			id: 'regDate',
 			header: () => (
 				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
-					가입일
+					마지막 로그인일
 				</Text>
 			),
 			cell: (info) => (
 				<Text color={textColor} fontSize='sm' fontWeight='700'>
-					{info.getValue()}
+					{info.getValue() ? functions.castToDateString(new Date(info.getValue()), 'yyyy-MM-dd HH:mm:ss') : ''}
 				</Text>
 			)
 		})
 	];
-	const [ data, setData ] = React.useState(() => [ ...defaultData ]);
-	const [ isShow, setShow ] = React.useState(false);
-	const btnRef = React.useRef();
+
 	const table = useReactTable({
-		data,
+		data: tableData,
 		columns,
 		state: {
 			sorting
@@ -149,19 +222,24 @@ export default function MemberTable(props: { tableData: any }) {
 		onSortingChange: setSorting,
 		getCoreRowModel: getCoreRowModel(),
 		getSortedRowModel: getSortedRowModel(),
-		debugTable: true
+		debugTable: true,
+		enableRowSelection: true
 	});
 
-	const onHandleOpenDetail = (id:string) => {
-		if ( !functions.isEmpty(id) ) setIsOpenRequestModal(true);
+	const onHandleOpenDetail = (userId: string, nickname: string) => {
+		if ( !functions.isEmpty(userId) ) {
+			setSelectedUserId(userId);
+			setSelectedUserNickname(nickname);
+			setIsOpenRequestModal(true);
+		}
 	}
 
 	return (
 		<Card flexDirection='column' w='100%' px='0px' overflowX={{ sm: 'scroll', lg: 'hidden' }}>
-			<Flex 
+			<Flex
 				flexDirection={{base : 'column', md : 'row'}}
 				px={{base : '10px', xl : '25px'}}
-				mb="8px" 
+				mb="8px"
 				justifyContent={{base : 'center', md : 'space-between' }}
 				align='center'
 			>
@@ -192,7 +270,7 @@ export default function MemberTable(props: { tableData: any }) {
 				<Table variant='simple' color='gray.500' mb='24px' mt="12px">
 					<Thead>
 						{table.getHeaderGroups().map((headerGroup) => (
-							<Tr  key={headerGroup.id} >
+							<Tr key={headerGroup.id} >
 								{headerGroup.headers.map((header) => {
 									return (
 										<Th
@@ -220,88 +298,41 @@ export default function MemberTable(props: { tableData: any }) {
 						))}
 					</Thead>
 					<Tbody>
-						{table.getRowModel().rows.slice(0, 11).map((row) => {
-							return (
-								<Tr key={row.id}>
-									{row.getVisibleCells().map((cell) => {
-										return (
-											<Td
-												key={cell.id}
-												sx={{borderBottom:'1px', borderBottomColor:'#ebebeb'}}
-												fontSize={{ sm: '14px' }}
-												minW={{ sm: '150px', md: '200px', lg: 'auto' }}
-												borderColor='transparent'
-												onClick={() => onHandleOpenDetail(row.original.name)}
-											>
-												{flexRender(cell.column.columnDef.cell, cell.getContext())}
-											</Td>
-										);
-									})}
-								</Tr>
-							);
-						})}
+						{table.getRowModel().rows.length === 0 ? (
+							<Tr>
+								<Td colSpan={columns.length} textAlign="center">
+									<Text color={textColor} fontSize='sm' fontWeight='700'>
+										데이터가 없습니다.
+									</Text>
+								</Td>
+							</Tr>
+						) : (
+							table.getRowModel().rows.map((row) => {
+								return (
+									<Tr key={row.id}>
+										{row.getVisibleCells().map((cell) => {
+											return (
+												<Td
+													key={cell.id}
+													sx={{borderBottom:'1px', borderBottomColor:'#ebebeb'}}
+													fontSize={{ sm: '14px' }}
+													minW={{ sm: '150px', md: '200px', lg: 'auto' }}
+													borderColor='transparent'
+													onClick={() => onHandleOpenDetail(row.original.user_id, row.original.nickname)}
+												>
+													{flexRender(cell.column.columnDef.cell, cell.getContext())}
+												</Td>
+											);
+										})}
+									</Tr>
+								);
+							})
+						)}
 					</Tbody>
 				</Table>
 			</Box>
 			{
-				isShow && (
-				<Drawer
-					isOpen={isShow}
-					onClose={()=>setShow(false)}
-					placement={'bottom'}
-					finalFocusRef={btnRef}
-					closeOnOverlayClick={false}
-					size={'full'}
-				>
-					<DrawerOverlay />
-					<DrawerContent 
-						h="calc( 100vh - 30px)" 
-						overflow='scroll'
-						backgroundColor={bgColor}
-						//w="285px" 
-						//maxW="300px"  
-						/* ms={{
-							sm: '300px',
-						}}
-						my={{
-							sm: '0',
-						}}
-						borderRadius="16px" */
-					>
-					<DrawerCloseButton
-						zIndex="3"
-						onClick={()=>setShow(false)}
-						_focus={{ boxShadow: 'none' }}
-						_hover={{ boxShadow: 'none' }}
-					/>
-					<DrawerHeader sx={{borderBottom:'1px solid #ebebeb'}}>공지사항 등록</DrawerHeader>
-					<DrawerBody w="calc(100% - 20px)"  padding="10px">
-						<Scrollbars
-							autoHide
-							renderTrackVertical={renderTrack}
-							renderThumbVertical={renderThumb}
-							renderView={renderView}
-							universal={true}
-						>
-						<NoticeForm
-							data={null}
-							onHandSaveNotice={() => {}} 
-							isReceiving={false}
-						/>
-						</Scrollbars>
-					</DrawerBody>
-					<DrawerFooter sx={{borderTop:'1px solid #ebebeb'}}>
-						<Button variant='outline' mr={3} onClick={()=>setShow(false)} id="button_cancel">
-						Cancel
-						</Button>
-						<Button colorScheme='blue' id="button_save">Save</Button>
-					</DrawerFooter>
-					</DrawerContent>
-				</Drawer>
-				)
-			}
-			{
-				isOpenRequestModal && (    
+				isOpenRequestModal && (
 					<Modal
 						onClose={() => setIsOpenRequestModal(false)}
 						finalFocusRef={formBtnRef}
@@ -310,13 +341,14 @@ export default function MemberTable(props: { tableData: any }) {
 						>
 						<ModalOverlay />
 						<ModalContent maxW={`${mConstants.modalMaxWidth}px`} bg={sidebarBackgroundColor}>
-							<ModalHeader>{"회원정보"}</ModalHeader>
+							<ModalHeader>{selectedUserNickname}</ModalHeader>
 							<ModalCloseButton />
 							<ModalBody >
 							<MemberDetail
 								isOpen={isOpenRequestModal}
 								setClose={() => setIsOpenRequestModal(false)}
-								memberId={'1'}
+								memberId={selectedUserId}
+								memberNickname={selectedUserNickname}
 							/>
 							</ModalBody>
 						</ModalContent>
@@ -325,4 +357,4 @@ export default function MemberTable(props: { tableData: any }) {
 			}
 		</Card>
 	);
-} 
+}

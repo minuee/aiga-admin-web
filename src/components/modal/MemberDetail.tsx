@@ -9,10 +9,11 @@ export interface MemberDetailProps extends PropsWithChildren {
   isOpen : boolean;
   setClose : () => void;
   memberId : string;
+  memberNickname: string;
 }
 
 function MemberDetail(props: MemberDetailProps) {
-  const { isOpen, setClose, memberId } = props;
+  const { isOpen, setClose, memberId, memberNickname } = props;
   const [isLoading, setIsLoading] = React.useState(true);  
   const [inputs, setInputs] = React.useState<any>({
     doctorId: '',
