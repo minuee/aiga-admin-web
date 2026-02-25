@@ -1,6 +1,5 @@
 // src/services/conversations.ts
-import api from './api'; // api 인스턴스를 가정합니다. 실제 경로에 맞게 수정해주세요.
-
+import { api, ApiResponse } from './api';
 export interface Conversation {
   user: string;
   sessionId: string;
