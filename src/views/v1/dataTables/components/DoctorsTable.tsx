@@ -31,7 +31,7 @@ type RowObj = {
 const columnHelper = createColumnHelper<RowObj>();
 
 // const columns = columnsDataCheck;
-export default function DoctorsTable(props: { tableData: any,page:number, order : string , orderName: string ,getDataSortChange : (str: string) => void, hospitalData: any}) {
+export default function DoctorsTable(props: { tableData: any,page:number, order : string , orderName: string ,getDataSortChange : (str: string) => void, hospitalData: any, getData: (page?: number) => void}) {
 	
 	const { tableData,page ,order,orderName, hospitalData} = props;
 	const router = useRouter();
@@ -358,6 +358,7 @@ export default function DoctorsTable(props: { tableData: any,page:number, order 
 							isOpen={isOpenModal}
 							setCloseModal={() => setIsOpenModal(false)}
 							DoctorData={DoctorData}
+							onUpdateSuccess={() => props.getData(props.page)}
 						/>
 						</ModalBody>
 					</ModalContent>

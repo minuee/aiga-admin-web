@@ -38,6 +38,7 @@ function InquiryDetail(props: InquiryDetailProps) {
   });
   const skeletonColor = useColorModeValue('white', 'navy.700');
   const textColor = useColorModeValue('navy.700', 'white');
+  const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
 
   React.useEffect(() => {
     if (isOpen && data) {
@@ -109,13 +110,13 @@ function InquiryDetail(props: InquiryDetailProps) {
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>요청자 이름</FormLabel>
-              <Input type="text" placeholder='이름' disabled id='nickname' readOnly value={inputs.nickname} />
+              <Input type="text" placeholder='이름' disabled id='nickname' readOnly value={inputs.nickname} borderColor={borderColor} color={textColor} />
             </FormControl>
           </Box>  
           <Box flex={1}>
             <FormControl variant="floatingLabel">
               <FormLabel>등록일자</FormLabel>
-              <Input type="text" placeholder='등록일자' disabled id='regDate' readOnly value={functions.dateToDateTime(inputs.createAt)}/>
+              <Input type="text" placeholder='등록일자' disabled id='regDate' readOnly value={functions.dateToDateTime(inputs.createAt)} borderColor={borderColor} color={textColor} />
             </FormControl>
           </Box>              
         </Flex> 
@@ -123,13 +124,13 @@ function InquiryDetail(props: InquiryDetailProps) {
           <Box flex={1} mt={{base : 5, xl : 0}}>
             <FormControl variant="floatingLabel">
               <FormLabel>병원명</FormLabel>
-              <Input type="text" placeholder='병원명' disabled id='hospital_name' readOnly value={inputs.hospital_name}  />
+              <Input type="text" placeholder='병원명' disabled id='hospital_name' readOnly value={inputs.hospital_name}  borderColor={borderColor} color={textColor} />
             </FormControl>
           </Box>
           <Box flex={1} mt={{base : 5, xl : 0}}>
             <FormControl variant="floatingLabel">
               <FormLabel>의사명</FormLabel>
-              <Input type="text" placeholder='의사명' disabled id='doctor_name' readOnly value={inputs.doctor_name}  />
+              <Input type="text" placeholder='의사명' disabled id='doctor_name' readOnly value={inputs.doctor_name}  borderColor={borderColor} color={textColor} />
             </FormControl>
           </Box>
         </Flex> 
@@ -147,6 +148,8 @@ function InquiryDetail(props: InquiryDetailProps) {
                 size={'sm'} 
                 isDisabled
                 id="req_content"
+                borderColor={borderColor} 
+                color={textColor} 
               />
             </FormControl>
           </Box>   
@@ -163,7 +166,8 @@ function InquiryDetail(props: InquiryDetailProps) {
                 value={inputs.comment}
                 onChange={handleInputChange}
                 disabled={!isAdmin}
-                color={textColor}
+                borderColor={borderColor} 
+                color={textColor} 
               />
             </FormControl>
           </Box>              

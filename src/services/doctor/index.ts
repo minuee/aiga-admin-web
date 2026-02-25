@@ -28,10 +28,10 @@ export function getDoctorList(props: PaginationProps): ApiResponse<any> {
     } 
 }
 
-interface PaperProps {
+interface DoctorIdProps {
     doctorId: string;
 }
-export function getDoctorPaperList(props: PaperProps): ApiResponse<any> {
+export function   getDoctorPaperList(props: DoctorIdProps): ApiResponse<any> {
     if ( !functions.isEmpty(props.doctorId)  ) {
         return api.get(`/doctors/paper/${props.doctorId}`);
     }else{
@@ -39,6 +39,33 @@ export function getDoctorPaperList(props: PaperProps): ApiResponse<any> {
     } 
 }
 
+
+export function getDoctorDetailInformation(props: DoctorIdProps): ApiResponse<any> {
+    if ( !functions.isEmpty(props.doctorId)  ) {
+        return api.get(`/doctors/${props.doctorId}`);
+    }else{
+        return null;
+    } 
+}
+
+
+export function getDoctorEvaluationList(props: DoctorIdProps): ApiResponse<any> {
+    if ( !functions.isEmpty(props.doctorId)  ) {
+        return api.get(`/doctors/evaluation/${props.doctorId}`);
+    }else{
+        return null;
+    } 
+}
+
+
+
+export function getDoctorSpecialtyList(props: DoctorIdProps): ApiResponse<any> {
+    if ( !functions.isEmpty(props.doctorId)  ) {
+        return api.get(`/doctors/specialty/${props.doctorId}`);
+    }else{
+        return null;
+    } 
+}
 
 export function putDoctorCareer(reqData:any): ApiResponse<any> {
     try{
@@ -48,7 +75,8 @@ export function putDoctorCareer(reqData:any): ApiResponse<any> {
             career : reqData?.career,
             etc : reqData?.etc
         }
-        const res:any =  api.put(`/doctors/career/${reqData?.rid}`,bodyData)
+        console.log("reqData",JSON.stringify(reqData))
+        const res:any =  api.put(`/doctors/career/${reqData?.doctor_id}`,bodyData)
         .then((response) => {
                 return response?.data;
         }).catch((error):any => {
@@ -74,7 +102,7 @@ export function putDoctorBasic(reqData:any): ApiResponse<any> {
             new_doctor_url : reqData?.new_doctor_url,
             is_active : reqData?.is_active
         }
-        const res:any =  api.put(`/doctors/basic/${reqData?.rid}`,bodyData)
+        const res:any =  api.put(`/doctors/basic/${reqData?.rid_long}`,bodyData)
         .then((response) => {
                 return response?.data;
         }).catch((error):any => {

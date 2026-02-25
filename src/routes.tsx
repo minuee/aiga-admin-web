@@ -1,5 +1,5 @@
 import { Icon,Tooltip } from '@chakra-ui/react';
-import { MdBarChart,MdPerson,MdHome,MdEdit,MdNotifications,MdDvr,MdApartment, MdSearch } from 'react-icons/md';
+import { MdBarChart,MdPerson,MdHome,MdEdit,MdNotifications,MdDvr,MdApartment, MdSearch ,MdChatBubbleOutline,MdCalculate } from 'react-icons/md';
 import { IRoute } from 'types/navigation';
 
 const routes: IRoute[] = [
@@ -8,6 +8,13 @@ const routes: IRoute[] = [
     layout: '/v1',
     path: '/dashboard',
     icon: <Tooltip label="메인 홈"><Icon as={MdHome} width="20px" height="20px" color="inherit" /></Tooltip>,
+  },
+  {
+    name: '통계관리',
+    layout: '/v1',
+    path: '/anaysis',
+    icon: <Tooltip label="통계관리"><Icon as={MdBarChart} width="20px" height="20px" color="inherit" /></Tooltip>,
+    secondary: true,
   },
   {
     name: '공지사항',
@@ -44,13 +51,28 @@ const routes: IRoute[] = [
     path: '/hospital',
   },
   {
+    name: '대화관리',
+    layout: '/v1',
+    path: '/conversations',
+    icon: <Tooltip label="대화관리"><Icon as={MdChatBubbleOutline} width="20px" height="20px" color="inherit" /></Tooltip>,
+    secondary: true,
+  },
+  {
+    name: '코드관리',
+    layout: '/v1',
+    path: '/codemanage',
+    icon: <Tooltip label="코드관리"><Icon as={MdCalculate} width="20px" height="20px" color="inherit" /></Tooltip>,
+    secondary: true,
+  },
+  /*  {
     name: 'MCP 데이터 조회',
     layout: '/v1',
     path: '/mcp-query',
     icon: <Tooltip label="MCP 데이터 조회"><Icon as={MdSearch} width="20px" height="20px" color="inherit" /></Tooltip>,
     secondary: true,
+    roles: ['admin'],
   }
- /*  {
+ {
     name: '각종통계',
     layout: '/v1',
     icon: <Tooltip label="각종통계"><Icon as={MdBarChart} width="20px" height="20px" color="inherit" /></Tooltip>,

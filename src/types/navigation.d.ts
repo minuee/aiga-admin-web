@@ -6,4 +6,5 @@ export interface IRoute {
   icon: ReactComponentElement | string;
   secondary?: boolean;
   path: string;
+  roles?: string[];
 }

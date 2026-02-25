@@ -1,21 +1,26 @@
 // Chakra imports
 import { Box, Button, Flex, Icon, Text, useColorModeValue } from '@chakra-ui/react';
 // Custom components
-import Card from 'components/card/Card';
-import LineChart from 'components/charts/LineChart';
+import Card from 'components/card/Card'; // 경로 수정
+import LineChart from 'components/charts/LineChart'; // 경로 수정
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { IoCheckmarkCircle } from 'react-icons/io5';
 import { MdBarChart, MdOutlineCalendarToday } from 'react-icons/md';
 // Assets
 import { RiArrowUpSFill } from 'react-icons/ri';
-import { lineChartDataTotalSpent, lineChartOptionsTotalSpent } from 'variables/charts';
 
-export default function TotalSpent(props: { [x: string]: any }) {
-	const { ...rest } = props;
+// Props 타입 정의
+interface MonthlyTokenUsageProps {
+	chartData: any[]; // 월별 토큰 사용량 데이터
+	chartOptions: any; // 차트 옵션
+	[x: string]: any;
+}
+
+export default function MonthlyTokenUsage(props: MonthlyTokenUsageProps) {
+	const { chartData, chartOptions, ...rest } = props;
 
 	// Chakra Color Mode
-
 	const textColor = useColorModeValue('secondaryGray.900', 'white');
 	const textColorSecondary = useColorModeValue('secondaryGray.600', 'white');
 	const boxBg = useColorModeValue('secondaryGray.300', 'whiteAlpha.100');
@@ -39,6 +44,15 @@ export default function TotalSpent(props: { [x: string]: any }) {
 		<Card justifyContent='center' alignItems='center' flexDirection='column' w='100%' mb='0px' {...rest}>
 			<Flex justify='space-between' ps='0px' pe='20px' pt='5px' w='100%'>
 				<Flex align='center' w='100%'>
+					<Text
+						me='auto'
+						color={textColor}
+						fontSize='xl'
+						fontWeight='700'
+						lineHeight='100%'
+					>
+						월별 토큰 사용량
+					</Text>
 					<Button
 						ms='auto'
 						alignItems='center'
@@ -59,9 +73,8 @@ export default function TotalSpent(props: { [x: string]: any }) {
 				</Flex>
 			</Flex>
 			<Flex w='100%' flexDirection={{ base: 'column', lg: 'row' }}>
-				
 				<Box minH='260px' minW='95%' mt='auto'>
-					<LineChart chartData={lineChartDataTotalSpent} chartOptions={lineChartOptionsTotalSpent} />
+					{mounted && <LineChart chartData={chartData} chartOptions={chartOptions} />}
 				</Box>
 			</Flex>
 		</Card>

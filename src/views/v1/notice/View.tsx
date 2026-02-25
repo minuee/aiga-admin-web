@@ -52,9 +52,10 @@ export default function ViewForm(props: ViewFormProps) {
         setInputs({
             ...inputs,
             ...props.data,
-            isOpen : props.data?.info,
-            openDate :  props.data?.date,
-            title : props.data?.name[0],
+            noticeId :  props.data?.notice_id,
+            isOpen : props.data?.is_active,
+            openDate :  props.data?.open_date,
+            title : props.data?.title,
             content :  props.data?.content
         })
     }, [props.data]);
@@ -64,7 +65,7 @@ export default function ViewForm(props: ViewFormProps) {
             ...inputs,
             content : saveContent
         })
-    }, [saveContent]);
+    }, [inputs, saveContent]);
 
     
   

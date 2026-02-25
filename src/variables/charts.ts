@@ -434,3 +434,171 @@ export const lineChartOptionsTotalSpent: ApexOptions = {
   },
   // color: ["#7551FF", "#39B8FF"],
 };
+
+// Daily Token Usage
+export const dailyTokenUsageData = [
+  {
+    name: '일별 토큰 사용량',
+    data: [0, 0, 0, 0, 0, 0, 0], // 임시 데이터
+  },
+];
+
+export const dailyTokenUsageOptions: ApexOptions = {
+  chart: {
+    toolbar: {
+      show: false,
+    },
+    dropShadow: {
+      enabled: true,
+      top: 13,
+      left: 0,
+      blur: 10,
+      opacity: 0.1,
+      color: '#4318FF',
+    },
+  },
+  colors: ['#4318FF'], // 단일 데이터이므로 색상 하나
+  markers: {
+    size: 0,
+    colors: 'white',
+    strokeColors: '#7551FF',
+    strokeWidth: 3,
+    strokeOpacity: 0.9,
+    strokeDashArray: 0,
+    fillOpacity: 1,
+    discrete: [],
+    shape: 'circle',
+    offsetX: 0,
+    offsetY: 0,
+    showNullDataPoints: true,
+  },
+  tooltip: {
+    theme: 'dark',
+    x: {
+      format: 'yyyy-MM-dd', // 날짜 형식에 맞게 변경
+    },
+    y: {
+      formatter: function (val: number) {
+        return val.toLocaleString() + ' tokens'; // 토큰 단위 표시
+      },
+    },
+  },
+  dataLabels: {
+    enabled: false,
+  },
+  stroke: {
+    curve: 'smooth',
+  },
+  xaxis: {
+    categories: ['DAY-6', 'DAY-5', 'DAY-4', 'DAY-3', 'DAY-2', 'DAY-1', 'TODAY'], // 임시 레이블
+    labels: {
+      style: {
+        colors: '#A3AED0',
+        fontSize: '12px',
+        fontWeight: '500',
+      },
+    },
+    axisBorder: {
+      show: false,
+    },
+    axisTicks: {
+      show: false,
+    },
+  },
+  yaxis: {
+    show: false,
+  },
+  legend: {
+    show: false,
+  },
+  grid: {
+    show: false,
+    column: {
+      opacity: 0.5,
+    },
+  },
+};
+
+// Monthly Token Usage
+export const monthlyTokenUsageData = [
+  {
+    name: '월별 토큰 사용량',
+    data: [0, 0, 0, 0, 0, 0], // 임시 데이터
+  },
+];
+
+export const monthlyTokenUsageOptions: ApexOptions = {
+  chart: {
+    toolbar: {
+      show: false,
+    },
+    dropShadow: {
+      enabled: true,
+      top: 13,
+      left: 0,
+      blur: 10,
+      opacity: 0.1,
+      color: '#4318FF',
+    },
+  },
+  colors: ['#39B8FF'], // 단일 데이터이므로 색상 하나
+  markers: {
+    size: 0,
+    colors: 'white',
+    strokeColors: '#7551FF',
+    strokeWidth: 3,
+    strokeOpacity: 0.9,
+    strokeDashArray: 0,
+    fillOpacity: 1,
+    discrete: [],
+    shape: 'circle',
+    offsetX: 0,
+    offsetY: 0,
+    showNullDataPoints: true,
+  },
+  tooltip: {
+    theme: 'dark',
+    x: {
+      format: 'yyyy-MM', // 날짜 형식에 맞게 변경
+    },
+    y: {
+      formatter: function (val: number) {
+        return val.toLocaleString() + ' tokens'; // 토큰 단위 표시
+      },
+    },
+  },
+  dataLabels: {
+    enabled: false,
+  },
+  stroke: {
+    curve: 'smooth',
+  },
+  xaxis: {
+    categories: ['MONTH-5', 'MONTH-4', 'MONTH-3', 'MONTH-2', 'MONTH-1', 'THIS-MONTH'], // 임시 레이블
+    labels: {
+      style: {
+        colors: '#A3AED0',
+        fontSize: '12px',
+        fontWeight: '500',
+      },
+    },
+    axisBorder: {
+      show: false,
+    },
+    axisTicks: {
+      show: false,
+    },
+  },
+  yaxis: {
+    show: false,
+  },
+  legend: {
+    show: false,
+  },
+  grid: {
+    show: false,
+    column: {
+      opacity: 0.5,
+    },
+  },
+};

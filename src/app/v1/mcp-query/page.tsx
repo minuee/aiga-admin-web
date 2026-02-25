@@ -16,14 +16,24 @@ import {
   CardBody,
   CardHeader,
   Flex,
+  useColorModeValue,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { redirect } from 'next/navigation';
+import AdminUserStateStore from 'store/userStore';
 
 export default function MCPQueryPage() {
   const [query, setQuery] = useState('');
   const [result, setResult] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
+
+  const { is_master } = AdminUserStateStore();
+  useEffect(() => {
+    if (!is_master) {
+      redirect('/v1/dashboard');
+    }
+  }, [is_master]);
 
   const handleSubmit = async () => {
     if (!query.trim()) {
@@ -68,14 +78,25 @@ export default function MCPQueryPage() {
     }
   };
 
+  const bgColor = useColorModeValue('gray.50', 'navy.900'); // 다크 모드 배경색 정의
+  const cardBgColor = useColorModeValue('white', 'navy.900'); // Card 컴포넌트 배경색 (예상)
+
+  if (isLoading && is_master) {
+    return (
+      <Box pt={{ base: '130px', md: '80px', xl: '80px' }} display="flex" justifyContent="center" alignItems="center" minH="50vh">
+        <Spinner size="xl" />
+      </Box>
+    );
+  }
+
   return (
-    <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
+    <Box pt={{ base: '130px', md: '80px', xl: '80px' }} bg={bgColor}>
       <VStack spacing={8} align="stretch">
         <Text>
           병원, 의사 정보 등 데이터베이스에 있는 정보를 자연어로 질문해보세요.
         </Text>
 
-        <Card>
+        <Card bg={cardBgColor}>
           <CardHeader>
             <Heading size='md'>질문 입력</Heading>
           </CardHeader>

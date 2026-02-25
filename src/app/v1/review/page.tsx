@@ -1,5 +1,5 @@
 'use client';
-import { Box, SimpleGrid } from '@chakra-ui/react';
+import { Box, SimpleGrid, useToast } from '@chakra-ui/react';
 import ReviewTable from 'views/v1/dataTables/components/ReviewTable';
 import * as ReviewService from "services/review/index";
 import styled from '@emotion/styled';
@@ -16,6 +16,7 @@ export default function DataTables() {
   const [ pageIndex, setPageIndex ] = React.useState(0);
   const [ pageSize, setPageSize ] = React.useState(10);
   const [ page, setPage ] = React.useState(1);
+  const toast = useToast();
 
   const resumeCallData = async() => {
     const res:any = await ReviewService.getReviewList({
@@ -37,9 +38,20 @@ export default function DataTables() {
   const getData = React.useCallback(
     async() => {
       try{
-        resumeCallData()
-      }catch(e){
+        await resumeCallData()
+      }catch(e: any){
         setData([]);
+        // 401 에러 처리
+        if (e.response && e.response.status === 401) {
+          toast({
+            title: '인증 실패',
+            description: '일시적인 문제일 수 있으니, 페이지를 새로고침하여 다시 시도해 주세요. 문제가 계속되면 관리자에게 문의해주세요.',
+            status: 'error',
+            duration: 9000,
+            isClosable: true,
+            position: 'top-right',
+          });
+        }
       }
     },[page,orderName,order,pageSize]
   );

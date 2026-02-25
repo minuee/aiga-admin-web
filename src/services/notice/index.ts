@@ -39,7 +39,7 @@ interface saveDataProps {
 export function postNoticeData(reqData:saveDataProps): ApiResponse<any> {
     try{
         if ( reqData?.noticeId ) {
-            const res:any =  api.post(`/admin/patch/${reqData?.noticeId}`,reqData)
+            const res:any =  api.put(`/notice/${reqData?.noticeId}`,reqData)
             .then((response) => {
                  return response?.data;
             }).catch((error):any => {
@@ -48,7 +48,7 @@ export function postNoticeData(reqData:saveDataProps): ApiResponse<any> {
             });
             return res;
         }else{
-            const res:any =  api.post(`/admin/notice`,reqData)
+            const res:any =  api.post(`/notice`,reqData)
             .then((response) => {
                  return response?.data;
             }).catch((error):any => {
@@ -61,5 +61,15 @@ export function postNoticeData(reqData:saveDataProps): ApiResponse<any> {
     }catch(error){
         console.log("eeeee",error)
         return null;   
+    }
+}
+
+export function deleteNotices(noticeIds: number[]): ApiResponse<any> {
+    try {
+        console.log("deleteNotices noticeIds", noticeIds);
+        return api.delete(`/notice`, { data: { noticeIds } }); // DELETE 요청 시 body에 데이터를 담기 위해 data 옵션 사용
+    } catch (error) {
+        console.log("deleteNotices error", error);
+        return null;
     }
 }

@@ -1,89 +1,84 @@
 'use client';
-import { Box, SimpleGrid } from '@chakra-ui/react';
-import DevelopmentTable from 'views/v1/dataTables/components/DevelopmentTable';
-import styled from '@emotion/styled';
-import * as React from 'react';
-import * as NoticeService from "services/notice/index";
-import Pagination from 'components/etc/Pagination';
 
-export default function DataTables() {
+import {
+  Box,
+  Flex,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  useColorModeValue,
+} from '@chakra-ui/react';
+import { useState } from 'react';
 
-  const [ data, setData ] = React.useState<any>([]);
-  const [ order, setOrder ] = React.useState('ASC');
-  const [ orderName, setOrderName ] = React.useState('hospital.hid');
-  const [ totalCount, setTotalCount ] = React.useState(0);
-  const [ pageIndex, setPageIndex ] = React.useState(0);
-  const [ pageSize, setPageSize ] = React.useState(10);
-  const [ page, setPage ] = React.useState(1);
+// New Components
+import DoctorTab from 'views/v1/analysis/DoctorTab';
+import HospitalTab from 'views/v1/analysis/HospitalTab';
+import KeywordTab from 'views/v1/analysis/KeywordTab';
+import TokenTab from 'views/v1/analysis/TokenTab';
 
-  const getData = React.useCallback(
-    async() => {
-      try{
-        const res:any = await NoticeService.getHospitalList({
-          page,
-          take: pageSize,
-          order,
-          orderName,
-          isAll: false
-        });
-        
-        if ( res?.data?.meta?.totalCount > 0 ) {
-          setData(res?.data?.data);
-          setTotalCount(res?.data.meta?.totalCount)
-          setPageIndex(parseInt(res?.data?.meta?.currentPage)+1)
-        }else{
-          setData([]);
-        }
-      }catch(e){
-        setData([]);
-      }
-    },[page,orderName,order,pageSize]
-  );
-    
-  React.useEffect(() => {
-    getData()
-  }, [getData]);
+export default function AnalysisPage() {
+  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
 
-  const getDataSortChange = (str:string) => {
-    setPage(1);
-    setOrderName(str)
-    setOrder(order == 'ASC' ? 'DESC' : 'ASC')
-  }
+  // CodeManage 스타일 컬러 정의
+  const skeletonColor = useColorModeValue('white', 'navy.700');
+  const tabSelectColor = useColorModeValue('navy.700', 'white');
 
   return (
-    <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
-      <SimpleGrid
-        mb="20px"
-        columns={{ sm: 1, md: 1 }}
-        spacing={{ base: '20px', xl: '20px' }}
+    <Flex flexDirection="column" height="100vh">
+      <Tabs 
+        variant='enclosed' 
+        width={'100%'} 
+        isLazy 
+        lazyBehavior='keepMounted' 
+        onChange={(index) => setSelectedTabIndex(index)}
+        display="flex" 
+        flexDirection="column" 
+        flex="1" 
+        height="100%"
       >
-        <DevelopmentTable 
-          tableData={data} 
-          order={order}
-          orderName={orderName}
-          page={page}
-          getDataSortChange={getDataSortChange}
-          getData={getData}
-        />
-        <Box 
-          display={totalCount > 0 ? 'block' : 'none'}
+        <TabList
+          overflowY="hidden"
+          sx={{
+            scrollbarWidth: 'none',
+            '::-webkit-scrollbar': {
+              display: 'none',
+            },
+          }}
+          flexShrink={0} 
+          pt={{ base: '130px', md: '80px', xl: '80px' }}
         >
-          <PaginationWrapper
-            total={totalCount}
-            page={page}
-            pageSize={pageSize}
-            onPageChange={(page:number) => setPage(page)}
-          />
+          <Tab _selected={{ bg: tabSelectColor, color: skeletonColor }} fontWeight="700">의사 분석</Tab>
+          <Tab _selected={{ bg: tabSelectColor, color: skeletonColor }} fontWeight="700">병원 분석</Tab>
+          <Tab _selected={{ bg: tabSelectColor, color: skeletonColor }} fontWeight="700">키워드 분석</Tab>
+          <Tab _selected={{ bg: tabSelectColor, color: skeletonColor }} fontWeight="700">토큰 관리</Tab>
+        </TabList>
+
+        <Box flex="1" overflowY="auto" minH={0} p={{ base: '20px', md: '20px' }}>
+          <TabPanels>
+            {/* 1번째 탭: 의사 */}
+            <TabPanel p="0">
+              <DoctorTab />
+            </TabPanel>
+
+            {/* 2번째 탭: 병원 */}
+            <TabPanel p="0">
+              <HospitalTab />
+            </TabPanel>
+
+            {/* 3번째 탭: 키워드 */}
+            <TabPanel p="0">
+              <KeywordTab />
+            </TabPanel>
+
+            {/* 4번째 탭: 토큰 관리 */}
+            <TabPanel p="0">
+              <TokenTab />
+            </TabPanel>
+          </TabPanels>
         </Box>
-      </SimpleGrid>
-    </Box>
+      </Tabs>
+    </Flex>
   );
 }
-
-const PaginationWrapper = styled(Pagination)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-top: 16px;
-  padding-bottom: 64px;
-`;

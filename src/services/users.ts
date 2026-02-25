@@ -18,7 +18,7 @@ export const users: TUserAccount[] = [
     name: "Wonjae Lee",
     nickName: "CTO",
     email: "wjlee@kormedi.com",
-    role: "admin",
+    role: "staff",
     password: "1234",
   },
   {

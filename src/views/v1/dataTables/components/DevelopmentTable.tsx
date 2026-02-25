@@ -102,7 +102,7 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 				</Text>
 			),
 			cell: (info) => (
-				<Flex align='center' onClick={()=> onHandleOpenModal(info.row.original)}>
+				<Flex align='center' onClick={()=> onHandleOpenModal(info.row.original)} cursor='pointer'>
 					<Text color={textColor} fontSize='sm' fontWeight='700'>
 						{info.getValue()}
 					</Text>

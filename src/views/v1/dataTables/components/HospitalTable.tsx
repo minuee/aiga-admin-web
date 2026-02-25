@@ -116,7 +116,7 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 				</Text>
 			),
 			cell: (info) => (
-				<Flex align='center' onClick={()=> onHandleOpenModal(info.row.original)}>
+				<Flex align='center' onClick={()=> onHandleOpenModal(info.row.original)} cursor='pointer'>
 					<Text color={textColor} fontSize='sm' fontWeight='700'>
 						{info.getValue()}
 					</Text>
@@ -318,7 +318,7 @@ export default function ComplexTable(props: { tableData: any,page:number, order 
 						>
 						<ModalOverlay />
 						<ModalContent maxW={`${mConstants.modalMaxWidth}px`} bg={sidebarBackgroundColor}>
-							<ModalHeader>{`${selectedHospital?.baseName} 상세정보`}</ModalHeader>
+							<ModalHeader sx={{borderBottom:'1px solid #ebebeb'}}>{`${selectedHospital?.baseName} 상세정보`}</ModalHeader>
 							<ModalCloseButton />
 							<ModalBody >
 							<HospitalDetail

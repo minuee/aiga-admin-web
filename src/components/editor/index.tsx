@@ -160,7 +160,7 @@ export default function ReactEditor(props: ReactEditorProps) {
           ['link'],
           [{ align: '' }, { align: 'center' }, { align: 'right' }, { align: 'justify' }],
           ['clean'] ,
-          ['table', 'image']       
+          ['image']       
         ],
         handlers: { 
           image: imageHandler,

@@ -1,5 +1,5 @@
 'use client';
-import { Box, SimpleGrid } from '@chakra-ui/react';
+import { Box, SimpleGrid, useToast } from '@chakra-ui/react';
 import InquiryTable from 'views/v1/dataTables/components/InquiryTable';
 import styled from '@emotion/styled';
 import React from 'react';
@@ -27,6 +27,7 @@ export default function DataTables() {
     status: '',
     keyword: '',
   });
+  const toast = useToast();
 
   // Centralized data fetching function
   const fetchData = React.useCallback(async () => {
@@ -47,10 +48,20 @@ export default function DataTables() {
         setData([]);
         setTotalCount(0);
       }
-    } catch (e) {
-      console.error("Failed to fetch data:", e);
+    } catch (e: any) {
       setData([]);
       setTotalCount(0);
+      // 401 에러 처리
+      if (e.response && e.response.status === 401) {
+        toast({
+          title: '인증 실패',
+          description: '일시적인 문제일 수 있으니, 페이지를 새로고침하여 다시 시도해 주세요. 문제가 계속되면 관리자에게 문의해주세요.',
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+          position: 'top-right',
+        });
+      }
     }
   }, [queryOptions]); // Depends only on the single queryOptions state
 

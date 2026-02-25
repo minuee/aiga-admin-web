@@ -4,7 +4,7 @@ import React from 'react';
 import { Icon,Flex,Text,Menu,MenuButton,MenuItem,MenuList,useDisclosure,useColorModeValue } from '@chakra-ui/react';
 import { MdOutlineMoreHoriz,MdEdit,MdOutlineDeleteForever } from 'react-icons/md';
 
-export default function TableMenu({onHandleToggle,...rest}: {onHandleToggle: (bool: boolean) => any;[x: string]: any;}) {
+export default function TableMenu({onHandleToggle, onDeleteSelected, ...rest}: {onHandleToggle: (bool: boolean) => any; onDeleteSelected: () => void; [x: string]: any;}) {
 
 	const textColor = useColorModeValue('secondaryGray.500', 'white');
 	const textHover = useColorModeValue({ color: 'secondaryGray.900', bg: 'unset' },{ color: 'secondaryGray.500', bg: 'unset'} );
@@ -82,6 +82,7 @@ export default function TableMenu({onHandleToggle,...rest}: {onHandleToggle: (bo
 						bg: 'transparent'
 					}}
 					mb='10px'
+					onClick={onDeleteSelected} // onClick 핸들러 추가
 				>
 					<Flex align='center'>
 						<Icon as={MdOutlineDeleteForever} h='16px' w='16px' me='8px' />

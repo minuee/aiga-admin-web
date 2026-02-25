@@ -12,6 +12,10 @@ axios.defaults.withCredentials = true;
 axios.interceptors.request.use(
   function (config) {
     config.baseURL = baseURL;
+    const token = process.env.NEXT_PUBLIC_API_KEY; // API 키를 환경 변수에서 가져옵니다.
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`; // 헤더에 Authorization을 추가합니다.
+    }
     return config;
   },
   function (error) {

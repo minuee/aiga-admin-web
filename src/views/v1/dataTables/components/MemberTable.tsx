@@ -28,7 +28,8 @@ import {
 	ModalContent,
 	ModalHeader,
 	ModalCloseButton,
-	ModalBody
+	ModalBody,
+	useToast
 } from '@chakra-ui/react';
 // Custom components
 import Card from 'components/card/Card';
@@ -62,18 +63,26 @@ export default function MemberTable(props: {
 	page: number;
 	getDataSortChange: (str: string) => void;
 	getDataUpdateChange: (bool: boolean, isNewPage: boolean) => void;
+	onSearch: (keyword: string) => void;
 }) {
-	const { tableData } = props;
+	const { tableData: initialTableData, onSearch } = props;
+	const [ tableData, setTableData ] = React.useState(initialTableData);
 	const [ sorting, setSorting ] = React.useState<SortingState>([]);
 	const [ isOpenRequestModal, setIsOpenRequestModal ] = React.useState(false);
-	const [ selectedUserId, setSelectedUserId ] = React.useState('');
-	const [ selectedUserNickname, setSelectedUserNickname ] = React.useState('');
+	const [ selectedUser, setSelectedUser ] = React.useState<RowObj | null>(null);
+	const toast = useToast();
 	const textColor = useColorModeValue('secondaryGray.900', 'white');
 	const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
 	const sidebarBackgroundColor = useColorModeValue('white', 'navy.800');
+	const extratrBorderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
 	const formBtnRef = React.useRef(null);
 
 	const [ checkedRows, setCheckedRows ] = React.useState<Set<string>>(new Set());
+	const [ searchKeyword, setSearchKeyword ] = React.useState('');
+
+	React.useEffect(() => {
+		setTableData(initialTableData);
+	}, [initialTableData]);
 
 	const handleHeaderCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const isChecked = e.target.checked;
@@ -97,18 +106,23 @@ export default function MemberTable(props: {
 		});
 	};
 
+	const handleSearchClick = () => {
+		console.log('검색 키워드:', searchKeyword);
+		onSearch(searchKeyword);
+	};
+
 	const columns = [
 		columnHelper.accessor('nickname', {
 			size: 200,
 			id: 'nickname',
 			header: () => (
 				<Flex align='center'>
-					<Checkbox
+					{/* <Checkbox
 						isChecked={checkedRows.size === tableData.length && tableData.length > 0}
 						onChange={handleHeaderCheckboxChange}
 						colorScheme='brandScheme'
 						mr='10px'
-					/>
+					/> */}
 					<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400' >
 						이름
 					</Text>
@@ -116,12 +130,13 @@ export default function MemberTable(props: {
 			),
 			cell: (info: any) => (
 				<Flex align='center'>
-					<Checkbox
+					{/* <Checkbox
 						isChecked={checkedRows.has(info.row.original.user_id)}
 						onChange={(e) => handleRowCheckboxChange(info.row.original.user_id, e.target.checked)}
 						colorScheme='brandScheme'
 						mr='10px'
-					/>
+						onClick={(e) => e.stopPropagation()} // 이벤트 전파 중단
+					/> */}
 					<Text color={textColor} fontSize='sm' fontWeight='700'>
 						{info.getValue()}
 					</Text>
@@ -159,7 +174,7 @@ export default function MemberTable(props: {
 			id: 'useTokens',
 			header: () => (
 				<Text justifyContent='space-between' align='center' fontSize={{ sm: '10px', lg: '12px' }} color='gray.400'>
-					사용토큰수
+					사용토큰(최근24시간)
 				</Text>
 			),
 			cell: (info) => (
@@ -226,13 +241,21 @@ export default function MemberTable(props: {
 		enableRowSelection: true
 	});
 
-	const onHandleOpenDetail = (userId: string, nickname: string) => {
-		if ( !functions.isEmpty(userId) ) {
-			setSelectedUserId(userId);
-			setSelectedUserNickname(nickname);
+	const onHandleOpenDetail = (userData: RowObj) => {
+		if ( !functions.isEmpty(userData.user_id) ) {
+			setSelectedUser(userData);
 			setIsOpenRequestModal(true);
 		}
 	}
+
+	const handleUpdateMember = (updatedData: RowObj) => {
+		setTableData(currentData =>
+			currentData.map(item =>
+				item.user_id === updatedData.user_id ? updatedData : item
+			)
+		);
+		setSelectedUser(updatedData);
+	};
 
 	return (
 		<Card flexDirection='column' w='100%' px='0px' overflowX={{ sm: 'scroll', lg: 'hidden' }}>
@@ -249,18 +272,19 @@ export default function MemberTable(props: {
 					</Text>
 				</Box>
 				<Box display='flex' alignItems={'flex-end'} width={{base : '100%', xl : 'auto'}}>
-					<Select placeholder='정렬기준'>
+					{/* <Select placeholder='정렬기준'>
 						<option value='option1'>최신 등록순</option>
 						<option value='option2'>이름순</option>
 						<option value='option3'>사용토큰 많은순</option>
-					</Select>
-					<Input placeholder='키워드를 입력하세요' id='keyword' />
+					</Select> */}
+					<Input placeholder='키워드를 입력하세요' id='keyword' value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} />
 					<Button
 						size='md'
 						loadingText='Loading'
 						variant="solid"
 						colorScheme='blue'
 						sx={{borderRadius:'5px'}}
+						onClick={handleSearchClick}
 					>
 						검색
 					</Button>
@@ -314,11 +338,12 @@ export default function MemberTable(props: {
 											return (
 												<Td
 													key={cell.id}
-													sx={{borderBottom:'1px', borderBottomColor:'#ebebeb'}}
+													sx={{borderBottom:'1px', borderBottomColor:extratrBorderColor,cursor:'pointer'}}
 													fontSize={{ sm: '14px' }}
 													minW={{ sm: '150px', md: '200px', lg: 'auto' }}
 													borderColor='transparent'
-													onClick={() => onHandleOpenDetail(row.original.user_id, row.original.nickname)}
+													// nickname 컬럼이 아닐 때만 onClick 이벤트 적용
+													onClick={() => onHandleOpenDetail(row.original)}
 												>
 													{flexRender(cell.column.columnDef.cell, cell.getContext())}
 												</Td>
@@ -332,7 +357,7 @@ export default function MemberTable(props: {
 				</Table>
 			</Box>
 			{
-				isOpenRequestModal && (
+				isOpenRequestModal && selectedUser && (
 					<Modal
 						onClose={() => setIsOpenRequestModal(false)}
 						finalFocusRef={formBtnRef}
@@ -341,14 +366,15 @@ export default function MemberTable(props: {
 						>
 						<ModalOverlay />
 						<ModalContent maxW={`${mConstants.modalMaxWidth}px`} bg={sidebarBackgroundColor}>
-							<ModalHeader>{selectedUserNickname}</ModalHeader>
+							<ModalHeader>{selectedUser?.nickname}</ModalHeader>
 							<ModalCloseButton />
 							<ModalBody >
 							<MemberDetail
 								isOpen={isOpenRequestModal}
 								setClose={() => setIsOpenRequestModal(false)}
-								memberId={selectedUserId}
-								memberNickname={selectedUserNickname}
+								memberData={selectedUser}
+								toast={toast}
+								onUpdate={handleUpdateMember}
 							/>
 							</ModalBody>
 						</ModalContent>

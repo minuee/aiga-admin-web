@@ -46,6 +46,7 @@ export default function InquiryTable(props: {
 	const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
 	const bgColor = useColorModeValue(' .300', 'navy.900');
 	const sidebarBackgroundColor = useColorModeValue('white', 'navy.800');
+	const extratrBorderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
 	const formBtnRef = React.useRef(null)
 	
 	// Sync local keyword state if prop changes from parent
@@ -281,7 +282,7 @@ export default function InquiryTable(props: {
 										return (
 											<Td
 												key={cell.id}
-												sx={{borderBottom:'1px', borderBottomColor:'#ebebeb'}}
+												sx={{borderBottom:'1px', borderBottomColor: extratrBorderColor}}
 												fontSize={{ sm: '14px' }}
 												minW={{ sm: '150px', md: '200px', lg: 'auto' }}
 												borderColor='transparent'

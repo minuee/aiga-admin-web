@@ -295,7 +295,7 @@ export default function ReviewTable(props: { tableData: any,page:number, order :
 										return (
 											<Td
 												key={cell.id}
-												sx={{borderBottom:'1px', borderBottomColor:'#ebebeb'}}
+												sx={{borderBottom:'1px', borderBottomColor:borderColor}}
 												fontSize={{ sm: '14px' }}
 												minW={{ sm: '150px', md: '200px', lg: 'auto' }}
 												borderColor='transparent'

@@ -28,12 +28,13 @@ export default function DoctorList(props: { hospitalData: any }) {
   const textColor = useColorModeValue('secondaryGray.900', 'white');
 
   const getData = React.useCallback(
-    async(page: number = 1, currentInputs?: typeof inputs) => {
+    async(page?: number, currentInputs?: typeof inputs) => {
       const effectiveInputs = currentInputs || inputs;
+      const effectivePage = page !== undefined ? page : effectiveInputs.page;
       try{
         const res:any = await DoctorService.getDoctorList({
           hospitalId: props.hospitalData?.hid,
-          page: page,
+          page: effectivePage,
           take: effectiveInputs.pageSize,
           order : effectiveInputs.orderBy,
           orderName : effectiveInputs.orderName,
@@ -52,15 +53,15 @@ export default function DoctorList(props: { hospitalData: any }) {
         setData([]);
         setInputs(prev => ({...prev, totalCount: 0, page: 1}));
       }
-    },[props.hospitalData?.hid, inputs.pageSize]
+    },[props.hospitalData?.hid, inputs]
   );
   
   React.useEffect(() => {
-    getData(1, inputs);
-  }, [inputs.orderBy, inputs.orderName, inputs.keyword, inputs.is_active, getData]);
+    getData(inputs.page, inputs);
+  }, [inputs.orderBy, inputs.orderName, inputs.keyword, inputs.is_active, inputs.page, inputs.pageSize, props.hospitalData?.hid]);
 
   const onHandleSubmit = () => {
-    getData(1, inputs);
+    getData(1);
   }
 
   const getDataSortChange = (str:string) => {
@@ -77,7 +78,7 @@ export default function DoctorList(props: { hospitalData: any }) {
   }
 
   const handlePageChange = (page: number) => {
-    getData(page, inputs);
+    getData(page);
   }
 
   return (
@@ -96,7 +97,6 @@ export default function DoctorList(props: { hospitalData: any }) {
           <Select value={inputs.orderName} placeholder='정렬기준' onChange={(e:any) =>setInputs({...inputs,orderName : e.target.value})} size={'sm'}>
             <option value='deptname'>진료과목명순</option>
             <option value='doctorname'>의사명</option>
-            <option value='updatedate'>수정일자순</option>
           </Select>
           <Select value={inputs.orderBy} placeholder='오름기준' onChange={(e:any) =>setInputs({...inputs,orderBy : e.target.value})} size={'sm'}>
             <option value='ASC'>순차적</option>
@@ -152,6 +152,7 @@ export default function DoctorList(props: { hospitalData: any }) {
           orderName={inputs.orderName}
           page={inputs.page}
           getDataSortChange={getDataSortChange}
+          getData={getData} // 추가
         />
         </Scrollbars>
         <Box 
