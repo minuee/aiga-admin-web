@@ -39,6 +39,7 @@ const defaultImage = '/img/avatars/no_image01.png';
 
 interface StandardSpecialtyItem {
   spec_id: number;
+  standard_group: string;
   standard_spec: string;
 }
 
@@ -176,6 +177,7 @@ function MedicalField() {
             <Thead bg={extraThreadBgColor}>
               <Tr>
                 <Th fontWeight="bold" fontSize="sm">spec_id</Th>
+                <Th fontWeight="bold" fontSize="sm">standard_group</Th>
                 <Th fontWeight="bold" fontSize="sm">standard_spec</Th>
                 <Th fontWeight="bold" fontSize="sm">등록의사</Th>
               </Tr>
@@ -185,6 +187,7 @@ function MedicalField() {
                 filteredData.map((item) => (
                   <Tr key={item.spec_id} _hover={{ bg: extraTrBgColor}}>
                     <Td py={3}>{item.spec_id}</Td>
+                    <Td py={3}>{item.standard_group}</Td>
                     <Td py={3}>{highlightText(item.standard_spec, searchKeyword)}</Td>
                     <Td py={3}>
                       <Button size="sm" onClick={() => handleViewDoctors(item.standard_spec)}>

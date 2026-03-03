@@ -22,8 +22,9 @@ import DoctorDetail from 'components/modal/DoctorBasicDetail';
 import mConstants from 'utils/constants';
 
 const DoctorTab = () => {
-  // API 응답 데이터 ( [{ disease: '...', doctors: [...] }, ...] )
+  // API 응답 데이터 ( [{ standard_group: '...', standard_spec: [...] }, ...] )
   const [analysisData, setAnalysisData] = useState<any[]>([]);
+  const [selectedGroup, setSelectedGroup] = useState<string>('');
   const [selectedDisease, setSelectedDisease] = useState<string>('');
   const [doctorRanking, setDoctorRanking] = useState<any[]>([]);
   const [selectedDoctor, setSelectedDoctor] = useState<any | null>(null);
@@ -54,15 +55,24 @@ const DoctorTab = () => {
       });
 
       if (response && response.data) {
-        // API 리턴 포맷: [ { disease: '간암', doctors: [...] }, ... ]
+        // API 리턴 포맷: [ { standard_group: '...', specs: [ { standard_spec: '...', doctors: [...] } ] }, ... ]
         const data = response.data;
         setAnalysisData(data);
 
         if (data.length > 0) {
-          const firstItem = data[0];
-          setSelectedDisease(firstItem.disease);
-          setDoctorRanking(firstItem.doctors || []);
+          const firstGroup = data[0];
+          setSelectedGroup(firstGroup.standard_group);
+          
+          if (firstGroup.specs && firstGroup.specs.length > 0) {
+            const firstSpec = firstGroup.specs[0];
+            setSelectedDisease(firstSpec.standard_spec);
+            setDoctorRanking(firstSpec.doctors || []);
+          } else {
+            setSelectedDisease('');
+            setDoctorRanking([]);
+          }
         } else {
+          setSelectedGroup('');
           setSelectedDisease('');
           setDoctorRanking([]);
         }
@@ -80,10 +90,24 @@ const DoctorTab = () => {
     fetchData(currentDates.start, currentDates.end);
   }, []);
 
-  const handleDiseaseClick = (diseaseName: string) => {
-    setSelectedDisease(diseaseName);
-    const selectedGroup = analysisData.find(item => item.disease === diseaseName);
-    setDoctorRanking(selectedGroup?.doctors || []);
+  const handleGroupClick = (groupName: string) => {
+    setSelectedGroup(groupName);
+    const group = analysisData.find(item => item.standard_group === groupName);
+    if (group && group.specs && group.specs.length > 0) {
+      const firstSpec = group.specs[0];
+      setSelectedDisease(firstSpec.standard_spec);
+      setDoctorRanking(firstSpec.doctors || []);
+    } else {
+      setSelectedDisease('');
+      setDoctorRanking([]);
+    }
+  };
+
+  const handleDiseaseClick = (specName: string) => {
+    setSelectedDisease(specName);
+    const group = analysisData.find(item => item.standard_group === selectedGroup);
+    const spec = group?.specs?.find((s: any) => s.standard_spec === specName);
+    setDoctorRanking(spec?.doctors || []);
   };
 
   const handleSearch = (startDate: string, endDate: string, keyword?: string) => {
@@ -96,6 +120,8 @@ const DoctorTab = () => {
     onOpen();
   };
 
+  const currentGroupData = analysisData.find(item => item.standard_group === selectedGroup);
+
   return (
     <Box>
       <AnalysisFilter onSearch={handleSearch} />
@@ -106,16 +132,18 @@ const DoctorTab = () => {
             질환별 검색랭킹 {isLoading && <Text as="span" fontSize="sm" fontWeight="normal" ml="2" color="brand.500">(로딩중...)</Text>}
           </Text>
         </Flex>
-        <Flex flexWrap="wrap" gap="10px">
+
+        {/* 1단계: 질환 그룹 버튼 */}
+        <Flex flexWrap="wrap" gap="10px" mb="15px" borderBottom="1px solid" borderColor="gray.100" pb="15px">
           {analysisData.length > 0 ? (
             analysisData.map((item, idx) => (
               <Button
-                key={idx}
+                key={`group-${idx}`}
                 size="sm"
-                variant={selectedDisease === item.disease ? 'brand' : 'outline'}
-                onClick={() => handleDiseaseClick(item.disease)}
+                variant={selectedGroup === item.standard_group ? 'brand' : 'outline'}
+                onClick={() => handleGroupClick(item.standard_group)}
               >
-                {item.disease}
+                {item.standard_group}
               </Button>
             ))
           ) : (
@@ -124,6 +152,23 @@ const DoctorTab = () => {
             </Text>
           )}
         </Flex>
+
+        {/* 2단계: 세부 질환 버튼 */}
+        {currentGroupData && currentGroupData.specs && currentGroupData.specs.length > 0 && (
+          <Flex flexWrap="wrap" gap="10px">
+            {currentGroupData.specs.map((item: any, idx: number) => (
+              <Button
+                key={`spec-${idx}`}
+                size="sm"
+                variant={selectedDisease === item.standard_spec ? 'brand' : 'outline'}
+                onClick={() => handleDiseaseClick(item.standard_spec)}
+                colorScheme="gray"
+              >
+                {item.standard_spec}
+              </Button>
+            ))}
+          </Flex>
+        )}
       </Card>
 
       <DoctorRankingTable 

@@ -30,18 +30,18 @@
     "dayjs": "^1.11.19",
     "dompurify": "^3.2.6",
     "formik": "^2.4.6",
-    "framer-motion": "^4.1.17",
-    "next": "^15.1.6",
+    "framer-motion": "^12.16.0",
+    "next": "^15.5.9",
     "quill-better-table": "^1.2.10",
     "quill-blot-formatter": "^1.0.5",
     "quill-image-resize-module-ts": "^3.0.3",
-    "react": "^18.2.0",
+    "react": "^19.2.4",
     "react-apexcharts": "^1.4.0",
     "react-calendar": "^3.7.0",
     "react-cookie": "^8.0.1",
     "react-custom-scrollbars-2": "^4.5.0",
     "react-device-detect": "^2.2.3",
-    "react-dom": "^18.2.0",
+    "react-dom": "^19.2.4",
     "react-dropzone": "^12.0.4",
     "react-icons": "^4.3.1",
     "react-is": "^18.0.0",
@@ -51,9 +51,9 @@
     "react-quill-new": "^3.4.6",
     "stylis": "^4.1.1",
     "stylis-plugin-rtl": "2.0.2",
-    "typescript": "^4.9.4",
+    "typescript": "5.8.3",
     "web-vitals": "^1.1.2",
-    "zustand": "^5.0.3"
+    "zustand": "^5.0.4"
   },
   "scripts": {
     "dev": "next dev --turbopack -p 6001",
@@ -78,14 +78,15 @@
   },
   "devDependencies": {
     "@types/node": "^18.7.6",
-    "@types/react": "18.2.0",
+    "@types/react": "18.0.31",
     "@types/react-calendar": "^3.5.2",
     "@types/react-table": "^7.7.12",
     "eslint": "^8.23.0",
-    "eslint-config-next": "^15.1.4"
+    "eslint-config-next": "^15.1.6"
   },
   "resolutions": {
     "@types/react": "18.0.31",
-    "@types/react-dom": "18.0.11"
+    "@types/react-dom": "18.0.11",
+    "vfile": "6.0.0"
   }
 }
