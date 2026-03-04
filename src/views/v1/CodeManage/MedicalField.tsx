@@ -29,6 +29,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  Select,
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import { getStandardSpecialty, getStandardSpecialtyForDoctors } from 'services/common';
@@ -56,6 +57,7 @@ function MedicalField() {
   const [originalData, setOriginalData] = useState<StandardSpecialtyItem[]>([]);
   const [filteredData, setFilteredData] = useState<StandardSpecialtyItem[]>([]);
   const [searchKeyword, setSearchKeyword] = useState('');
+  const [selectedGroup, setSelectedGroup] = useState('전체');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedStandardSpec, setSelectedStandardSpec] = useState<string | null>(null);
   const [doctorList, setDoctorList] = useState<Doctor[]>([]);
@@ -83,19 +85,36 @@ function MedicalField() {
     fetchStandardSpecialty();
   }, []);
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const keyword = event.target.value;
-    setSearchKeyword(keyword);
+  // 그룹 목록 추출
+  const groups = React.useMemo(() => {
+    const uniqueGroups = Array.from(new Set(originalData.map(item => item.standard_group))).filter(Boolean);
+    return ['전체', ...uniqueGroups];
+  }, [originalData]);
 
-    if (keyword === '') {
-      setFilteredData(originalData);
-    } else {
-      const lowerKeyword = keyword.toLowerCase();
-      const newFilteredData = originalData.filter(item =>
+  // 필터링 로직 통합
+  useEffect(() => {
+    let filtered = originalData;
+
+    if (selectedGroup !== '전체') {
+      filtered = filtered.filter(item => item.standard_group === selectedGroup);
+    }
+
+    if (searchKeyword.trim() !== '') {
+      const lowerKeyword = searchKeyword.toLowerCase();
+      filtered = filtered.filter(item =>
         item.standard_spec.toLowerCase().includes(lowerKeyword)
       );
-      setFilteredData(newFilteredData);
     }
+
+    setFilteredData(filtered);
+  }, [searchKeyword, selectedGroup, originalData]);
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchKeyword(event.target.value);
+  };
+
+  const handleGroupChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedGroup(event.target.value);
   };
 
   const highlightText = (text: string, highlight: string) => {
@@ -157,7 +176,19 @@ function MedicalField() {
           <Text fontSize="2xl" fontWeight="bold" color={textColor}>
             진료 분야별 의사 관리
           </Text>
-          <Box>
+          <Flex gap="10px">
+            <Select
+              value={selectedGroup}
+              onChange={handleGroupChange}
+              width="180px"
+              color={textColor}
+            >
+              {groups.map((group) => (
+                <option key={group} value={group}>
+                  {group}
+                </option>
+              ))}
+            </Select>
             <InputGroup>
               <InputLeftElement pointerEvents="none">
                 <SearchIcon color="gray.300" />
@@ -170,7 +201,7 @@ function MedicalField() {
                 color={textColor}
               />
             </InputGroup>
-          </Box>
+          </Flex>
         </Flex>
         <Box overflowX="auto">
           <Table variant="simple" colorScheme="gray">
