@@ -32,9 +32,11 @@ import {
   Select,
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
-import { getStandardSpecialty, getStandardSpecialtyForDoctors } from 'services/common';
+import { getStandardSpecialty, getStandardSpecialtyForDoctors, updateStandardSpecialty } from 'services/common';
 import DoctorDetail from 'components/modal/DoctorBasicDetail';
 import mConstants from 'utils/constants';
+import functions from 'utils/functions';
+import { useToast } from '@chakra-ui/react';
 
 const defaultImage = '/img/avatars/no_image01.png';
 
@@ -54,6 +56,7 @@ interface Doctor {
 
 function MedicalField() {
   const textColor = useColorModeValue('secondaryGray.900', 'white');
+  const toast = useToast();
   const [originalData, setOriginalData] = useState<StandardSpecialtyItem[]>([]);
   const [filteredData, setFilteredData] = useState<StandardSpecialtyItem[]>([]);
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -70,18 +73,23 @@ function MedicalField() {
   const extraTrBgColor =  useColorModeValue('gray.100', 'whiteAlpha.200') 
   const extraThreadBgColor =useColorModeValue('gray.50', 'whiteAlpha.100');
 
-  useEffect(() => {
-    const fetchStandardSpecialty = async () => {
-      try {
-        const response = await getStandardSpecialty();
-        if (response && response.data) {
-          setOriginalData(response.data);
-          setFilteredData(response.data);
-        }
-      } catch (error) {
-        console.error('진료분야 API 호출 중 에러 발생:', error);
+  // 수정 모드 관련 상태 추가
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editedValues, setEditedValues] = useState<{ [key: number]: string }>({});
+
+  const fetchStandardSpecialty = async () => {
+    try {
+      const response = await getStandardSpecialty();
+      if (response && response.data) {
+        setOriginalData(response.data);
+        setFilteredData(response.data);
       }
-    };
+    } catch (error) {
+      console.error('진료분야 API 호출 중 에러 발생:', error);
+    }
+  };
+
+  useEffect(() => {
     fetchStandardSpecialty();
   }, []);
 
@@ -169,6 +177,62 @@ function MedicalField() {
     setIsOpenDoctorDetailModal(true);
   };
 
+  // 수정 모드 변경 핸들러
+  const handleEditValueChange = (spec_id: number, value: string) => {
+    setEditedValues((prev) => ({
+      ...prev,
+      [spec_id]: value,
+    }));
+  };
+
+  // 수정 API 호출 핸들러
+  const handleUpdate = async (item: StandardSpecialtyItem) => {
+    const newValue = editedValues[item.spec_id];
+    if (newValue === undefined || newValue === item.standard_group) {
+        toast({
+            title: '변경사항이 없습니다.',
+            status: 'info',
+            duration: 2000,
+            isClosable: true,
+        });
+        return;
+    }
+
+    try {
+      const response = await updateStandardSpecialty({
+        spec_id: item.spec_id,
+        standard_group: newValue,
+      });
+
+      if (response && response.status === 200) {
+        toast({
+          title: '수정되었습니다.',
+          status: 'success',
+          duration: 2000,
+          isClosable: true,
+        });
+        // 수정된 항목의 임시 상태 초기화
+        setEditedValues((prev) => {
+          const newState = { ...prev };
+          delete newState[item.spec_id];
+          return newState;
+        });
+        // 데이터 재요청
+        fetchStandardSpecialty();
+      } else {
+        throw new Error('수정 실패');
+      }
+    } catch (error) {
+      console.error('수정 API 호출 중 에러 발생:', error);
+      toast({
+        title: '수정 중 에러가 발생했습니다.',
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <Box>
       <Flex flexDirection="column" pt={{ base: '20px', md: '20px' }}>
@@ -177,6 +241,12 @@ function MedicalField() {
             진료 분야별 의사 관리
           </Text>
           <Flex gap="10px">
+            <Button
+              onClick={() => setIsEditMode(!isEditMode)}
+              variant={isEditMode ? 'outline' : 'solid'}
+            >
+              {isEditMode ? '조회 모드' : '수정 모드'}
+            </Button>
             <Select
               value={selectedGroup}
               onChange={handleGroupChange}
@@ -218,7 +288,28 @@ function MedicalField() {
                 filteredData.map((item) => (
                   <Tr key={item.spec_id} _hover={{ bg: extraTrBgColor}}>
                     <Td py={3}>{item.spec_id}</Td>
-                    <Td py={3}>{item.standard_group}</Td>
+                    <Td py={3}>
+                      {isEditMode ? (
+                        <Flex gap="5px">
+                          <Input
+                            size="sm"
+                            value={editedValues[item.spec_id] ?? item.standard_group}
+                            onChange={(e) => handleEditValueChange(item.spec_id, e.target.value)}
+                            colorScheme="whiteAlpha"
+                            color={textColor}
+                          />
+                          <Button
+                            size="sm"
+                            onClick={() => handleUpdate(item)}
+                            flexShrink={0}
+                          >
+                            수정
+                          </Button>
+                        </Flex>
+                      ) : (
+                        item.standard_group
+                      )}
+                    </Td>
                     <Td py={3}>{highlightText(item.standard_spec, searchKeyword)}</Td>
                     <Td py={3}>
                       <Button size="sm" onClick={() => handleViewDoctors(item.standard_spec)}>
@@ -229,7 +320,7 @@ function MedicalField() {
                 ))
               ) : (
                 <Tr>
-                  <Td colSpan={3} textAlign="center">
+                  <Td colSpan={4} textAlign="center">
                     {searchKeyword ? '검색 결과가 없습니다.' : '데이터가 없습니다.'}
                   </Td>
                 </Tr>
@@ -274,12 +365,12 @@ function MedicalField() {
                       <Tr key={`${doctor.doctor_id}_${index+1}`} cursor="pointer" onClick={() => handleOpenDoctorDetailModal(doctor)}>
                         <Td>
                           <Image
-                            src={errorImageUrls.includes(doctor.profileimgurl) ? defaultImage : (doctor.profileimgurl || defaultImage)}
+                            src={(functions.isEmpty(doctor.profileimgurl) || errorImageUrls.includes(doctor.profileimgurl?.trim())) ? defaultImage : doctor.profileimgurl.trim()}
                             alt={doctor.doctorname}
                             boxSize="50px"
                             objectFit="cover"
                             borderRadius="full"
-                            onError={() => handleImageError(doctor.profileimgurl)}
+                            onError={() => handleImageError(doctor.profileimgurl?.trim())}
                           />
                         </Td>
                         <Td>{doctor.doctor_id}</Td>

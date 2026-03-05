@@ -96,3 +96,11 @@ export function getStandardSpecialtyForDoctors(props: any): ApiResponse<any> {
         return null;
     }
 }
+
+export function updateStandardSpecialty(props: { spec_id: number; standard_group: string }): ApiResponse<any> {
+    if ( !functions.isEmpty(props.spec_id) ) {
+        return api.patch(`/statistics/standard-specialty-group/${props.spec_id}`, { standard_group: props.standard_group });
+    }else{
+        return null;
+    }
+}
