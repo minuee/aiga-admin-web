@@ -1,6 +1,30 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Flex,Box,Text,useColorModeValue,Table,Thead,Tbody,Tr,Th,Td,Button,useDisclosure,Image,Modal,ModalOverlay,ModalContent,ModalHeader,ModalCloseButton,ModalBody,Input,InputGroup,InputLeftElement,Select } from '@chakra-ui/react';
+import {
+  Flex,
+  Box,
+  Text,
+  useColorModeValue,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  Button,
+  useDisclosure,
+  Image,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Select,
+} from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import { getStandardSpecialty, getStandardSpecialtyForDoctors, updateStandardSpecialty } from 'services/common';
 import DoctorDetail from 'components/modal/DoctorBasicDetail';
@@ -9,7 +33,7 @@ import functions from 'utils/functions';
 import { useToast } from '@chakra-ui/react';
 import useCheckAdmin from 'store/useCheckAdmin';
 
-const defaultImage = '/img/avatars/no_image01.png';
+const defaultImage = require("../../../../public/img/avatars/no_image01.png");
 
 interface StandardSpecialtyItem {
   spec_id: number;
@@ -38,7 +62,6 @@ function MedicalField() {
   const [doctorList, setDoctorList] = useState<Doctor[]>([]);
   const [isLoadingDoctors, setIsLoadingDoctors] = useState(false);
   const btnRef = React.useRef(null);
-  const [errorImageUrls, setErrorImageUrls] = useState<string[]>([]);
   const [isOpenDoctorDetailModal, setIsOpenDoctorDetailModal] = useState<boolean>(false);
   const [selectedDoctorData, setSelectedDoctorData] = useState<any | null>(null);
   const sidebarBackgroundColor = useColorModeValue('white', 'gray.700');
@@ -135,7 +158,6 @@ function MedicalField() {
     setSelectedStandardSpec(standardSpec);
     onOpen();
     setIsLoadingDoctors(true);
-    setErrorImageUrls([]);
     try {
       const response = await getStandardSpecialtyForDoctors({ standard_spec: standardSpec });
       if (response && response.data) {
@@ -148,12 +170,6 @@ function MedicalField() {
       setDoctorList([]);
     } finally {
       setIsLoadingDoctors(false);
-    }
-  };
-
-  const handleImageError = (imageUrl: string) => {
-    if (imageUrl && !errorImageUrls.includes(imageUrl)) {
-      setErrorImageUrls((prev) => [...prev, imageUrl]);
     }
   };
 
@@ -216,6 +232,41 @@ function MedicalField() {
         isClosable: true,
       });
     }
+  };
+
+  // 프로필 이미지 렌더러 컴포넌트 (DoctorsTable.tsx 참고)
+  const ProfileImageRenderer = ({ imageUrl, defaultImage }: { imageUrl: string; defaultImage: any }) => {
+    const [hasImageError, setHasImageError] = useState(false);
+
+    useEffect(() => {
+      setHasImageError(false);
+    }, [imageUrl]);
+
+    const trimmedUrl = imageUrl?.trim();
+    const finalUrl = trimmedUrl?.startsWith('//') ? `https:${trimmedUrl}` : trimmedUrl;
+
+    if (functions.isEmpty(finalUrl) || hasImageError) {
+      return (
+        <Image
+          src={defaultImage?.default || defaultImage}
+          alt="default profile"
+          boxSize="50px"
+          objectFit="cover"
+          borderRadius="full"
+        />
+      );
+    }
+
+    return (
+      <Image
+        src={finalUrl}
+        alt="profile"
+        boxSize="50px"
+        objectFit="cover"
+        borderRadius="full"
+        onError={() => setHasImageError(true)}
+      />
+    );
   };
 
   return (
@@ -351,23 +402,7 @@ function MedicalField() {
                     doctorList.map((doctor,index) => (
                       <Tr key={`${doctor.doctor_id}_${index+1}`} cursor="pointer" onClick={() => handleOpenDoctorDetailModal(doctor)}>
                         <Td>
-                          <Image
-                            src={
-                              functions.isEmpty(doctor.profileimgurl) || errorImageUrls.includes(doctor.profileimgurl?.trim()) 
-                                ? defaultImage 
-                                : doctor.profileimgurl.trim().startsWith('//') 
-                                  ? `https:${doctor.profileimgurl.trim()}` 
-                                  : doctor.profileimgurl.trim()
-                            }
-                            alt={doctor.doctorname}
-                            boxSize="50px"
-                            objectFit="cover"
-                            borderRadius="full"
-                            onError={() => {
-                              const trimmedUrl = doctor.profileimgurl?.trim();
-                              if (trimmedUrl) handleImageError(trimmedUrl);
-                            }}
-                          />
+                          <ProfileImageRenderer imageUrl={doctor.profileimgurl} defaultImage={defaultImage} />
                         </Td>
                         <Td>{doctor.doctor_id}</Td>
                         <Td>{doctor.deptname}</Td>
