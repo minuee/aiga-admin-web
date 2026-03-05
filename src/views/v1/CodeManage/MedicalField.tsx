@@ -37,6 +37,7 @@ import DoctorDetail from 'components/modal/DoctorBasicDetail';
 import mConstants from 'utils/constants';
 import functions from 'utils/functions';
 import { useToast } from '@chakra-ui/react';
+import useCheckAdmin from 'store/useCheckAdmin';
 
 const defaultImage = '/img/avatars/no_image01.png';
 
@@ -57,6 +58,7 @@ interface Doctor {
 function MedicalField() {
   const textColor = useColorModeValue('secondaryGray.900', 'white');
   const toast = useToast();
+  const isAdmin = useCheckAdmin();
   const [originalData, setOriginalData] = useState<StandardSpecialtyItem[]>([]);
   const [filteredData, setFilteredData] = useState<StandardSpecialtyItem[]>([]);
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -241,12 +243,14 @@ function MedicalField() {
             진료 분야별 의사 관리
           </Text>
           <Flex gap="10px">
-            <Button
-              onClick={() => setIsEditMode(!isEditMode)}
-              variant={isEditMode ? 'outline' : 'solid'}
-            >
-              {isEditMode ? '조회 모드' : '수정 모드'}
-            </Button>
+            {isAdmin && (
+              <Button
+                onClick={() => setIsEditMode(!isEditMode)}
+                variant={isEditMode ? 'outline' : 'solid'}
+              >
+                {isEditMode ? '조회 모드' : '수정 모드'}
+              </Button>
+            )}
             <Select
               value={selectedGroup}
               onChange={handleGroupChange}
@@ -289,7 +293,7 @@ function MedicalField() {
                   <Tr key={item.spec_id} _hover={{ bg: extraTrBgColor}}>
                     <Td py={3}>{item.spec_id}</Td>
                     <Td py={3}>
-                      {isEditMode ? (
+                      {isEditMode && isAdmin ? (
                         <Flex gap="5px">
                           <Input
                             size="sm"
