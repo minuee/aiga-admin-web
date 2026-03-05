@@ -1,36 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import {
-  Flex,
-  Box,
-  Text,
-  useColorModeValue,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  Button,
-  Drawer,
-  DrawerBody,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  useDisclosure,
-  Image,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Select,
-} from '@chakra-ui/react';
+import { Flex,Box,Text,useColorModeValue,Table,Thead,Tbody,Tr,Th,Td,Button,useDisclosure,Image,Modal,ModalOverlay,ModalContent,ModalHeader,ModalCloseButton,ModalBody,Input,InputGroup,InputLeftElement,Select } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import { getStandardSpecialty, getStandardSpecialtyForDoctors, updateStandardSpecialty } from 'services/common';
 import DoctorDetail from 'components/modal/DoctorBasicDetail';
@@ -98,7 +68,20 @@ function MedicalField() {
   // 그룹 목록 추출
   const groups = React.useMemo(() => {
     const uniqueGroups = Array.from(new Set(originalData.map(item => item.standard_group))).filter(Boolean);
-    return ['전체', ...uniqueGroups];
+    
+    // '기타'를 제외하고 가나다순 정렬
+    const sortedOthers = uniqueGroups
+      .filter(g => g !== '기타')
+      .sort((a, b) => a.localeCompare(b, 'ko'));
+    
+    const result = ['전체', ...sortedOthers];
+    
+    // '기타'가 데이터에 있으면 맨 뒤에 추가
+    if (uniqueGroups.includes('기타')) {
+      result.push('기타');
+    }
+    
+    return result;
   }, [originalData]);
 
   // 필터링 로직 통합

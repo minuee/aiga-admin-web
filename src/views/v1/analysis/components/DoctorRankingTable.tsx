@@ -1,17 +1,5 @@
 'use client';
-import {
-  Box,
-  Text,
-  useColorModeValue,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  Flex,
-  Icon,
-} from '@chakra-ui/react';
+import { Box,Text,useColorModeValue,Table,Thead,Tbody,Tr,Th,Td,Flex,Icon } from '@chakra-ui/react';
 import Card from 'components/card/Card';
 import { FaCrown } from 'react-icons/fa';
 

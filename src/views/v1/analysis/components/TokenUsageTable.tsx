@@ -1,14 +1,5 @@
 'use client';
-import {
-  Text,
-  useColorModeValue,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-} from '@chakra-ui/react';
+import { Text,useColorModeValue,Table,Thead,Tbody,Tr,Th,Td } from '@chakra-ui/react';
 import Card from 'components/card/Card';
 
 interface TokenUsageItem {

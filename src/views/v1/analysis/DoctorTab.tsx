@@ -1,19 +1,6 @@
 'use client';
 import React, { useState, useEffect, useCallback } from 'react';
-import {
-  Box,
-  Flex,
-  Button,
-  useColorModeValue,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  Text,
-} from '@chakra-ui/react';
+import { Box,Flex,Button,useColorModeValue,useDisclosure,Modal,ModalOverlay,ModalContent,ModalHeader,ModalCloseButton,ModalBody,Text } from '@chakra-ui/react';
 import Card from 'components/card/Card';
 import AnalysisFilter from './AnalysisFilter';
 import DoctorRankingTable from './components/DoctorRankingTable';

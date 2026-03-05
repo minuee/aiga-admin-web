@@ -1,21 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import {
-  Flex,
-  Box,
-  Text,
-  useColorModeValue,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  Tag,
-  Input,
-  InputGroup,
-  InputLeftElement,
-} from '@chakra-ui/react';
+import { Flex,Box,Text,useColorModeValue,Table,Thead,Tbody,Tr,Th,Td,Tag,Input,InputGroup,InputLeftElement } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import { getStandardDeptSpec } from 'services/common';
 

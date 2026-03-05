@@ -1,22 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import {
-  Flex,
-  Input,
-  Button,
-  FormControl,
-  FormLabel,
-  useColorModeValue,
-  InputGroup,
-  InputLeftElement,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-  Icon,
-} from '@chakra-ui/react';
+import { Flex,Input,Button,FormControl,FormLabel,useColorModeValue,InputGroup,InputLeftElement,Modal,ModalOverlay,ModalContent,ModalHeader,ModalBody,ModalCloseButton,Icon } from '@chakra-ui/react';
 import { MdOutlineEventAvailable, MdChevronLeft, MdChevronRight } from 'react-icons/md';
 import Calendar from 'react-calendar';
 import { format } from 'date-fns';

@@ -2,23 +2,7 @@
 import React, { PropsWithChildren, useState, useEffect } from 'react';
 
 // chakra imports
-import {
-  Box,
-  Flex,
-  useColorModeValue,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-  Text,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td
-} from '@chakra-ui/react';
+import { Box,Flex,useColorModeValue,Tabs,TabList,TabPanels,Tab,TabPanel,Text,Table,Thead,Tbody,Tr,Th,Td } from '@chakra-ui/react';
 import StandardMedicalField from './StandardMedicalField';
 import MedicalField from './MedicalField';
 import { getDataVersion } from 'services/common'; // getDataVersion 임포트
