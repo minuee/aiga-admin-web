@@ -352,12 +352,21 @@ function MedicalField() {
                       <Tr key={`${doctor.doctor_id}_${index+1}`} cursor="pointer" onClick={() => handleOpenDoctorDetailModal(doctor)}>
                         <Td>
                           <Image
-                            src={(functions.isEmpty(doctor.profileimgurl) || errorImageUrls.includes(doctor.profileimgurl?.trim())) ? defaultImage : doctor.profileimgurl.trim()}
+                            src={
+                              functions.isEmpty(doctor.profileimgurl) || errorImageUrls.includes(doctor.profileimgurl?.trim()) 
+                                ? defaultImage 
+                                : doctor.profileimgurl.trim().startsWith('//') 
+                                  ? `https:${doctor.profileimgurl.trim()}` 
+                                  : doctor.profileimgurl.trim()
+                            }
                             alt={doctor.doctorname}
                             boxSize="50px"
                             objectFit="cover"
                             borderRadius="full"
-                            onError={() => handleImageError(doctor.profileimgurl?.trim())}
+                            onError={() => {
+                              const trimmedUrl = doctor.profileimgurl?.trim();
+                              if (trimmedUrl) handleImageError(trimmedUrl);
+                            }}
                           />
                         </Td>
                         <Td>{doctor.doctor_id}</Td>
