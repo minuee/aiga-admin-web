@@ -152,8 +152,8 @@ export default function ReactEditor(props: ReactEditorProps) {
           ['blockquote'],
           ['list'],
           [
-            { color:[]},
-            { background: [] }
+            { color: [] as string[] },
+            { background: [] as string[] }
           ],
           [{ script: 'sub' }, { script: 'super' }],
           ['code', 'code-block'],
