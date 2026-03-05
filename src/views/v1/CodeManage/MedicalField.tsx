@@ -234,7 +234,7 @@ function MedicalField() {
     }
   };
 
-  // 프로필 이미지 렌더러 컴포넌트 (DoctorsTable.tsx 참고)
+  // 프로필 이미지 렌더러 컴포넌트 (캐시 서버 로직 적용)
   const ProfileImageRenderer = ({ imageUrl, defaultImage }: { imageUrl: string; defaultImage: any }) => {
     const [hasImageError, setHasImageError] = useState(false);
 
@@ -242,10 +242,24 @@ function MedicalField() {
       setHasImageError(false);
     }, [imageUrl]);
 
-    const trimmedUrl = imageUrl?.trim();
-    const finalUrl = trimmedUrl?.startsWith('//') ? `https:${trimmedUrl}` : trimmedUrl;
+    const useCache = process.env.NEXT_PUBLIC_DOCTOR_IMAGE_CACAE_SERVER_VERBOSE === 'true';
+    const imageCacheServer = process.env.NEXT_PUBLIC_DOCTOR_IMAGE_CACAE_SERVER || 'http://localhost:7001';
+    const imageCacheWidth = parseInt(process.env.NEXT_PUBLIC_DOCTOR_IMAGE_CACAE_WIDTH || '300', 10);
+    const imageCacheHeight = parseInt(process.env.NEXT_PUBLIC_DOCTOR_IMAGE_CACAE_HEIGHT || '300', 10);
 
-    if (functions.isEmpty(finalUrl) || hasImageError) {
+    const photoUrl = (imageUrl && !functions.isEmpty(imageUrl)) ? imageUrl.trim() : null;
+    
+    // 캐시 서버 URL 생성 로직
+    let photoSrc = defaultImage?.default || defaultImage;
+    if (photoUrl) {
+      if (useCache) {
+        photoSrc = `${imageCacheServer}?url=${encodeURIComponent(photoUrl)}&w=${imageCacheWidth}&h=${imageCacheHeight}`;
+      } else {
+        photoSrc = photoUrl.startsWith('//') ? `https:${photoUrl}` : photoUrl;
+      }
+    }
+
+    if (hasImageError || !photoUrl) {
       return (
         <Image
           src={defaultImage?.default || defaultImage}
@@ -259,7 +273,7 @@ function MedicalField() {
 
     return (
       <Image
-        src={finalUrl}
+        src={photoSrc}
         alt="profile"
         boxSize="50px"
         objectFit="cover"
